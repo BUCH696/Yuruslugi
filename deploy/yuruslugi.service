@@ -1,0 +1,18 @@
+[Unit]
+Description=Yuruslugi landing service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/yuruslugi
+ExecStart=/usr/bin/node /opt/yuruslugi/src/server.js
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+EnvironmentFile=/opt/yuruslugi/.env
+User=www-data
+Group=www-data
+
+[Install]
+WantedBy=multi-user.target
+
