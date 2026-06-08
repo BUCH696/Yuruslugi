@@ -16,6 +16,7 @@ const publicDir = path.resolve(process.cwd(), "public");
 const allowedScriptSources = [
   "'self'",
   "'unsafe-inline'",
+  "https://cdnjs.cloudflare.com",
   "https://mc.yandex.ru",
   "https://www.googletagmanager.com",
   "https://www.google-analytics.com"
@@ -23,6 +24,8 @@ const allowedScriptSources = [
 
 const allowedConnectSources = [
   "'self'",
+  "https://fonts.googleapis.com",
+  "https://fonts.gstatic.com",
   "https://mc.yandex.ru",
   "https://www.google-analytics.com",
   "https://region1.google-analytics.com"
@@ -36,11 +39,11 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
         imgSrc: ["'self'", "data:", "https://mc.yandex.ru"],
         scriptSrc: allowedScriptSources,
         connectSrc: allowedConnectSources,
-        fontSrc: ["'self'", "data:"],
+        fontSrc: ["'self'", "data:", "https://fonts.gstatic.com"],
         objectSrc: ["'none'"],
         baseUri: ["'self'"],
         formAction: ["'self'"],
