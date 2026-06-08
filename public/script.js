@@ -19,12 +19,13 @@ async function initialize() {
   setupBurgerMenu();
   setupFaq();
   setupModals();
-  setupReveal();
   setupServiceSelection();
 
   await loadSiteSettings();
   await loadAppointmentSlots();
 
+  setupReveal();
+  setupStatCounters();
   setupLeadForm();
   setupCallbackForms();
   setupAppointmentForm();
@@ -91,6 +92,9 @@ function setupServiceSelection() {
       if (selected) {
         selected.value = card.dataset.service || "";
       }
+
+      $$(".service-card").forEach((item) => item.classList.remove("is-active"));
+      card.classList.add("is-active");
     });
   });
 }
@@ -127,8 +131,8 @@ function applySiteSettings(settings) {
   setText("#footer-email", settings.contacts.email);
   setText("#footer-hours", settings.contacts.workingHours);
   setText("#footer-address", settings.contacts.cityAddress);
-  setText("#topbar-hours", settings.contacts.workingHours, "<span class=\"icon\">◷</span> ");
-  setText("#topbar-address", settings.contacts.cityAddress, "<span class=\"icon\">⌖</span> ");
+  setText("#topbar-hours", settings.contacts.workingHours, '<span class="icon">◷</span> ');
+  setText("#topbar-address", settings.contacts.cityAddress, '<span class="icon">⌖</span> ');
 
   setSocialLink("#social-telegram", settings.contacts.telegramUrl);
   setSocialLink("#social-whatsapp", settings.contacts.whatsappUrl);
@@ -149,11 +153,7 @@ function applySiteSettings(settings) {
     type: settings.actions.urgentButtonType,
     value: settings.actions.urgentButtonValue
   });
-  bindAction("#navbar-cta", {
-    label: settings.actions.navbarButtonLabel,
-    type: settings.actions.navbarButtonType,
-    value: settings.actions.navbarButtonValue
-  });
+  bindNavbarAction(settings);
   bindAction("#office-button", {
     label: settings.actions.officeButtonLabel,
     type: settings.actions.officeButtonType,
@@ -161,8 +161,8 @@ function applySiteSettings(settings) {
   });
 
   applyPrices(settings.prices || []);
-  applyDocumentSettings(settings.documents);
-  applyOfficeSettings(settings.office);
+  applyDocumentSettings(settings.documents || {});
+  applyOfficeSettings(settings.office || {});
 }
 
 function setMeta(settings) {
@@ -175,7 +175,7 @@ function setMeta(settings) {
 
 function setText(selector, value, prefix = "") {
   const element = $(selector);
-  if (!element || !value) {
+  if (!element || value === undefined || value === null || value === "") {
     return;
   }
 
@@ -237,14 +237,7 @@ function bindAction(selector, action) {
   element.replaceWith(cloned);
 
   if (action.type === "anchor") {
-    if (cloned.tagName === "A") {
-      cloned.href = action.value || "#lead";
-    } else {
-      cloned.addEventListener("click", () => {
-        const target = $(action.value || "#lead");
-        target?.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-    }
+    bindAnchorAction(cloned, action.value || "#lead");
     return;
   }
 
@@ -255,17 +248,51 @@ function bindAction(selector, action) {
   }
 
   if (action.type === "url" || action.type === "tel" || action.type === "mailto") {
-    const href = action.type === "url"
-      ? action.value
-      : `${action.type}:${action.value || ""}`;
+    const href = action.type === "url" ? action.value : `${action.type}:${action.value || ""}`;
+    bindHrefAction(cloned, href);
+  }
+}
 
-    if (cloned.tagName === "A") {
-      cloned.href = href;
-    } else {
-      cloned.addEventListener("click", () => {
-        window.location.href = href;
-      });
+function bindNavbarAction(settings) {
+  const button = $("#navbar-cta");
+  if (!button) {
+    return;
+  }
+
+  const cloned = button.cloneNode(true);
+  button.replaceWith(cloned);
+  cloned.textContent = settings.contacts.phoneDisplay || "+7 (495) 128-24-24";
+
+  cloned.addEventListener("click", () => {
+    const telHref = `tel:${String(settings.contacts.phoneHref || settings.contacts.phoneDisplay || "").replace(/[^\d+]/g, "")}`;
+    const isMobileViewport = window.matchMedia("(max-width: 980px)").matches;
+
+    if (isMobileViewport) {
+      window.location.href = telHref;
+      return;
     }
+
+    $("#contacts")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+}
+
+function bindAnchorAction(element, selector) {
+  if (element.tagName === "A") {
+    element.href = selector;
+  } else {
+    element.addEventListener("click", () => {
+      $(selector)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+}
+
+function bindHrefAction(element, href) {
+  if (element.tagName === "A") {
+    element.href = href;
+  } else {
+    element.addEventListener("click", () => {
+      window.location.href = href;
+    });
   }
 }
 
@@ -293,9 +320,9 @@ function applyPrices(prices) {
       featuredCard.classList.toggle("price-card--featured", Boolean(price.featured));
     }
 
-    const popularBadge = $(`[data-price-popular="${index}"]`);
-    if (popularBadge) {
-      popularBadge.style.display = price.featured ? "" : "none";
+    const flag = $(`[data-price-popular="${index}"]`);
+    if (flag) {
+      flag.hidden = !price.featured;
     }
   });
 }
@@ -335,9 +362,15 @@ function applyOfficeSettings(office) {
       ></iframe>
     `;
     mapContainer.classList.add("office-map--embedded");
-  } else {
-    mapContainer.classList.remove("office-map--embedded");
+    return;
   }
+
+  mapContainer.classList.remove("office-map--embedded");
+  mapContainer.innerHTML = `
+    <span>⌖</span>
+    <strong id="office-map-title">${escapeHtml(office.mapTitle || "Тверская, 16")}</strong>
+    <small id="office-map-subtitle">${escapeHtml(office.mapSubtitle || "офис 812")}</small>
+  `;
 }
 
 async function loadAppointmentSlots() {
@@ -570,26 +603,36 @@ function closeModals() {
 }
 
 function setupReveal() {
-  if (window.gsap) {
+  if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(window.ScrollTrigger);
-    gsap.to(".reveal", {
-      opacity: 1,
-      y: 0,
-      duration: 0.85,
-      ease: "power3.out",
-      stagger: 0.08,
-      scrollTrigger: { trigger: "body", start: "top top" }
+
+    $$(".reveal").forEach((element) => {
+      gsap.to(element, {
+        opacity: 1,
+        y: 0,
+        duration: 0.85,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: element,
+          start: "top 88%"
+        }
+      });
     });
+
     $$(".reveal-group").forEach((group) => {
       gsap.to($$(":scope > *", group), {
         opacity: 1,
         y: 0,
-        duration: 0.75,
+        duration: 0.72,
         ease: "power3.out",
-        stagger: 0.08,
-        scrollTrigger: { trigger: group, start: "top 82%" }
+        stagger: 0.12,
+        scrollTrigger: {
+          trigger: group,
+          start: "top 82%"
+        }
       });
     });
+
     return;
   }
 
@@ -616,6 +659,54 @@ function setupReveal() {
   );
 
   $$(".reveal, .reveal-group > *").forEach((element) => observer.observe(element));
+}
+
+function setupStatCounters() {
+  const counters = $$(".stat-value[data-counter]");
+  if (!counters.length) {
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting || entry.target.dataset.counted === "true") {
+          return;
+        }
+
+        animateCounter(entry.target);
+        entry.target.dataset.counted = "true";
+        observer.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.4 }
+  );
+
+  counters.forEach((counter) => observer.observe(counter));
+}
+
+function animateCounter(element) {
+  const target = Number(element.dataset.counter || "0");
+  const suffix = element.dataset.suffix || "";
+  const duration = 1400;
+  const startTime = performance.now();
+
+  const step = (currentTime) => {
+    const progress = Math.min((currentTime - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const currentValue = Math.round(target * eased);
+    element.textContent = `${formatCounter(currentValue)}${suffix}`;
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    }
+  };
+
+  requestAnimationFrame(step);
+}
+
+function formatCounter(value) {
+  return new Intl.NumberFormat("ru-RU").format(value);
 }
 
 function bootstrapAnalytics(analytics) {

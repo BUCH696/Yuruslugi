@@ -17,7 +17,7 @@
   <header class="site-header" id="top">
     <div class="topbar">
       <div class="page-shell topbar__inner">
-        <a href="#office" class="topbar__item" id="topbar-address"><span class="icon">⌖</span> Москва, ул. Тверская, 16, офис 812</a>
+        <a href="#office" class="topbar__item topbar__item--address" id="topbar-address"><span class="icon">⌖</span> Москва, ул. Тверская, 16, офис 812</a>
         <a class="topbar__item" id="topbar-phone" href="tel:+74951282424"><span class="icon">☎</span> +7 (495) 128-24-24</a>
         <div class="topbar__item" id="topbar-hours"><span class="icon">◷</span> Пн–Пт 9:00–19:00 <span class="hide-sm"> · Сб 10:00–16:00</span></div>
         <button class="topbar__urgent" id="urgent-button" type="button" data-open-modal="callback">Помощь за 5 минут</button>
@@ -27,7 +27,7 @@
     <div class="navbar">
       <div class="page-shell navbar__inner">
         <a class="brand" href="#top" aria-label="Правовой партнёр">
-          <img src="assets/logo.svg" alt="Правовой партнёр" class="brand__logo" id="brand-logo" />
+          <img src="/assets/logo.svg" alt="Правовой партнёр" class="brand__logo" id="brand-logo" />
         </a>
         <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
         <nav class="nav-links" aria-label="Основное меню">
@@ -39,7 +39,7 @@
           <a href="#faq">FAQ</a>
           <a href="#contacts">Контакты</a>
         </nav>
-        <button class="btn btn--primary navbar__cta" id="navbar-cta" type="button" data-open-modal="appointment">Записаться в офис</button>
+        <button class="btn btn--primary navbar__cta" id="navbar-cta" type="button">+7 (495) 128-24-24</button>
       </div>
     </div>
   </header>
@@ -47,7 +47,7 @@
   <main>
     <section class="hero section-full">
       <div class="page-shell hero__grid">
-        <div class="hero__content reveal">
+        <div class="hero__content">
           <div class="eyebrow" id="hero-eyebrow">Юридические услуги для людей и бизнеса</div>
           <h1 id="hero-title">Быстрый юридический разбор вашей ситуации</h1>
           <p class="hero__text" id="hero-text">
@@ -66,21 +66,29 @@
           </div>
         </div>
 
-        <div class="hero-visual reveal" aria-label="Иллюстрация юридического сервиса">
-          <img src="assets/hero-placeholder.svg" alt="Юридическая консультация" id="hero-image" />
-          <div class="hero-visual__badge"><strong id="hero-badge-title">до 24 ч.</strong><span id="hero-badge-text">на первичный разбор</span></div>
+        <div class="hero-visual" aria-label="Иллюстрация юридического сервиса">
+          <img src="/assets/hero-placeholder.svg" alt="Юридическая консультация" id="hero-image" />
+          <div class="hero-visual__badge">
+            <strong id="hero-badge-title">до 24 ч.</strong>
+            <span id="hero-badge-text">на первичный разбор</span>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="section-full benefits-strip" id="benefits">
       <div class="page-shell">
+        <div class="section-title section-title--compact reveal">
+          <span class="eyebrow">Почему обращаются к нам</span>
+          <h2>Даём не общие советы, а рабочую юридическую позицию</h2>
+          <p>Каждое обращение быстро переводим в понятный план: что происходит, какие есть риски и какой следующий шаг действительно нужен.</p>
+        </div>
         <div class="cards cards--five reveal-group">
           <article class="mini-card"><span class="mini-card__icon">⌕</span><h3>Понимание ситуации</h3><p>Чётко объясним, что происходит с точки зрения закона.</p></article>
           <article class="mini-card"><span class="mini-card__icon">▣</span><h3>Оценка рисков</h3><p>Покажем возможные риски и последствия решений.</p></article>
-          <article class="mini-card"><span class="mini-card__icon">▤</span><h3>План действий</h3><p>Предложим оптимальный план и необходимые шаги.</p></article>
+          <article class="mini-card"><span class="mini-card__icon">▤</span><h3>План действий</h3><p>Предложим оптимальный сценарий и необходимые шаги.</p></article>
           <article class="mini-card"><span class="mini-card__icon">▢</span><h3>Прозрачная стоимость</h3><p>Сразу озвучим стоимость услуг и возможные расходы.</p></article>
-          <article class="mini-card"><span class="mini-card__icon">♙</span><h3>Поддержка</h3><p>Сопровождаем вас на всех этапах до результата.</p></article>
+          <article class="mini-card"><span class="mini-card__icon">♙</span><h3>Поддержка до результата</h3><p>Сопровождаем вас на каждом этапе до завершения задачи.</p></article>
         </div>
       </div>
     </section>
@@ -89,34 +97,46 @@
       <div class="page-shell">
         <div class="section-title reveal">
           <span class="eyebrow">Все направления в одном месте</span>
-          <h2>Юридические услуги для любых задач</h2>
-          <p>Помогаем частным клиентам, предпринимателям и компаниям: документы, переговоры, суды, сопровождение и срочные консультации.</p>
+          <h2>Юридические услуги для частных клиентов и бизнеса</h2>
+          <p>Помогаем с документами, переговорами, судами и сопровождением сложных вопросов. Выберите направление и начните с краткого разбора.</p>
         </div>
         <div class="service-grid reveal-group">
-          <a class="service-card" href="#lead" data-service="Для граждан"><span>♙</span><h3>Для граждан</h3><p>Семейные споры, наследство, жильё, защита прав потребителей и другие вопросы.</p><em>Это мне подходит</em></a>
-          <a class="service-card" href="#lead" data-service="Недвижимость"><span>⌂</span><h3>Недвижимость</h3><p>Сделки, споры, аренда, перепланировка, регистрация прав и проверка объектов.</p><em>Обсудить</em></a>
-          <a class="service-card" href="#lead" data-service="Бизнесу"><span>▧</span><h3>Бизнесу</h3><p>Регистрация, договоры, корпоративные вопросы, сопровождение компаний.</p><em>Это мне подходит</em></a>
+          <a class="service-card" href="#lead" data-service="Для граждан"><span>♙</span><h3>Для граждан</h3><p>Семейные споры, наследство, жильё, защита прав потребителей и другие вопросы.</p><em>Обсудить</em></a>
+          <a class="service-card" href="#lead" data-service="Недвижимость"><span>⌂</span><h3>Недвижимость</h3><p>Сделки, споры, аренда, регистрация прав и проверка объектов.</p><em>Обсудить</em></a>
+          <a class="service-card" href="#lead" data-service="Бизнесу"><span>▧</span><h3>Бизнесу</h3><p>Регистрация, договоры, корпоративные вопросы и постоянное сопровождение компаний.</p><em>Обсудить</em></a>
           <a class="service-card" href="#lead" data-service="Налоги и финансы"><span>⌃</span><h3>Налоги и финансы</h3><p>Споры с налоговой, проверки, оптимизация, возврат налогов и финансовые риски.</p><em>Обсудить</em></a>
-          <a class="service-card" href="#lead" data-service="Трудовые споры"><span>⚖</span><h3>Трудовые споры</h3><p>Увольнения, выплаты, трудовые договоры, споры работников и работодателей.</p><em>Это мне подходит</em></a>
+          <a class="service-card" href="#lead" data-service="Трудовые споры"><span>⚖</span><h3>Трудовые споры</h3><p>Увольнения, выплаты, трудовые договоры, споры работников и работодателей.</p><em>Обсудить</em></a>
           <a class="service-card" href="#lead" data-service="Арбитраж и суды"><span>◀</span><h3>Арбитраж и суды</h3><p>Досудебное урегулирование, представительство и защита интересов в суде.</p><em>Обсудить</em></a>
-          <a class="service-card" href="#lead" data-service="Интеллектуальная собственность"><span>☆</span><h3>Интеллектуальная собственность</h3><p>Товарные знаки, авторские права, договоры, защита бренда и контента.</p><em>Это мне подходит</em></a>
-          <a class="service-card" href="#lead" data-service="Банкротство"><span>⊙</span><h3>Банкротство</h3><p>Физических и юридических лиц, переговоры с кредиторами, защита имущества.</p><em>Обсудить</em></a>
-          <a class="service-card" href="#lead" data-service="Миграционные вопросы"><span>◌</span><h3>Миграционные вопросы</h3><p>ВНЖ, РВП, гражданство, документы и привлечение иностранных специалистов.</p><em>Это мне подходит</em></a>
-          <a class="service-card" href="#lead" data-service="Другие услуги"><span>✦</span><h3>Другие услуги</h3><p>Лицензии, проверки, административные дела, юридический аутсорсинг.</p><em>Обсудить</em></a>
+          <a class="service-card" href="#lead" data-service="Интеллектуальная собственность"><span>☆</span><h3>Интеллектуальная собственность</h3><p>Товарные знаки, авторские права, договоры, защита бренда и контента.</p><em>Обсудить</em></a>
+          <a class="service-card" href="#lead" data-service="Банкротство"><span>⊙</span><h3>Банкротство</h3><p>Физических и юридических лиц, переговоры с кредиторами и защита имущества.</p><em>Обсудить</em></a>
+          <a class="service-card" href="#lead" data-service="Миграционные вопросы"><span>◌</span><h3>Миграционные вопросы</h3><p>ВНЖ, РВП, гражданство, документы и привлечение иностранных специалистов.</p><em>Обсудить</em></a>
+          <a class="service-card" href="#lead" data-service="Другие услуги"><span>✦</span><h3>Другие услуги</h3><p>Лицензии, проверки, административные дела и юридический аутсорсинг.</p><em>Обсудить</em></a>
         </div>
       </div>
     </section>
 
     <section class="section-full quick-help" id="quick-help">
       <div class="page-shell quick-help__inner reveal">
-        <div>
-          <span class="eyebrow eyebrow--light">Срочный вопрос</span>
-          <h2>Оставьте телефон — перезвоним за 5 минут</h2>
-          <p>Коротко уточним ситуацию, скажем первый шаг и подскажем, какие документы пригодятся.</p>
+        <div class="quick-help__content">
+          <div class="quick-help__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" role="presentation">
+              <path d="M20 10h24a8 8 0 0 1 8 8v28a8 8 0 0 1-8 8H20a8 8 0 0 1-8-8V18a8 8 0 0 1 8-8Z" fill="none" stroke="currentColor" stroke-width="4"/>
+              <path d="M25 20h14M25 28h14M25 36h8" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+              <path d="M44 41c0 4.97-4.03 9-9 9" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <span class="eyebrow eyebrow--light">Срочный вопрос</span>
+            <h2>Оставьте телефон — коротко сориентируем по ситуации</h2>
+            <p>Уточним задачу, подскажем первый шаг и скажем, какие документы пригодятся для разбора. Без длинной анкеты и лишних действий.</p>
+          </div>
         </div>
         <form class="quick-form">
-          <input type="tel" name="phone" placeholder="Ваш телефон" aria-label="Ваш телефон" />
-          <button class="btn btn--light" type="submit">Жду звонка</button>
+          <label class="quick-form__field">
+            <span>Ваш телефон</span>
+            <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" aria-label="Ваш телефон" />
+          </label>
+          <button class="btn btn--primary" type="submit">Жду звонка</button>
         </form>
       </div>
     </section>
@@ -126,20 +146,20 @@
         <div class="section-title reveal">
           <span class="eyebrow">Понятная поэтапность</span>
           <h2>Как мы решаем вашу проблему</h2>
-          <p>Не оставляем вас один на один с юридическим процессом: показываем этапы, сроки и следующий шаг.</p>
+          <p>Показываем весь маршрут заранее: от первичного запроса до документов, переговоров или представительства в суде.</p>
         </div>
         <div class="process-flow reveal-group">
-          <article><span>01</span><div><h3>Запрос</h3><p>Вы описываете ситуацию на сайте, по телефону или в офисе.</p></div></article>
+          <article><span>01</span><div><h3>Запрос</h3><p>Вы описываете ситуацию на сайте, по телефону или на встрече.</p></div></article>
           <article><span>02</span><div><h3>Разбор</h3><p>Юрист изучает вводные, документы и задаёт уточняющие вопросы.</p></div></article>
-          <article><span>03</span><div><h3>Стратегия</h3><p>Показываем варианты, риски, сроки и честную стоимость.</p></div></article>
-          <article><span>04</span><div><h3>Действия</h3><p>Готовим документы, ведём переговоры или представляем в суде.</p></div></article>
+          <article><span>03</span><div><h3>Стратегия</h3><p>Показываем варианты действий, риски, сроки и честную стоимость.</p></div></article>
+          <article><span>04</span><div><h3>Действия</h3><p>Готовим документы, ведём переговоры или представляем интересы в суде.</p></div></article>
           <article><span>05</span><div><h3>Результат</h3><p>Доводим задачу до результата и объясняем дальнейшие шаги.</p></div></article>
         </div>
         <div class="stats reveal-group">
-          <div><span>12 000+</span><p>довольных клиентов</p></div>
-          <div><span>8 лет</span><p>успешной работы</p></div>
-          <div><span>93%</span><p>дел решены в пользу клиентов</p></div>
-          <div><span>80+</span><p>городов России</p></div>
+          <div><span class="stat-value" data-counter="12000" data-suffix="+">12 000+</span><p>довольных клиентов</p></div>
+          <div><span class="stat-value" data-counter="8">8</span><p>лет успешной работы</p></div>
+          <div><span class="stat-value" data-counter="93" data-suffix="%">93%</span><p>дел решены в пользу клиентов</p></div>
+          <div><span class="stat-value" data-counter="80" data-suffix="+">80+</span><p>городов России</p></div>
         </div>
       </div>
     </section>
@@ -153,17 +173,34 @@
         </div>
         <div class="pricing reveal-group">
           <article class="price-card">
-            <h3 data-price-title="0">Базовый</h3><p data-price-description="0">Краткий разбор по телефону или в мессенджере</p><strong data-price-amount="0">0 ₽</strong>
+            <div class="price-card__head">
+              <h3 data-price-title="0">Базовый</h3>
+              <span class="price-card__flag" data-price-popular="0" hidden>Рекомендуем</span>
+            </div>
+            <p data-price-description="0">Краткий разбор по телефону или в мессенджере</p>
+            <strong data-price-amount="0">0 ₽</strong>
             <ul data-price-features="0"><li>Ответим на ваш вопрос</li><li>Оценим перспективы</li><li>Подскажем первые шаги</li></ul>
             <a class="btn btn--secondary btn--block" data-price-button="0" href="#lead">Получить бесплатно</a>
           </article>
+
           <article class="price-card price-card--featured" data-price-featured="1">
-            <div class="popular" data-price-popular="1">Популярный</div><h3 data-price-title="1">Оптимальный</h3><p data-price-description="1">Подробный разбор и план действий</p><strong data-price-amount="1">3 900 ₽</strong>
+            <div class="price-card__head">
+              <h3 data-price-title="1">Оптимальный</h3>
+              <span class="price-card__flag" data-price-popular="1">Оптимальный выбор</span>
+            </div>
+            <p data-price-description="1">Подробный разбор и план действий</p>
+            <strong data-price-amount="1">3 900 ₽</strong>
             <ul data-price-features="1"><li>Анализ ситуации и документов</li><li>Оценка рисков</li><li>План действий и рекомендации</li></ul>
             <a class="btn btn--primary btn--block" data-price-button="1" href="#lead">Заказать разбор</a>
           </article>
+
           <article class="price-card">
-            <h3 data-price-title="2">Расширенный</h3><p data-price-description="2">Глубокий анализ и стратегия</p><strong data-price-amount="2">7 900 ₽</strong>
+            <div class="price-card__head">
+              <h3 data-price-title="2">Расширенный</h3>
+              <span class="price-card__flag" data-price-popular="2" hidden>Рекомендуем</span>
+            </div>
+            <p data-price-description="2">Глубокий анализ и стратегия</p>
+            <strong data-price-amount="2">7 900 ₽</strong>
             <ul data-price-features="2"><li>Комплексный анализ</li><li>Варианты решения и стратегия</li><li>Консультация юриста 60 минут</li></ul>
             <a class="btn btn--secondary btn--block" data-price-button="2" href="#lead">Заказать разбор</a>
           </article>
@@ -175,13 +212,20 @@
       <div class="page-shell">
         <div class="document-panel reveal">
           <div class="document-panel__head">
-            <div><span class="eyebrow">Быстрая проверка</span><h2 id="documents-title">Загрузите документы — мы посмотрим и подскажем первый шаг</h2></div>
+            <div>
+              <span class="eyebrow">Быстрая проверка</span>
+              <h2 id="documents-title">Загрузите документы — мы посмотрим и подскажем первый шаг</h2>
+            </div>
             <p id="documents-description">Подойдут PDF, DOCX, JPG, PNG. Документы нужны только для предварительной оценки ситуации.</p>
           </div>
           <form class="doc-form" enctype="multipart/form-data">
             <label class="upload-wide" for="docs-input">
               <input id="docs-input" name="documents" type="file" multiple />
-              <span class="upload-wide__icon">⇧</span>
+              <span class="upload-wide__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="presentation">
+                  <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
               <strong id="documents-upload-text">Перетащите файлы сюда или выберите на компьютере</strong>
               <small id="documents-upload-hint">До 10 файлов, общий размер до 50 МБ</small>
             </label>
@@ -206,7 +250,38 @@
           <ul id="office-points"><li>Москва, ул. Тверская, 16, офис 812</li><li>Пн–Пт 9:00–19:00, Сб 10:00–16:00</li><li>Онлайн-консультации доступны по всей России</li></ul>
           <button class="btn btn--primary" id="office-button" type="button" data-open-modal="appointment">Записаться в офис</button>
         </div>
-        <div class="office-map" id="office-map" aria-label="Карта офиса"><span>⌖</span><strong id="office-map-title">Тверская, 16</strong><small id="office-map-subtitle">офис 812</small></div>
+        <div class="office-map" id="office-map" aria-label="Карта офиса">
+          <span>⌖</span>
+          <strong id="office-map-title">Тверская, 16</strong>
+          <small id="office-map-subtitle">офис 812</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-full social-hub" id="social-hub">
+      <div class="page-shell">
+        <div class="section-title reveal">
+          <span class="eyebrow">Мы в социальных сетях</span>
+          <h2>Следите за разбором кейсов и напишите нам в удобном канале</h2>
+          <p>Публикуем полезные комментарии, практические ситуации и обновления. Если удобнее, начните общение через соцсети или мессенджеры.</p>
+        </div>
+        <div class="social-hub__grid reveal-group">
+          <a class="social-hub__card" href="#" id="social-telegram">
+            <span class="social-hub__icon">TG</span>
+            <strong>Telegram</strong>
+            <small>Оперативная связь и быстрые ответы</small>
+          </a>
+          <a class="social-hub__card" href="#" id="social-whatsapp">
+            <span class="social-hub__icon">WA</span>
+            <strong>WhatsApp</strong>
+            <small>Удобно для коротких вопросов и документов</small>
+          </a>
+          <a class="social-hub__card" href="#" id="social-vk">
+            <span class="social-hub__icon">VK</span>
+            <strong>ВКонтакте</strong>
+            <small>Новости, материалы и дополнительное доверие</small>
+          </a>
+        </div>
       </div>
     </section>
 
@@ -229,16 +304,29 @@
 
     <section class="section-full lead-section" id="lead">
       <div class="page-shell lead-card reveal">
-        <div class="lead-card__visual"><img src="assets/contact-art.svg" alt="Юрист изучает документы" id="contact-image" /></div>
+        <div class="lead-card__visual">
+          <div class="lead-card__visual-shell">
+            <img src="/assets/contact-art.svg" alt="Юрист изучает документы" id="contact-image" />
+            <div class="lead-card__visual-note">
+              <strong>Разбор без затяжки</strong>
+              <span>Свяжемся, уточним задачу и предложим рабочий формат помощи.</span>
+            </div>
+          </div>
+        </div>
         <form class="lead-form" aria-label="Форма заявки">
-          <span class="eyebrow">Начать с разбора</span>
-          <h2>Оставьте заявку на юридический разбор</h2>
-          <p>Мы свяжемся с вами в течение 15 минут, уточним задачу и предложим удобный формат консультации.</p>
-          <input type="hidden" name="service" id="selected-service" />
-          <div class="form-row"><input type="text" name="name" placeholder="Ваше имя" /><input type="tel" name="phone" placeholder="Телефон" /></div>
-          <textarea name="message" placeholder="Опишите вашу ситуацию"></textarea>
-          <button class="btn btn--primary btn--block btn--xl" type="submit">Получить разбор</button>
-          <small>Ваши данные защищены и не передаются третьим лицам.</small>
+          <div class="lead-form__inner">
+            <span class="eyebrow">Начать с разбора</span>
+            <h2>Оставьте заявку на юридический разбор</h2>
+            <p>Мы свяжемся с вами в течение 15 минут, уточним задачу и предложим удобный формат консультации.</p>
+            <input type="hidden" name="service" id="selected-service" />
+            <div class="form-row">
+              <input type="text" name="name" placeholder="Ваше имя" />
+              <input type="tel" name="phone" placeholder="Телефон" />
+            </div>
+            <textarea name="message" placeholder="Опишите вашу ситуацию"></textarea>
+            <button class="btn btn--primary btn--block btn--xl" type="submit">Получить разбор</button>
+            <small>Ваши данные защищены и не передаются третьим лицам.</small>
+          </div>
         </form>
       </div>
     </section>
@@ -246,12 +334,37 @@
 
   <footer class="footer" id="contacts">
     <div class="page-shell footer__grid">
-      <div><img src="assets/logo-light.svg" alt="Правовой партнёр" class="footer__logo" id="footer-logo" /><p id="footer-description">Юридические решения для жизни и бизнеса.</p><div class="socials"><a href="#" id="social-telegram">TG</a><a href="#" id="social-whatsapp">WA</a><a href="#" id="social-vk">VK</a></div></div>
-      <div><h4>Услуги</h4><a href="#services">Для граждан</a><a href="#services">Бизнесу</a><a href="#services">Недвижимость</a><a href="#services">Налоги и финансы</a></div>
-      <div><h4>Навигация</h4><a href="#process">Как работаем</a><a href="#prices">Цены</a><a href="#documents">Документы</a><a href="#faq">FAQ</a></div>
-      <div class="footer__contacts"><h4>Контакты</h4><p id="footer-address">г. Москва, ул. Тверская, 16, офис 812</p><p id="footer-phone">+7 (495) 128-24-24</p><p id="footer-email">info@prav-partner.ru</p><p id="footer-hours">Пн–Пт: 9:00–19:00, Сб: 10:00–16:00</p></div>
+      <div>
+        <img src="/assets/logo-light.svg" alt="Правовой партнёр" class="footer__logo" id="footer-logo" />
+        <p id="footer-description">Юридические решения для жизни и бизнеса.</p>
+      </div>
+      <div>
+        <h4>Услуги</h4>
+        <a href="#services">Для граждан</a>
+        <a href="#services">Бизнесу</a>
+        <a href="#services">Недвижимость</a>
+        <a href="#services">Налоги и финансы</a>
+      </div>
+      <div>
+        <h4>Навигация</h4>
+        <a href="#process">Как работаем</a>
+        <a href="#prices">Цены</a>
+        <a href="#documents">Документы</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="footer__contacts">
+        <h4>Контакты</h4>
+        <p id="footer-address">г. Москва, ул. Тверская, 16, офис 812</p>
+        <p id="footer-phone">+7 (495) 128-24-24</p>
+        <p id="footer-email">info@prav-partner.ru</p>
+        <p id="footer-hours">Пн–Пт: 9:00–19:00, Сб: 10:00–16:00</p>
+      </div>
     </div>
-    <div class="page-shell footer__bottom"><span>© 2026 Правовой Партнёр. Все права защищены.</span><a href="privacy.html">Политика конфиденциальности</a><a href="privacy.html">Согласие на обработку данных</a></div>
+    <div class="page-shell footer__bottom">
+      <span>© 2026 Правовой Партнёр. Все права защищены.</span>
+      <a href="privacy.html">Политика конфиденциальности</a>
+      <a href="privacy.html">Согласие на обработку данных</a>
+    </div>
   </footer>
 
   <div class="modal" id="appointment-modal" aria-hidden="true">
