@@ -10,6 +10,9 @@ const state = {
   settings: null
 };
 
+const DEFAULT_OFFICE_MAP_URL =
+  "https://yandex.ru/map-widget/v1/?ll=39.869363%2C57.630114&mode=search&oid=1787836671&ol=biz&z=19.97";
+
 initialize().catch((error) => {
   console.error(error);
 });
@@ -54,17 +57,33 @@ function setupBurgerMenu() {
 }
 
 function setupFaq() {
+  refreshFaqHeights();
+
   $$(".faq-item button").forEach((button) => {
+    button.setAttribute(
+      "aria-expanded",
+      button.closest(".faq-item")?.classList.contains("is-open") ? "true" : "false"
+    );
+
     button.addEventListener("click", () => {
       const item = button.closest(".faq-item");
+      const shouldOpen = !item?.classList.contains("is-open");
+
       $$(".faq-item").forEach((faq) => {
-        if (faq !== item) {
-          faq.classList.remove("is-open");
-        }
+        faq.classList.remove("is-open");
+        $("button", faq)?.setAttribute("aria-expanded", "false");
       });
-      item.classList.toggle("is-open");
+
+      if (item && shouldOpen) {
+        item.classList.add("is-open");
+        button.setAttribute("aria-expanded", "true");
+      }
+
+      refreshFaqHeights();
     });
   });
+
+  window.addEventListener("resize", refreshFaqHeights, { passive: true });
 }
 
 function setupModals() {
@@ -297,7 +316,11 @@ function bindHrefAction(element, href) {
 }
 
 function applyPrices(prices) {
-  prices.slice(0, 3).forEach((price, index) => {
+  const visiblePrices = prices.slice(0, 3);
+  const detectedFeaturedIndex = visiblePrices.findIndex((price) => Boolean(price.featured));
+  const featuredIndex = detectedFeaturedIndex >= 0 ? detectedFeaturedIndex : 1;
+
+  visiblePrices.forEach((price, index) => {
     setText(`[data-price-title="${index}"]`, price.title);
     setText(`[data-price-description="${index}"]`, price.description);
     setText(`[data-price-amount="${index}"]`, price.price);
@@ -317,12 +340,12 @@ function applyPrices(prices) {
 
     const featuredCard = $(`[data-price-featured="${index}"]`);
     if (featuredCard) {
-      featuredCard.classList.toggle("price-card--featured", Boolean(price.featured));
+      featuredCard.classList.toggle("price-card--featured", index === featuredIndex);
     }
 
     const flag = $(`[data-price-popular="${index}"]`);
     if (flag) {
-      flag.hidden = !price.featured;
+      flag.hidden = index !== featuredIndex;
     }
   });
 }
@@ -351,10 +374,12 @@ function applyOfficeSettings(office) {
     return;
   }
 
-  if (office.mapEmbedUrl) {
+  const mapEmbedUrl = office.mapEmbedUrl || DEFAULT_OFFICE_MAP_URL;
+
+  if (mapEmbedUrl) {
     mapContainer.innerHTML = `
       <iframe
-        src="${escapeHtmlAttribute(office.mapEmbedUrl)}"
+        src="${escapeHtmlAttribute(mapEmbedUrl)}"
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"
         allowfullscreen
@@ -620,6 +645,53 @@ function setupReveal() {
     });
 
     $$(".reveal-group").forEach((group) => {
+      if (group.classList.contains("process-flow")) {
+        const line = $(".process-flow__line", group);
+        const cards = $$(":scope > article", group);
+        const timeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: group,
+            start: "top 82%"
+          }
+        });
+
+        if (line) {
+          timeline.fromTo(
+            line,
+            { scaleX: 0, opacity: 0.65 },
+            { scaleX: 1, opacity: 1, duration: 1.05, ease: "power2.out" }
+          );
+        }
+
+        timeline.to(
+          cards,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.78,
+            ease: "power3.out",
+            stagger: 0.4
+          },
+          line ? 0.18 : 0
+        );
+        return;
+      }
+
+      if (group.classList.contains("pricing")) {
+        gsap.to($$(":scope > .price-card", group), {
+          opacity: 1,
+          y: 0,
+          duration: 0.78,
+          ease: "power3.out",
+          stagger: 0.26,
+          scrollTrigger: {
+            trigger: group,
+            start: "top 84%"
+          }
+        });
+        return;
+      }
+
       gsap.to($$(":scope > *", group), {
         opacity: 1,
         y: 0,
@@ -640,17 +712,15 @@ function setupReveal() {
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.animate(
-            [
-              { opacity: 0, transform: "translateY(24px)" },
-              { opacity: 1, transform: "translateY(0)" }
-            ],
-            {
-              duration: 700,
-              easing: "cubic-bezier(.2,.8,.2,1)",
-              fill: "forwards"
-            }
-          );
+          if (entry.target.classList.contains("reveal")) {
+            animateRevealItem(entry.target);
+          } else if (entry.target.classList.contains("process-flow")) {
+            animateRevealProcess(entry.target);
+          } else if (entry.target.classList.contains("pricing")) {
+            animateRevealGroup($$(":scope > .price-card", entry.target), 260);
+          } else if (entry.target.classList.contains("reveal-group")) {
+            animateRevealGroup($$(":scope > *", entry.target), 120);
+          }
           observer.unobserve(entry.target);
         }
       });
@@ -658,7 +728,61 @@ function setupReveal() {
     { threshold: 0.15 }
   );
 
-  $$(".reveal, .reveal-group > *").forEach((element) => observer.observe(element));
+  $$(".reveal, .reveal-group").forEach((element) => observer.observe(element));
+}
+
+function animateRevealProcess(group) {
+  const line = $(".process-flow__line", group);
+  const cards = $$(":scope > article", group);
+
+  if (line) {
+    line.animate(
+      [
+        { transform: "scaleX(0)", opacity: 0.65 },
+        { transform: "scaleX(1)", opacity: 1 }
+      ],
+      {
+        duration: 1050,
+        easing: "cubic-bezier(.2,.8,.2,1)",
+        fill: "forwards"
+      }
+    );
+  }
+
+  animateRevealGroup(cards, 400, line ? 180 : 0);
+}
+
+function animateRevealGroup(elements, staggerMs, initialDelay = 0) {
+  elements.forEach((element, index) => {
+    window.setTimeout(() => {
+      animateRevealItem(element);
+    }, initialDelay + index * staggerMs);
+  });
+}
+
+function animateRevealItem(element) {
+  element.animate(
+    [
+      { opacity: 0, transform: "translateY(24px)" },
+      { opacity: 1, transform: "translateY(0)" }
+    ],
+    {
+      duration: 720,
+      easing: "cubic-bezier(.2,.8,.2,1)",
+      fill: "forwards"
+    }
+  );
+}
+
+function refreshFaqHeights() {
+  $$(".faq-item").forEach((item) => {
+    const content = $("p", item);
+    if (!content) {
+      return;
+    }
+
+    item.style.setProperty("--faq-height", `${content.scrollHeight + 26}px`);
+  });
 }
 
 function setupStatCounters() {

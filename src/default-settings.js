@@ -113,7 +113,8 @@ module.exports = {
     ],
     mapTitle: "Тверская, 16",
     mapSubtitle: "офис 812",
-    mapEmbedUrl: ""
+    mapEmbedUrl:
+      "https://yandex.ru/map-widget/v1/?ll=39.869363%2C57.630114&mode=search&oid=1787836671&ol=biz&z=19.97"
   },
   analytics: {
     yandexMetrikaId: "",
