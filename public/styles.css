@@ -133,8 +133,8 @@ img{max-width:100%;display:block}
   display:flex;
   align-items:center;
   justify-content:flex-start;
-  width:min(100%,340px);
-  min-width:300px;
+  width:min(100%,440px);
+  min-width:360px;
   flex-shrink:0;
   overflow:hidden;
 }
@@ -146,10 +146,10 @@ img{max-width:100%;display:block}
   object-fit:contain;
   object-position:left center;
 }
-.brand__logo{max-height:58px}
+.brand__logo{max-height:74px}
 .footer__logo{
-  max-width:320px;
-  max-height:64px;
+  max-width:440px;
+  max-height:86px;
   margin-bottom:18px;
 }
 
@@ -894,7 +894,7 @@ img{max-width:100%;display:block}
   .document-panel__intro{grid-template-columns:1fr}
   .lead-card__visual{padding:24px 24px 0}
   .slot-grid{grid-template-columns:repeat(2,1fr)}
-  .brand{min-width:0;width:min(100%,250px)}
+  .brand{min-width:0;width:min(100%,300px)}
   .navbar__cta{
     display:inline-flex;
     min-width:200px;
@@ -917,8 +917,8 @@ img{max-width:100%;display:block}
   .topbar{display:none}
   .hide-sm{display:none}
   .navbar__inner{gap:12px}
-  .brand{width:min(100%,180px)}
-  .brand__logo{max-height:46px}
+  .brand{width:min(100%,220px)}
+  .brand__logo{max-height:58px}
   .navbar__cta{
     min-width:auto;
     font-size:13px;
