@@ -448,12 +448,12 @@ function setupLeadForm() {
 
     const data = await response.json();
     if (!response.ok || !data.ok) {
-      alert(data.error || "Не удалось отправить заявку.");
+      showFormStatus(form, data.error || "Не удалось отправить заявку.", "error");
       return;
     }
 
     form.reset();
-    alert(data.message);
+    showFormStatus(form, data.message, "success");
   });
 }
 
@@ -476,13 +476,13 @@ function setupCallbackForms() {
 
       const data = await response.json();
       if (!response.ok || !data.ok) {
-        alert(data.error || "Не удалось отправить запрос.");
+        showFormStatus(form, data.error || "Не удалось отправить запрос.", "error");
         return;
       }
 
       form.reset();
-      closeModals();
-      alert(data.message);
+      showFormStatus(form, data.message, "success");
+      window.setTimeout(closeModals, 1400);
     });
   });
 }
@@ -507,15 +507,15 @@ function setupAppointmentForm() {
 
     const data = await response.json();
     if (!response.ok || !data.ok) {
-      alert(data.error || "Не удалось отправить запись.");
+      showFormStatus(form, data.error || "Не удалось отправить запись.", "error");
       return;
     }
 
     form.reset();
     $("#selected-slot").value = "";
     $$(".slot-btn").forEach((button) => button.classList.remove("is-selected"));
-    closeModals();
-    alert(data.message);
+    showFormStatus(form, data.message, "success");
+    window.setTimeout(closeModals, 1400);
   });
 }
 
@@ -563,13 +563,13 @@ function setupDocumentForm() {
 
     const data = await response.json();
     if (!response.ok || !data.ok) {
-      alert(data.error || "Не удалось отправить документы.");
+      showFormStatus(form, data.error || "Не удалось отправить документы.", "error");
       return;
     }
 
     form.reset();
     syncUploadText(uploadText, 0);
-    alert(data.message);
+    showFormStatus(form, data.message, "success");
   });
 }
 
@@ -703,6 +703,25 @@ function animateCounter(element) {
   };
 
   requestAnimationFrame(step);
+}
+
+function showFormStatus(form, message, type = "success") {
+  let status = $(".form-status", form);
+
+  if (!status) {
+    status = document.createElement("div");
+    status.className = "form-status";
+    form.appendChild(status);
+  }
+
+  status.dataset.type = type;
+  status.textContent = message;
+  status.classList.add("is-visible");
+
+  clearTimeout(status.timeoutId);
+  status.timeoutId = window.setTimeout(() => {
+    status.classList.remove("is-visible");
+  }, 6000);
 }
 
 function formatCounter(value) {

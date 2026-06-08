@@ -611,6 +611,41 @@ img{max-width:100%;display:block}
 }
 .consent{display:flex;align-items:flex-start;gap:12px;color:var(--muted);font-size:14px}
 .consent a{color:var(--blue);font-weight:800}
+.form-status{
+  display:none;
+  margin-top:14px;
+  padding:14px 16px;
+  border-radius:16px;
+  font-size:14px;
+  line-height:1.5;
+  font-weight:700;
+}
+.form-status.is-visible{display:block}
+.form-status[data-type="success"]{
+  background:#ecfdf3;
+  color:#067647;
+  border:1px solid #abefc6;
+}
+.form-status[data-type="error"]{
+  background:#fef3f2;
+  color:#b42318;
+  border:1px solid #fecdca;
+}
+.lead-form .form-status{
+  background:rgba(255,255,255,.14);
+  color:#fff;
+  border-color:rgba(255,255,255,.22);
+}
+.lead-form .form-status[data-type="error"]{
+  background:rgba(180,35,24,.24);
+  color:#fff3f2;
+  border-color:rgba(254,205,202,.24);
+}
+.lead-form .form-status[data-type="success"]{
+  background:rgba(6,118,71,.24);
+  color:#ecfdf3;
+  border-color:rgba(171,239,198,.24);
+}
 
 .office{background:#fff}
 .office__grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:28px;align-items:stretch}
@@ -795,8 +830,6 @@ img{max-width:100%;display:block}
 .slot-btn[disabled]{opacity:.35;cursor:not-allowed}
 
 .reveal,.reveal-group>*{opacity:0;transform:translateY(24px)}
-.form-status{font-weight:700}
-
 .policy-page{
   min-height:100vh;
   background:linear-gradient(180deg,#f8fbff 0,#eef3fb 100%);
