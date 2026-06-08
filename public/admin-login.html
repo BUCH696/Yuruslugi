@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Вход в админ-панель | ЮрУслуги</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/admin.css" />
+</head>
+<body class="admin-body">
+  <div class="admin-shell">
+    <header class="admin-topbar">
+      <div>
+        <p class="admin-kicker">Управление сайтом</p>
+        <h1>Вход в админ-панель</h1>
+      </div>
+      <div class="admin-topbar__actions">
+        <a class="admin-link" href="/" target="_blank" rel="noreferrer">Открыть сайт</a>
+      </div>
+    </header>
+
+    <div class="admin-status" id="app-status" hidden></div>
+
+    <section class="auth-card">
+      <div class="auth-card__content">
+        <p class="admin-kicker">Авторизация</p>
+        <h2>Введите логин и пароль</h2>
+        <p class="auth-card__text">
+          Доступ к настройкам, заявкам и загрузкам открыт только после серверной проверки сессии.
+        </p>
+        <form class="auth-form" id="login-form">
+          <label class="field">
+            <span>Логин</span>
+            <input type="text" name="username" autocomplete="username" value="admin" required />
+          </label>
+          <label class="field">
+            <span>Пароль</span>
+            <input type="password" name="password" autocomplete="current-password" value="admin" required />
+          </label>
+          <button class="admin-btn admin-btn--primary" type="submit">Войти</button>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <script src="/admin-login.js" defer></script>
+</body>
+</html>

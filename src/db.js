@@ -268,9 +268,18 @@ function ensureSiteSettings() {
 }
 
 function ensureAdminUser() {
-  const countRow = db.prepare("SELECT COUNT(*) AS count FROM admin_users").get();
+  const existingUser = db
+    .prepare("SELECT id, password_hash FROM admin_users WHERE username = ?")
+    .get(config.admin.username);
 
-  if (countRow.count > 0) {
+  if (existingUser) {
+    if (!verifyPassword(config.admin.password, existingUser.password_hash)) {
+      db.prepare(`
+        UPDATE admin_users
+        SET password_hash = ?
+        WHERE id = ?
+      `).run(hashPassword(config.admin.password), existingUser.id);
+    }
     return;
   }
 

@@ -466,8 +466,8 @@ app.get("/", (_req, res, next) => {
   renderPage("index.html", res, next);
 });
 
-app.get("/admin", (_req, res, next) => {
-  renderPage("admin.html", res, next);
+app.get(["/admin", "/admin.html"], (req, res, next) => {
+  renderAdminEntry(req, res, next);
 });
 
 app.get("/privacy.html", (_req, res, next) => {
@@ -537,6 +537,11 @@ function renderPage(fileName, res, next) {
 
     return res.send(rendered);
   });
+}
+
+function renderAdminEntry(req, res, next) {
+  const session = resolveAdminSession(req);
+  renderPage(session ? "admin.html" : "admin-login.html", res, next);
 }
 
 function normalizeLeadPayload(body) {

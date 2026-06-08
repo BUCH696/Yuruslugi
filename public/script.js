@@ -659,7 +659,7 @@ function setupReveal() {
           timeline.fromTo(
             line,
             { scaleX: 0, opacity: 0.65 },
-            { scaleX: 1, opacity: 1, duration: 1.05, ease: "power2.out" }
+            { scaleX: 1, opacity: 1, duration: 2.45, ease: "power2.out" }
           );
         }
 
@@ -672,7 +672,7 @@ function setupReveal() {
             ease: "power3.out",
             stagger: 0.4
           },
-          line ? 0.18 : 0
+          line ? 0.24 : 0
         );
         return;
       }
@@ -742,14 +742,14 @@ function animateRevealProcess(group) {
         { transform: "scaleX(1)", opacity: 1 }
       ],
       {
-        duration: 1050,
+        duration: 2450,
         easing: "cubic-bezier(.2,.8,.2,1)",
         fill: "forwards"
       }
     );
   }
 
-  animateRevealGroup(cards, 400, line ? 180 : 0);
+  animateRevealGroup(cards, 400, line ? 240 : 0);
 }
 
 function animateRevealGroup(elements, staggerMs, initialDelay = 0) {

@@ -3,8 +3,8 @@ module.exports = {
     siteTitle: "Правовой партнёр",
     siteDescription:
       "Юридические услуги для частных клиентов, предпринимателей и компаний. Разбор ситуации, документы, переговоры, суды, офис и онлайн.",
-    logoHeaderPath: "/assets/logo.svg",
-    logoFooterPath: "/assets/logo-light.svg",
+    logoHeaderPath: "/assets/logo.png",
+    logoFooterPath: "/assets/logo.png",
     heroImagePath: "/assets/hero-placeholder.svg",
     contactImagePath: "/assets/contact-art.svg"
   },

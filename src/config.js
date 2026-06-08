@@ -23,7 +23,7 @@ const config = {
   requestRateLimit: Number(process.env.REQUEST_RATE_LIMIT || 15),
   admin: {
     username: String(process.env.ADMIN_USERNAME || "admin").trim(),
-    password: String(process.env.ADMIN_PASSWORD || "admin12345").trim(),
+    password: String(process.env.ADMIN_PASSWORD || "admin").trim(),
     sessionTtlDays: Number(process.env.ADMIN_SESSION_TTL_DAYS || 7)
   },
   analytics: {
