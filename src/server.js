@@ -41,7 +41,10 @@ const assetFieldMap = {
   logoHeader: ["branding", "logoHeaderPath"],
   logoFooter: ["branding", "logoFooterPath"],
   heroImage: ["branding", "heroImagePath"],
-  contactImage: ["branding", "contactImagePath"]
+  contactImage: ["branding", "contactImagePath"],
+  telegramIcon: ["contacts", "telegramIconPath"],
+  whatsappIcon: ["contacts", "whatsappIconPath"],
+  vkIcon: ["contacts", "vkIconPath"]
 };
 
 const allowedScriptSources = [

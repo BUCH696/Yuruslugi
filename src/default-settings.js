@@ -16,8 +16,11 @@ module.exports = {
     workingHours: "Пн–Пт 9:00–19:00 · Сб 10:00–16:00",
     footerDescription: "Юридические решения для жизни и бизнеса.",
     telegramUrl: "#",
+    telegramIconPath: "/assets/socials/telegram.svg",
     whatsappUrl: "#",
-    vkUrl: "#"
+    whatsappIconPath: "/assets/socials/whatsapp.svg",
+    vkUrl: "#",
+    vkIconPath: "/assets/socials/vk.svg"
   },
   hero: {
     eyebrow: "Юридические услуги для людей и бизнеса",

@@ -15,15 +15,6 @@
 </head>
 <body>
   <header class="site-header" id="top">
-    <div class="topbar">
-      <div class="page-shell topbar__inner">
-        <a href="#office" class="topbar__item topbar__item--address" id="topbar-address"><span class="icon">⌖</span> Москва, ул. Тверская, 16, офис 812</a>
-        <a class="topbar__item" id="topbar-phone" href="tel:+74951282424"><span class="icon">☎</span> +7 (495) 128-24-24</a>
-        <div class="topbar__item" id="topbar-hours"><span class="icon">◷</span> Пн–Пт 9:00–19:00 <span class="hide-sm"> · Сб 10:00–16:00</span></div>
-        <button class="topbar__urgent" id="urgent-button" type="button" data-open-modal="callback">Помощь за 5 минут</button>
-      </div>
-    </div>
-
     <div class="navbar">
       <div class="page-shell navbar__inner">
         <a class="brand" href="#top" aria-label="Правовой партнёр">
@@ -275,17 +266,23 @@
         </div>
         <div class="social-hub__grid reveal-group">
           <a class="social-hub__card" href="#" id="social-telegram">
-            <span class="social-hub__icon">TG</span>
+            <div class="social-hub__logo-wrap">
+              <img class="social-hub__logo" id="social-telegram-icon" src="/assets/socials/telegram.svg" alt="Telegram" />
+            </div>
             <strong>Telegram</strong>
             <small>Оперативная связь и быстрые ответы</small>
           </a>
           <a class="social-hub__card" href="#" id="social-whatsapp">
-            <span class="social-hub__icon">WA</span>
+            <div class="social-hub__logo-wrap">
+              <img class="social-hub__logo" id="social-whatsapp-icon" src="/assets/socials/whatsapp.svg" alt="WhatsApp" />
+            </div>
             <strong>WhatsApp</strong>
             <small>Удобно для коротких вопросов и документов</small>
           </a>
           <a class="social-hub__card" href="#" id="social-vk">
-            <span class="social-hub__icon">VK</span>
+            <div class="social-hub__logo-wrap">
+              <img class="social-hub__logo" id="social-vk-icon" src="/assets/socials/vk.svg" alt="ВКонтакте" />
+            </div>
             <strong>ВКонтакте</strong>
             <small>Новости, материалы и дополнительное доверие</small>
           </a>

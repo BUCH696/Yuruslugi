@@ -23,9 +23,12 @@ async function initialize() {
   setupFaq();
   setupModals();
   setupServiceSelection();
+  setupSmoothScroll();
+  setupCursorDot();
 
   await loadSiteSettings();
   await loadAppointmentSlots();
+  syncProcessLineMetrics();
 
   setupReveal();
   setupStatCounters();
@@ -33,6 +36,7 @@ async function initialize() {
   setupCallbackForms();
   setupAppointmentForm();
   setupDocumentForm();
+  window.addEventListener("resize", syncProcessLineMetrics, { passive: true });
 }
 
 function setupAnchorNavigation() {
@@ -153,6 +157,9 @@ function applySiteSettings(settings) {
   setText("#topbar-hours", settings.contacts.workingHours, '<span class="icon">◷</span> ');
   setText("#topbar-address", settings.contacts.cityAddress, '<span class="icon">⌖</span> ');
 
+  setImage("#social-telegram-icon", settings.contacts.telegramIconPath, "Telegram");
+  setImage("#social-whatsapp-icon", settings.contacts.whatsappIconPath, "WhatsApp");
+  setImage("#social-vk-icon", settings.contacts.vkIconPath, "ВКонтакте");
   setSocialLink("#social-telegram", settings.contacts.telegramUrl);
   setSocialLink("#social-whatsapp", settings.contacts.whatsappUrl);
   setSocialLink("#social-vk", settings.contacts.vkUrl);
@@ -648,6 +655,7 @@ function setupReveal() {
       if (group.classList.contains("process-flow")) {
         const line = $(".process-flow__line", group);
         const cards = $$(":scope > article", group);
+        syncProcessLineMetrics();
         const timeline = gsap.timeline({
           scrollTrigger: {
             trigger: group,
@@ -658,8 +666,8 @@ function setupReveal() {
         if (line) {
           timeline.fromTo(
             line,
-            { scaleX: 0, opacity: 0.65 },
-            { scaleX: 1, opacity: 1, duration: 2.45, ease: "power2.out" }
+            { scaleX: 0, opacity: 0.72 },
+            { scaleX: 1, opacity: 1, duration: 3.2, ease: "power2.inOut" }
           );
         }
 
@@ -734,16 +742,17 @@ function setupReveal() {
 function animateRevealProcess(group) {
   const line = $(".process-flow__line", group);
   const cards = $$(":scope > article", group);
+  syncProcessLineMetrics();
 
   if (line) {
     line.animate(
       [
-        { transform: "scaleX(0)", opacity: 0.65 },
+        { transform: "scaleX(0)", opacity: 0.72 },
         { transform: "scaleX(1)", opacity: 1 }
       ],
       {
-        duration: 2450,
-        easing: "cubic-bezier(.2,.8,.2,1)",
+        duration: 3200,
+        easing: "cubic-bezier(.4,0,.2,1)",
         fill: "forwards"
       }
     );
@@ -783,6 +792,228 @@ function refreshFaqHeights() {
 
     item.style.setProperty("--faq-height", `${content.scrollHeight + 26}px`);
   });
+}
+
+function syncProcessLineMetrics() {
+  const group = $(".process-flow");
+  const line = $(".process-flow__line", group);
+  const circles = group ? $$(":scope > article > span", group) : [];
+
+  if (!group || !line || circles.length < 2 || window.innerWidth <= 980) {
+    return;
+  }
+
+  const groupRect = group.getBoundingClientRect();
+  const firstRect = circles[0].getBoundingClientRect();
+  const lastRect = circles[circles.length - 1].getBoundingClientRect();
+  const left = firstRect.left + firstRect.width / 2 - groupRect.left;
+  const right = groupRect.right - (lastRect.left + lastRect.width / 2);
+  const top = firstRect.top + firstRect.height / 2 - groupRect.top;
+
+  line.style.left = `${left}px`;
+  line.style.right = `${right}px`;
+  line.style.top = `${top}px`;
+}
+
+function setupSmoothScroll() {
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const hasCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+
+  if (prefersReducedMotion || hasCoarsePointer) {
+    return;
+  }
+
+  let targetScrollY = window.scrollY;
+  let currentScrollY = window.scrollY;
+  let frameId = 0;
+  let isAnimating = false;
+  let isInternalScroll = false;
+
+  const maxScroll = () =>
+    Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+
+  const animate = () => {
+    const delta = targetScrollY - currentScrollY;
+    currentScrollY += delta * 0.12;
+
+    if (Math.abs(delta) < 0.35) {
+      currentScrollY = targetScrollY;
+    }
+
+    isInternalScroll = true;
+    window.scrollTo(0, currentScrollY);
+    isInternalScroll = false;
+
+    if (Math.abs(targetScrollY - currentScrollY) > 0.35) {
+      frameId = window.requestAnimationFrame(animate);
+      return;
+    }
+
+    isAnimating = false;
+    frameId = 0;
+  };
+
+  const startAnimation = () => {
+    if (isAnimating) {
+      return;
+    }
+
+    isAnimating = true;
+    frameId = window.requestAnimationFrame(animate);
+  };
+
+  const canHandleWheel = (event) => {
+    if (event.ctrlKey || event.metaKey) {
+      return false;
+    }
+
+    const dialog = event.target.closest(".modal__dialog");
+    if (dialog && dialog.scrollHeight > dialog.clientHeight) {
+      return false;
+    }
+
+    return true;
+  };
+
+  window.addEventListener(
+    "wheel",
+    (event) => {
+      if (!canHandleWheel(event)) {
+        return;
+      }
+
+      event.preventDefault();
+      targetScrollY = Math.min(
+        maxScroll(),
+        Math.max(0, targetScrollY + event.deltaY * 1.05)
+      );
+      startAnimation();
+    },
+    { passive: false }
+  );
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (isInternalScroll || isAnimating) {
+        return;
+      }
+
+      currentScrollY = window.scrollY;
+      targetScrollY = window.scrollY;
+    },
+    { passive: true }
+  );
+
+  window.addEventListener(
+    "resize",
+    () => {
+      targetScrollY = Math.min(targetScrollY, maxScroll());
+      currentScrollY = Math.min(currentScrollY, maxScroll());
+    },
+    { passive: true }
+  );
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+      if (document.hidden && frameId) {
+        window.cancelAnimationFrame(frameId);
+        isAnimating = false;
+        frameId = 0;
+      }
+    },
+    { passive: true }
+  );
+}
+
+function setupCursorDot() {
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const hasCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+
+  if (prefersReducedMotion || hasCoarsePointer) {
+    return;
+  }
+
+  const cursorDot = document.createElement("div");
+  cursorDot.className = "cursor-dot";
+  cursorDot.innerHTML = `
+    <span class="cursor-dot__halo"></span>
+    <span class="cursor-dot__core"></span>
+  `;
+  document.body.appendChild(cursorDot);
+  document.documentElement.classList.add("has-cursor-dot");
+
+  let targetX = window.innerWidth / 2;
+  let targetY = window.innerHeight / 2;
+  let currentX = targetX;
+  let currentY = targetY;
+  let rafId = 0;
+  let isVisible = false;
+  const interactiveSelector =
+    'a, button, .btn, .service-card, .price-card, .social-hub__card, .slot-btn, .faq-item button, .burger';
+
+  const render = () => {
+    currentX += (targetX - currentX) * 0.18;
+    currentY += (targetY - currentY) * 0.18;
+    cursorDot.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+    rafId = window.requestAnimationFrame(render);
+  };
+
+  document.addEventListener(
+    "pointermove",
+    (event) => {
+      targetX = event.clientX;
+      targetY = event.clientY;
+      cursorDot.classList.toggle(
+        "is-hovering",
+        Boolean(event.target.closest(interactiveSelector))
+      );
+
+      if (!isVisible) {
+        isVisible = true;
+        cursorDot.classList.add("is-visible");
+      }
+    },
+    { passive: true }
+  );
+
+  document.addEventListener(
+    "pointerdown",
+    () => {
+      cursorDot.classList.add("is-pressed");
+    },
+    { passive: true }
+  );
+
+  document.addEventListener(
+    "pointerup",
+    () => {
+      cursorDot.classList.remove("is-pressed");
+    },
+    { passive: true }
+  );
+
+  document.addEventListener(
+    "pointerleave",
+    () => {
+      cursorDot.classList.remove("is-visible");
+      cursorDot.classList.remove("is-hovering");
+    },
+    { passive: true }
+  );
+
+  rafId = window.requestAnimationFrame(render);
+
+  window.addEventListener(
+    "beforeunload",
+    () => {
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+      }
+    },
+    { passive: true }
+  );
 }
 
 function setupStatCounters() {
