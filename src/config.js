@@ -19,7 +19,13 @@ const config = {
   siteAddress: process.env.SITE_ADDRESS || "Москва, Пресненская набережная, 12",
   leadsEmail: process.env.LEADS_EMAIL || "leads@example.com",
   databasePath: path.resolve(process.cwd(), process.env.DATABASE_PATH || "./storage/app.db"),
+  uploadsPath: path.resolve(process.cwd(), process.env.UPLOADS_PATH || "./storage/uploads"),
   requestRateLimit: Number(process.env.REQUEST_RATE_LIMIT || 15),
+  admin: {
+    username: String(process.env.ADMIN_USERNAME || "admin").trim(),
+    password: String(process.env.ADMIN_PASSWORD || "admin12345").trim(),
+    sessionTtlDays: Number(process.env.ADMIN_SESSION_TTL_DAYS || 7)
+  },
   analytics: {
     yandexMetrikaId: normalizeBooleanId(process.env.YANDEX_METRIKA_ID),
     googleTagManagerId: normalizeBooleanId(process.env.GOOGLE_TAG_MANAGER_ID)
@@ -27,4 +33,3 @@ const config = {
 };
 
 module.exports = config;
-

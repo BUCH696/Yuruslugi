@@ -4,7 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Правовой партнёр — юридические услуги для граждан и бизнеса</title>
-  <meta name="description" content="Юридические услуги для частных клиентов, предпринимателей и компаний. Разбор ситуации, документы, переговоры, суды, офис и онлайн." />
+  <meta
+    name="description"
+    content="Юридические услуги для частных клиентов, предпринимателей и компаний. Разбор ситуации, документы, переговоры, суды, офис и онлайн."
+  />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -14,17 +17,17 @@
   <header class="site-header" id="top">
     <div class="topbar">
       <div class="page-shell topbar__inner">
-        <a href="#office" class="topbar__item"><span class="icon">⌖</span> Москва, ул. Тверская, 16, офис 812</a>
-        <a class="topbar__item" href="tel:+74951282424"><span class="icon">☎</span> +7 (495) 128-24-24</a>
-        <div class="topbar__item"><span class="icon">◷</span> Пн–Пт 9:00–19:00 <span class="hide-sm"> · Сб 10:00–16:00</span></div>
-        <button class="topbar__urgent" type="button" data-open-modal="callback">Помощь за 5 минут</button>
+        <a href="#office" class="topbar__item" id="topbar-address"><span class="icon">⌖</span> Москва, ул. Тверская, 16, офис 812</a>
+        <a class="topbar__item" id="topbar-phone" href="tel:+74951282424"><span class="icon">☎</span> +7 (495) 128-24-24</a>
+        <div class="topbar__item" id="topbar-hours"><span class="icon">◷</span> Пн–Пт 9:00–19:00 <span class="hide-sm"> · Сб 10:00–16:00</span></div>
+        <button class="topbar__urgent" id="urgent-button" type="button" data-open-modal="callback">Помощь за 5 минут</button>
       </div>
     </div>
 
     <div class="navbar">
       <div class="page-shell navbar__inner">
         <a class="brand" href="#top" aria-label="Правовой партнёр">
-          <img src="assets/logo.svg" alt="Правовой партнёр" class="brand__logo" />
+          <img src="assets/logo.svg" alt="Правовой партнёр" class="brand__logo" id="brand-logo" />
         </a>
         <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
         <nav class="nav-links" aria-label="Основное меню">
@@ -36,7 +39,7 @@
           <a href="#faq">FAQ</a>
           <a href="#contacts">Контакты</a>
         </nav>
-        <button class="btn btn--primary navbar__cta" type="button" data-open-modal="appointment">Записаться в офис</button>
+        <button class="btn btn--primary navbar__cta" id="navbar-cta" type="button" data-open-modal="appointment">Записаться в офис</button>
       </div>
     </div>
   </header>
@@ -45,24 +48,27 @@
     <section class="hero section-full">
       <div class="page-shell hero__grid">
         <div class="hero__content reveal">
-          <div class="eyebrow">Юридические услуги для людей и бизнеса</div>
-          <h1>Быстрый юридический разбор вашей ситуации</h1>
-          <p class="hero__text">Проанализируем вашу ситуацию, объясним риски и предложим понятный план действий. Работаем онлайн и принимаем клиентов в офисе.</p>
+          <div class="eyebrow" id="hero-eyebrow">Юридические услуги для людей и бизнеса</div>
+          <h1 id="hero-title">Быстрый юридический разбор вашей ситуации</h1>
+          <p class="hero__text" id="hero-text">
+            Проанализируем вашу ситуацию, объясним риски и предложим понятный план действий.
+            Работаем онлайн и принимаем клиентов в офисе.
+          </p>
           <div class="hero__actions">
-            <a class="btn btn--primary btn--lg" href="#lead">Получить разбор</a>
-            <button class="btn btn--secondary btn--lg" type="button" data-open-modal="appointment">Записаться в офис</button>
+            <a class="btn btn--primary btn--lg" id="hero-primary-action" href="#lead">Получить разбор</a>
+            <button class="btn btn--secondary btn--lg" id="hero-secondary-action" type="button" data-open-modal="appointment">Записаться в офис</button>
           </div>
           <div class="trust-chips" aria-label="Ключевые преимущества">
             <div class="chip"><span>⚡</span><b>24 часа</b><small>на первичный разбор</small></div>
             <div class="chip"><span>◇</span><b>Фиксируем</b><small>стоимость заранее</small></div>
             <div class="chip"><span>▤</span><b>Офис</b><small>и онлайн-формат</small></div>
-            <div class="chip"><span>⌁</span><b>Работаем</b><small>по всей России</small></div>
+            <div class="chip"><span>⌃</span><b>Работаем</b><small>по всей России</small></div>
           </div>
         </div>
 
         <div class="hero-visual reveal" aria-label="Иллюстрация юридического сервиса">
-          <img src="assets/hero-placeholder.svg" alt="Юридическая консультация" />
-          <div class="hero-visual__badge"><strong>до 24 ч.</strong><span>на первичный разбор</span></div>
+          <img src="assets/hero-placeholder.svg" alt="Юридическая консультация" id="hero-image" />
+          <div class="hero-visual__badge"><strong id="hero-badge-title">до 24 ч.</strong><span id="hero-badge-text">на первичный разбор</span></div>
         </div>
       </div>
     </section>
@@ -90,9 +96,9 @@
           <a class="service-card" href="#lead" data-service="Для граждан"><span>♙</span><h3>Для граждан</h3><p>Семейные споры, наследство, жильё, защита прав потребителей и другие вопросы.</p><em>Это мне подходит</em></a>
           <a class="service-card" href="#lead" data-service="Недвижимость"><span>⌂</span><h3>Недвижимость</h3><p>Сделки, споры, аренда, перепланировка, регистрация прав и проверка объектов.</p><em>Обсудить</em></a>
           <a class="service-card" href="#lead" data-service="Бизнесу"><span>▧</span><h3>Бизнесу</h3><p>Регистрация, договоры, корпоративные вопросы, сопровождение компаний.</p><em>Это мне подходит</em></a>
-          <a class="service-card" href="#lead" data-service="Налоги и финансы"><span>⌁</span><h3>Налоги и финансы</h3><p>Споры с налоговой, проверки, оптимизация, возврат налогов и финансовые риски.</p><em>Обсудить</em></a>
+          <a class="service-card" href="#lead" data-service="Налоги и финансы"><span>⌃</span><h3>Налоги и финансы</h3><p>Споры с налоговой, проверки, оптимизация, возврат налогов и финансовые риски.</p><em>Обсудить</em></a>
           <a class="service-card" href="#lead" data-service="Трудовые споры"><span>⚖</span><h3>Трудовые споры</h3><p>Увольнения, выплаты, трудовые договоры, споры работников и работодателей.</p><em>Это мне подходит</em></a>
-          <a class="service-card" href="#lead" data-service="Арбитраж и суды"><span>◈</span><h3>Арбитраж и суды</h3><p>Досудебное урегулирование, представительство и защита интересов в суде.</p><em>Обсудить</em></a>
+          <a class="service-card" href="#lead" data-service="Арбитраж и суды"><span>◀</span><h3>Арбитраж и суды</h3><p>Досудебное урегулирование, представительство и защита интересов в суде.</p><em>Обсудить</em></a>
           <a class="service-card" href="#lead" data-service="Интеллектуальная собственность"><span>☆</span><h3>Интеллектуальная собственность</h3><p>Товарные знаки, авторские права, договоры, защита бренда и контента.</p><em>Это мне подходит</em></a>
           <a class="service-card" href="#lead" data-service="Банкротство"><span>⊙</span><h3>Банкротство</h3><p>Физических и юридических лиц, переговоры с кредиторами, защита имущества.</p><em>Обсудить</em></a>
           <a class="service-card" href="#lead" data-service="Миграционные вопросы"><span>◌</span><h3>Миграционные вопросы</h3><p>ВНЖ, РВП, гражданство, документы и привлечение иностранных специалистов.</p><em>Это мне подходит</em></a>
@@ -109,7 +115,7 @@
           <p>Коротко уточним ситуацию, скажем первый шаг и подскажем, какие документы пригодятся.</p>
         </div>
         <form class="quick-form">
-          <input type="tel" placeholder="Ваш телефон" aria-label="Ваш телефон" />
+          <input type="tel" name="phone" placeholder="Ваш телефон" aria-label="Ваш телефон" />
           <button class="btn btn--light" type="submit">Жду звонка</button>
         </form>
       </div>
@@ -147,19 +153,19 @@
         </div>
         <div class="pricing reveal-group">
           <article class="price-card">
-            <h3>Базовый</h3><p>Краткий разбор по телефону или в мессенджере</p><strong>0 ₽</strong>
-            <ul><li>Ответим на ваш вопрос</li><li>Оценим перспективы</li><li>Подскажем первые шаги</li></ul>
-            <a class="btn btn--secondary btn--block" href="#lead">Получить бесплатно</a>
+            <h3 data-price-title="0">Базовый</h3><p data-price-description="0">Краткий разбор по телефону или в мессенджере</p><strong data-price-amount="0">0 ₽</strong>
+            <ul data-price-features="0"><li>Ответим на ваш вопрос</li><li>Оценим перспективы</li><li>Подскажем первые шаги</li></ul>
+            <a class="btn btn--secondary btn--block" data-price-button="0" href="#lead">Получить бесплатно</a>
           </article>
-          <article class="price-card price-card--featured">
-            <div class="popular">Популярный</div><h3>Оптимальный</h3><p>Подробный разбор и план действий</p><strong>3 900 ₽</strong>
-            <ul><li>Анализ ситуации и документов</li><li>Оценка рисков</li><li>План действий и рекомендации</li></ul>
-            <a class="btn btn--primary btn--block" href="#lead">Заказать разбор</a>
+          <article class="price-card price-card--featured" data-price-featured="1">
+            <div class="popular" data-price-popular="1">Популярный</div><h3 data-price-title="1">Оптимальный</h3><p data-price-description="1">Подробный разбор и план действий</p><strong data-price-amount="1">3 900 ₽</strong>
+            <ul data-price-features="1"><li>Анализ ситуации и документов</li><li>Оценка рисков</li><li>План действий и рекомендации</li></ul>
+            <a class="btn btn--primary btn--block" data-price-button="1" href="#lead">Заказать разбор</a>
           </article>
           <article class="price-card">
-            <h3>Расширенный</h3><p>Глубокий анализ и стратегия</p><strong>7 900 ₽</strong>
-            <ul><li>Комплексный анализ</li><li>Варианты решения и стратегия</li><li>Консультация юриста 60 минут</li></ul>
-            <a class="btn btn--secondary btn--block" href="#lead">Заказать разбор</a>
+            <h3 data-price-title="2">Расширенный</h3><p data-price-description="2">Глубокий анализ и стратегия</p><strong data-price-amount="2">7 900 ₽</strong>
+            <ul data-price-features="2"><li>Комплексный анализ</li><li>Варианты решения и стратегия</li><li>Консультация юриста 60 минут</li></ul>
+            <a class="btn btn--secondary btn--block" data-price-button="2" href="#lead">Заказать разбор</a>
           </article>
         </div>
       </div>
@@ -169,23 +175,23 @@
       <div class="page-shell">
         <div class="document-panel reveal">
           <div class="document-panel__head">
-            <div><span class="eyebrow">Быстрая проверка</span><h2>Загрузите документы — мы посмотрим и подскажем первый шаг</h2></div>
-            <p>Подойдут PDF, DOCX, JPG, PNG. Документы нужны только для предварительной оценки ситуации.</p>
+            <div><span class="eyebrow">Быстрая проверка</span><h2 id="documents-title">Загрузите документы — мы посмотрим и подскажем первый шаг</h2></div>
+            <p id="documents-description">Подойдут PDF, DOCX, JPG, PNG. Документы нужны только для предварительной оценки ситуации.</p>
           </div>
-          <form class="doc-form">
+          <form class="doc-form" enctype="multipart/form-data">
             <label class="upload-wide" for="docs-input">
-              <input id="docs-input" type="file" multiple />
+              <input id="docs-input" name="documents" type="file" multiple />
               <span class="upload-wide__icon">⇧</span>
-              <strong>Перетащите файлы сюда или выберите на компьютере</strong>
-              <small>До 10 файлов, общий размер до 50 МБ</small>
+              <strong id="documents-upload-text">Перетащите файлы сюда или выберите на компьютере</strong>
+              <small id="documents-upload-hint">До 10 файлов, общий размер до 50 МБ</small>
             </label>
-            <textarea placeholder="Кратко опишите ситуацию: что произошло, какие сроки, какой результат хотите получить"></textarea>
+            <textarea name="message" placeholder="Кратко опишите ситуацию: что произошло, какие сроки, какой результат хотите получить"></textarea>
             <div class="doc-form__row">
-              <input type="text" placeholder="Ваше имя" />
-              <input type="tel" placeholder="Телефон или мессенджер" />
+              <input type="text" name="name" placeholder="Ваше имя" />
+              <input type="tel" name="phone" placeholder="Телефон или мессенджер" />
             </div>
             <label class="consent"><input type="checkbox" checked /> <span>Отправляя документы, вы соглашаетесь с <a href="privacy.html">политикой конфиденциальности</a> и обработкой персональных данных.</span></label>
-            <button class="btn btn--primary btn--block btn--xl" type="submit">Отправить документы на проверку</button>
+            <button class="btn btn--primary btn--block btn--xl" id="documents-submit-label" type="submit">Отправить документы на проверку</button>
           </form>
         </div>
       </div>
@@ -194,13 +200,13 @@
     <section class="section-full office" id="office">
       <div class="page-shell office__grid reveal">
         <div class="office__content">
-          <span class="eyebrow">Можно приехать лично</span>
-          <h2>Офис в центре города</h2>
-          <p>Встретимся по предварительной записи, изучим документы и обсудим варианты решения без спешки.</p>
-          <ul><li>Москва, ул. Тверская, 16, офис 812</li><li>Пн–Пт 9:00–19:00, Сб 10:00–16:00</li><li>Онлайн-консультации доступны по всей России</li></ul>
-          <button class="btn btn--primary" type="button" data-open-modal="appointment">Записаться в офис</button>
+          <span class="eyebrow" id="office-eyebrow">Можно приехать лично</span>
+          <h2 id="office-title">Офис в центре города</h2>
+          <p id="office-text">Встретимся по предварительной записи, изучим документы и обсудим варианты решения без спешки.</p>
+          <ul id="office-points"><li>Москва, ул. Тверская, 16, офис 812</li><li>Пн–Пт 9:00–19:00, Сб 10:00–16:00</li><li>Онлайн-консультации доступны по всей России</li></ul>
+          <button class="btn btn--primary" id="office-button" type="button" data-open-modal="appointment">Записаться в офис</button>
         </div>
-        <div class="office-map" aria-label="Карта офиса"><span>⌖</span><strong>Тверская, 16</strong><small>офис 812</small></div>
+        <div class="office-map" id="office-map" aria-label="Карта офиса"><span>⌖</span><strong id="office-map-title">Тверская, 16</strong><small id="office-map-subtitle">офис 812</small></div>
       </div>
     </section>
 
@@ -223,14 +229,14 @@
 
     <section class="section-full lead-section" id="lead">
       <div class="page-shell lead-card reveal">
-        <div class="lead-card__visual"><img src="assets/contact-art.svg" alt="Юрист изучает документы" /></div>
+        <div class="lead-card__visual"><img src="assets/contact-art.svg" alt="Юрист изучает документы" id="contact-image" /></div>
         <form class="lead-form" aria-label="Форма заявки">
           <span class="eyebrow">Начать с разбора</span>
           <h2>Оставьте заявку на юридический разбор</h2>
           <p>Мы свяжемся с вами в течение 15 минут, уточним задачу и предложим удобный формат консультации.</p>
           <input type="hidden" name="service" id="selected-service" />
-          <div class="form-row"><input type="text" placeholder="Ваше имя" /><input type="tel" placeholder="Телефон" /></div>
-          <textarea placeholder="Опишите вашу ситуацию"></textarea>
+          <div class="form-row"><input type="text" name="name" placeholder="Ваше имя" /><input type="tel" name="phone" placeholder="Телефон" /></div>
+          <textarea name="message" placeholder="Опишите вашу ситуацию"></textarea>
           <button class="btn btn--primary btn--block btn--xl" type="submit">Получить разбор</button>
           <small>Ваши данные защищены и не передаются третьим лицам.</small>
         </form>
@@ -240,10 +246,10 @@
 
   <footer class="footer" id="contacts">
     <div class="page-shell footer__grid">
-      <div><img src="assets/logo-light.svg" alt="Правовой партнёр" class="footer__logo" /><p>Юридические решения для жизни и бизнеса.</p><div class="socials"><a href="#">TG</a><a href="#">WA</a><a href="#">VK</a></div></div>
+      <div><img src="assets/logo-light.svg" alt="Правовой партнёр" class="footer__logo" id="footer-logo" /><p id="footer-description">Юридические решения для жизни и бизнеса.</p><div class="socials"><a href="#" id="social-telegram">TG</a><a href="#" id="social-whatsapp">WA</a><a href="#" id="social-vk">VK</a></div></div>
       <div><h4>Услуги</h4><a href="#services">Для граждан</a><a href="#services">Бизнесу</a><a href="#services">Недвижимость</a><a href="#services">Налоги и финансы</a></div>
       <div><h4>Навигация</h4><a href="#process">Как работаем</a><a href="#prices">Цены</a><a href="#documents">Документы</a><a href="#faq">FAQ</a></div>
-      <div class="footer__contacts"><h4>Контакты</h4><p>г. Москва, ул. Тверская, 16, офис 812</p><p>+7 (495) 128-24-24</p><p>info@prav-partner.ru</p><p>Пн–Пт: 9:00–19:00, Сб: 10:00–16:00</p></div>
+      <div class="footer__contacts"><h4>Контакты</h4><p id="footer-address">г. Москва, ул. Тверская, 16, офис 812</p><p id="footer-phone">+7 (495) 128-24-24</p><p id="footer-email">info@prav-partner.ru</p><p id="footer-hours">Пн–Пт: 9:00–19:00, Сб: 10:00–16:00</p></div>
     </div>
     <div class="page-shell footer__bottom"><span>© 2026 Правовой Партнёр. Все права защищены.</span><a href="privacy.html">Политика конфиденциальности</a><a href="privacy.html">Согласие на обработку данных</a></div>
   </footer>
@@ -253,13 +259,14 @@
     <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="appointment-title">
       <button class="modal__close" type="button" data-close-modal>×</button>
       <h2 id="appointment-title">Запись на приём в офис</h2>
-      <p>Демо-слоты ниже можно заменить данными из SQL через API.</p>
+      <p>Свободные слоты можно позже заменить данными из вашей рабочей системы записи.</p>
       <form class="appointment-form">
-        <select><option>Юридический разбор</option><option>Составление документов</option><option>Сопровождение дела</option><option>Консультация для бизнеса</option></select>
+        <select name="service"><option>Юридический разбор</option><option>Составление документов</option><option>Сопровождение дела</option><option>Консультация для бизнеса</option></select>
+        <input type="hidden" name="slot" id="selected-slot" />
         <div class="slot-grid" id="slot-grid"></div>
-        <input type="text" placeholder="Ваше имя" />
-        <input type="tel" placeholder="Телефон" />
-        <textarea placeholder="Комментарий к записи"></textarea>
+        <input type="text" name="name" placeholder="Ваше имя" />
+        <input type="tel" name="phone" placeholder="Телефон" />
+        <textarea name="message" placeholder="Комментарий к записи"></textarea>
         <button class="btn btn--primary btn--block" type="submit">Записаться</button>
       </form>
     </div>
@@ -271,7 +278,7 @@
       <button class="modal__close" type="button" data-close-modal>×</button>
       <h2 id="callback-title">Помощь за 5 минут</h2>
       <p>Оставьте телефон — юрист или координатор перезвонит в ближайшее время.</p>
-      <form class="callback-form"><input type="tel" placeholder="Ваш телефон" /><button class="btn btn--primary btn--block" type="submit">Жду звонка</button></form>
+      <form class="callback-form"><input type="tel" name="phone" placeholder="Ваш телефон" /><button class="btn btn--primary btn--block" type="submit">Жду звонка</button></form>
     </div>
   </div>
 

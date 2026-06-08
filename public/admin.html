@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Админ-панель | ЮрУслуги</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin.css" />
+</head>
+<body class="admin-body">
+  <div class="admin-shell">
+    <header class="admin-topbar">
+      <div>
+        <p class="admin-kicker">Управление сайтом</p>
+        <h1>Админ-панель</h1>
+      </div>
+      <div class="admin-topbar__actions">
+        <a class="admin-link" href="/" target="_blank" rel="noreferrer">Открыть сайт</a>
+        <span class="admin-user" id="admin-user"></span>
+        <button class="admin-btn admin-btn--ghost" id="logout-button" type="button">Выйти</button>
+      </div>
+    </header>
+
+    <div class="admin-status" id="app-status" hidden></div>
+
+    <section class="auth-card" id="login-view">
+      <div class="auth-card__content">
+        <p class="admin-kicker">Авторизация</p>
+        <h2>Вход в админ-панель</h2>
+        <p class="auth-card__text">Проверка выполняется на сервере через базу данных и сессионную cookie.</p>
+        <form class="auth-form" id="login-form">
+          <label class="field">
+            <span>Логин</span>
+            <input type="text" name="username" autocomplete="username" required />
+          </label>
+          <label class="field">
+            <span>Пароль</span>
+            <input type="password" name="password" autocomplete="current-password" required />
+          </label>
+          <button class="admin-btn admin-btn--primary" type="submit">Войти</button>
+        </form>
+      </div>
+    </section>
+
+    <main class="admin-layout" id="admin-view" hidden>
+      <aside class="admin-sidebar">
+        <nav class="admin-nav">
+          <a href="#branding">Брендинг</a>
+          <a href="#contacts">Контакты</a>
+          <a href="#hero">Первый экран</a>
+          <a href="#prices">Прайс</a>
+          <a href="#documents">Документы</a>
+          <a href="#office">Офис и карта</a>
+          <a href="#analytics">Метрика и CRM</a>
+          <a href="#submissions">Заявки</a>
+        </nav>
+      </aside>
+
+      <section class="admin-content">
+        <form id="settings-form" class="admin-sections">
+          <section class="admin-card" id="branding">
+            <div class="section-head">
+              <div>
+                <p class="admin-kicker">Брендинг</p>
+                <h2>Логотипы и изображения</h2>
+              </div>
+              <button class="admin-btn admin-btn--primary" type="submit">Сохранить все настройки</button>
+            </div>
+
+            <div class="fields-grid fields-grid--two">
+              <label class="field">
+                <span>Название сайта</span>
+                <input type="text" name="branding.siteTitle" />
+              </label>
+              <label class="field">
+                <span>Описание сайта</span>
+                <textarea name="branding.siteDescription" rows="4"></textarea>
+              </label>
+            </div>
+
+            <div class="asset-grid">
+              <article class="asset-card" data-asset-field="logoHeader">
+                <div class="asset-card__preview asset-card__preview--logo">
+                  <img alt="Логотип в шапке" data-asset-preview="logoHeader" />
+                </div>
+                <div class="asset-card__content">
+                  <h3>Логотип в шапке</h3>
+                  <p>Используется в верхней панели сайта.</p>
+                  <input class="asset-input" type="file" accept="image/*" />
+                  <div class="asset-actions">
+                    <button class="admin-btn admin-btn--secondary" data-asset-upload type="button">Загрузить</button>
+                    <button class="admin-btn admin-btn--ghost" data-asset-delete type="button">Удалить</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="asset-card" data-asset-field="logoFooter">
+                <div class="asset-card__preview asset-card__preview--logo asset-card__preview--dark">
+                  <img alt="Логотип в футере" data-asset-preview="logoFooter" />
+                </div>
+                <div class="asset-card__content">
+                  <h3>Логотип в футере</h3>
+                  <p>Используется в нижнем блоке сайта.</p>
+                  <input class="asset-input" type="file" accept="image/*" />
+                  <div class="asset-actions">
+                    <button class="admin-btn admin-btn--secondary" data-asset-upload type="button">Загрузить</button>
+                    <button class="admin-btn admin-btn--ghost" data-asset-delete type="button">Удалить</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="asset-card" data-asset-field="heroImage">
+                <div class="asset-card__preview">
+                  <img alt="Изображение первого экрана" data-asset-preview="heroImage" />
+                </div>
+                <div class="asset-card__content">
+                  <h3>Изображение первого экрана</h3>
+                  <p>Главная иллюстрация в первом блоке.</p>
+                  <input class="asset-input" type="file" accept="image/*" />
+                  <div class="asset-actions">
+                    <button class="admin-btn admin-btn--secondary" data-asset-upload type="button">Загрузить</button>
+                    <button class="admin-btn admin-btn--ghost" data-asset-delete type="button">Удалить</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="asset-card" data-asset-field="contactImage">
+                <div class="asset-card__preview">
+                  <img alt="Изображение формы" data-asset-preview="contactImage" />
+                </div>
+                <div class="asset-card__content">
+                  <h3>Изображение блока заявки</h3>
+                  <p>Картинка рядом с основной формой.</p>
+                  <input class="asset-input" type="file" accept="image/*" />
+                  <div class="asset-actions">
+                    <button class="admin-btn admin-btn--secondary" data-asset-upload type="button">Загрузить</button>
+                    <button class="admin-btn admin-btn--ghost" data-asset-delete type="button">Удалить</button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="admin-card" id="contacts">
+            <div class="section-head">
+              <div>
+                <p class="admin-kicker">Контакты</p>
+                <h2>Телефон, адрес, ссылки</h2>
+              </div>
+            </div>
+
+            <div class="fields-grid">
+              <label class="field">
+                <span>Адрес</span>
+                <input type="text" name="contacts.cityAddress" />
+              </label>
+              <label class="field">
+                <span>Телефон для показа</span>
+                <input type="text" name="contacts.phoneDisplay" />
+              </label>
+              <label class="field">
+                <span>Телефон для ссылки</span>
+                <input type="text" name="contacts.phoneHref" />
+              </label>
+              <label class="field">
+                <span>Email</span>
+                <input type="email" name="contacts.email" />
+              </label>
+              <label class="field">
+                <span>Часы работы</span>
+                <input type="text" name="contacts.workingHours" />
+              </label>
+              <label class="field">
+                <span>Описание в футере</span>
+                <textarea name="contacts.footerDescription" rows="4"></textarea>
+              </label>
+              <label class="field">
+                <span>Telegram URL</span>
+                <input type="url" name="contacts.telegramUrl" />
+              </label>
+              <label class="field">
+                <span>WhatsApp URL</span>
+                <input type="url" name="contacts.whatsappUrl" />
+              </label>
+              <label class="field">
+                <span>VK URL</span>
+                <input type="url" name="contacts.vkUrl" />
+              </label>
+            </div>
+          </section>
+
+          <section class="admin-card" id="hero">
+            <div class="section-head">
+              <div>
+                <p class="admin-kicker">Первый экран</p>
+                <h2>Контент и действия кнопок</h2>
+              </div>
+            </div>
+
+            <div class="fields-grid fields-grid--two">
+              <label class="field">
+                <span>Надзаголовок</span>
+                <input type="text" name="hero.eyebrow" />
+              </label>
+              <label class="field">
+                <span>Заголовок</span>
+                <textarea name="hero.title" rows="3"></textarea>
+              </label>
+              <label class="field">
+                <span>Текст</span>
+                <textarea name="hero.text" rows="4"></textarea>
+              </label>
+              <div class="stack">
+                <label class="field">
+                  <span>Текст бейджа</span>
+                  <input type="text" name="hero.badgeTitle" />
+                </label>
+                <label class="field">
+                  <span>Подпись бейджа</span>
+                  <input type="text" name="hero.badgeText" />
+                </label>
+              </div>
+            </div>
+
+            <div class="action-grid">
+              <div class="action-card">
+                <h3>Главная кнопка</h3>
+                <label class="field">
+                  <span>Текст</span>
+                  <input type="text" name="hero.primaryButtonLabel" />
+                </label>
+                <label class="field">
+                  <span>Тип действия</span>
+                  <select name="hero.primaryButtonType">
+                    <option value="anchor">Прокрутка к блоку</option>
+                    <option value="modal">Модальное окно</option>
+                    <option value="url">Внешняя ссылка</option>
+                    <option value="tel">Телефон</option>
+                    <option value="mailto">Email</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Значение</span>
+                  <input type="text" name="hero.primaryButtonValue" placeholder="#lead или appointment" />
+                </label>
+              </div>
+
+              <div class="action-card">
+                <h3>Вторая кнопка</h3>
+                <label class="field">
+                  <span>Текст</span>
+                  <input type="text" name="hero.secondaryButtonLabel" />
+                </label>
+                <label class="field">
+                  <span>Тип действия</span>
+                  <select name="hero.secondaryButtonType">
+                    <option value="anchor">Прокрутка к блоку</option>
+                    <option value="modal">Модальное окно</option>
+                    <option value="url">Внешняя ссылка</option>
+                    <option value="tel">Телефон</option>
+                    <option value="mailto">Email</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Значение</span>
+                  <input type="text" name="hero.secondaryButtonValue" placeholder="#lead или callback" />
+                </label>
+              </div>
+
+              <div class="action-card">
+                <h3>Кнопки сайта</h3>
+                <label class="field">
+                  <span>Срочная кнопка</span>
+                  <input type="text" name="actions.urgentButtonLabel" />
+                </label>
+                <label class="field">
+                  <span>Тип действия срочной кнопки</span>
+                  <select name="actions.urgentButtonType">
+                    <option value="anchor">Прокрутка к блоку</option>
+                    <option value="modal">Модальное окно</option>
+                    <option value="url">Внешняя ссылка</option>
+                    <option value="tel">Телефон</option>
+                    <option value="mailto">Email</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Значение срочной кнопки</span>
+                  <input type="text" name="actions.urgentButtonValue" />
+                </label>
+                <label class="field">
+                  <span>Кнопка в шапке</span>
+                  <input type="text" name="actions.navbarButtonLabel" />
+                </label>
+                <label class="field">
+                  <span>Тип действия в шапке</span>
+                  <select name="actions.navbarButtonType">
+                    <option value="anchor">Прокрутка к блоку</option>
+                    <option value="modal">Модальное окно</option>
+                    <option value="url">Внешняя ссылка</option>
+                    <option value="tel">Телефон</option>
+                    <option value="mailto">Email</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Значение в шапке</span>
+                  <input type="text" name="actions.navbarButtonValue" />
+                </label>
+                <label class="field">
+                  <span>Кнопка в блоке офиса</span>
+                  <input type="text" name="actions.officeButtonLabel" />
+                </label>
+                <label class="field">
+                  <span>Тип действия в блоке офиса</span>
+                  <select name="actions.officeButtonType">
+                    <option value="anchor">Прокрутка к блоку</option>
+                    <option value="modal">Модальное окно</option>
+                    <option value="url">Внешняя ссылка</option>
+                    <option value="tel">Телефон</option>
+                    <option value="mailto">Email</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Значение в блоке офиса</span>
+                  <input type="text" name="actions.officeButtonValue" />
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section class="admin-card" id="prices">
+            <div class="section-head">
+              <div>
+                <p class="admin-kicker">Прайс</p>
+                <h2>Тарифы и кнопки</h2>
+              </div>
+            </div>
+
+            <div class="price-grid">
+              <article class="price-editor">
+                <h3>Тариф 1</h3>
+                <label class="field"><span>Название</span><input type="text" name="prices.0.title" /></label>
+                <label class="field"><span>Описание</span><textarea name="prices.0.description" rows="3"></textarea></label>
+                <label class="field"><span>Цена</span><input type="text" name="prices.0.price" /></label>
+                <label class="field"><span>Преимущества</span><textarea data-array="lines" name="prices.0.features" rows="5" placeholder="По одному пункту на строку"></textarea></label>
+                <label class="field"><span>Текст кнопки</span><input type="text" name="prices.0.buttonLabel" /></label>
+                <label class="field"><span>Тип кнопки</span>
+                  <select name="prices.0.buttonType">
+                    <option value="anchor">Прокрутка к блоку</option>
+                    <option value="modal">Модальное окно</option>
+                    <option value="url">Внешняя ссылка</option>
+                    <option value="tel">Телефон</option>
+                    <option value="mailto">Email</option>
+                  </select>
+                </label>
+                <label class="field"><span>Значение кнопки</span><input type="text" name="prices.0.buttonValue" /></label>
+                <label class="checkbox"><input type="checkbox" name="prices.0.featured" /><span>Выделить как основной тариф</span></label>
+              </article>
+
+              <article class="price-editor">
+                <h3>Тариф 2</h3>
+                <label class="field"><span>Название</span><input type="text" name="prices.1.title" /></label>
+                <label class="field"><span>Описание</span><textarea name="prices.1.description" rows="3"></textarea></label>
+                <label class="field"><span>Цена</span><input type="text" name="prices.1.price" /></label>
+                <label class="field"><span>Преимущества</span><textarea data-array="lines" name="prices.1.features" rows="5" placeholder="По одному пункту на строку"></textarea></label>
+                <label class="field"><span>Текст кнопки</span><input type="text" name="prices.1.buttonLabel" /></label>
+                <label class="field"><span>Тип кнопки</span>
+                  <select name="prices.1.buttonType">
+                    <option value="anchor">Прокрутка к блоку</option>
+                    <option value="modal">Модальное окно</option>
+                    <option value="url">Внешняя ссылка</option>
+                    <option value="tel">Телефон</option>
+                    <option value="mailto">Email</option>
+                  </select>
+                </label>
+                <label class="field"><span>Значение кнопки</span><input type="text" name="prices.1.buttonValue" /></label>
+                <label class="checkbox"><input type="checkbox" name="prices.1.featured" /><span>Выделить как основной тариф</span></label>
+              </article>
+
+              <article class="price-editor">
+                <h3>Тариф 3</h3>
+                <label class="field"><span>Название</span><input type="text" name="prices.2.title" /></label>
+                <label class="field"><span>Описание</span><textarea name="prices.2.description" rows="3"></textarea></label>
+                <label class="field"><span>Цена</span><input type="text" name="prices.2.price" /></label>
+                <label class="field"><span>Преимущества</span><textarea data-array="lines" name="prices.2.features" rows="5" placeholder="По одному пункту на строку"></textarea></label>
+                <label class="field"><span>Текст кнопки</span><input type="text" name="prices.2.buttonLabel" /></label>
+                <label class="field"><span>Тип кнопки</span>
+                  <select name="prices.2.buttonType">
+                    <option value="anchor">Прокрутка к блоку</option>
+                    <option value="modal">Модальное окно</option>
+                    <option value="url">Внешняя ссылка</option>
+                    <option value="tel">Телефон</option>
+                    <option value="mailto">Email</option>
+                  </select>
+                </label>
+                <label class="field"><span>Значение кнопки</span><input type="text" name="prices.2.buttonValue" /></label>
+                <label class="checkbox"><input type="checkbox" name="prices.2.featured" /><span>Выделить как основной тариф</span></label>
+              </article>
+            </div>
+          </section>
+
+          <section class="admin-card" id="documents">
+            <div class="section-head">
+              <div>
+                <p class="admin-kicker">Документы</p>
+                <h2>Настройки загрузки и обработки</h2>
+              </div>
+            </div>
+
+            <div class="fields-grid">
+              <label class="field">
+                <span>Заголовок блока</span>
+                <textarea name="documents.title" rows="3"></textarea>
+              </label>
+              <label class="field">
+                <span>Описание блока</span>
+                <textarea name="documents.description" rows="4"></textarea>
+              </label>
+              <label class="field">
+                <span>Подсказка по загрузке</span>
+                <input type="text" name="documents.uploadHint" />
+              </label>
+              <label class="field">
+                <span>Текст кнопки</span>
+                <input type="text" name="documents.buttonLabel" />
+              </label>
+              <label class="field">
+                <span>Разрешенные расширения</span>
+                <input type="text" name="documents.allowedExtensions" placeholder="pdf,doc,docx,jpg,png" />
+              </label>
+              <label class="field">
+                <span>Максимум файлов</span>
+                <input type="number" min="1" max="50" step="1" data-number="integer" name="documents.maxFiles" />
+              </label>
+              <label class="field">
+                <span>Общий лимит, МБ</span>
+                <input type="number" min="1" max="500" step="1" data-number="integer" name="documents.maxTotalSizeMb" />
+              </label>
+              <label class="field">
+                <span>Папка хранения на сервере</span>
+                <input type="text" name="documents.uploadDirectory" />
+              </label>
+              <label class="field">
+                <span>Сообщение после загрузки</span>
+                <textarea name="documents.successMessage" rows="4"></textarea>
+              </label>
+              <label class="field">
+                <span>Webhook для документов</span>
+                <input type="url" name="documents.webhookUrl" placeholder="https://..." />
+              </label>
+            </div>
+          </section>
+
+          <section class="admin-card" id="office">
+            <div class="section-head">
+              <div>
+                <p class="admin-kicker">Офис и карта</p>
+                <h2>Контакты блока офиса и Яндекс карты</h2>
+              </div>
+            </div>
+
+            <div class="fields-grid fields-grid--two">
+              <label class="field">
+                <span>Надзаголовок</span>
+                <input type="text" name="office.eyebrow" />
+              </label>
+              <label class="field">
+                <span>Заголовок</span>
+                <textarea name="office.title" rows="3"></textarea>
+              </label>
+              <label class="field">
+                <span>Текст</span>
+                <textarea name="office.text" rows="4"></textarea>
+              </label>
+              <label class="field">
+                <span>Пункты списка</span>
+                <textarea data-array="lines" name="office.points" rows="5" placeholder="По одному пункту на строку"></textarea>
+              </label>
+              <label class="field">
+                <span>Заголовок карты</span>
+                <input type="text" name="office.mapTitle" />
+              </label>
+              <label class="field">
+                <span>Подпись карты</span>
+                <input type="text" name="office.mapSubtitle" />
+              </label>
+              <label class="field field--full">
+                <span>URL встраивания Яндекс карты</span>
+                <input type="url" id="map-embed-url" name="office.mapEmbedUrl" placeholder="https://yandex.ru/map-widget/..." />
+              </label>
+            </div>
+
+            <div class="map-preview" id="map-preview">
+              <div class="map-preview__empty">Укажите URL iframe Яндекс.Карт, чтобы увидеть превью.</div>
+            </div>
+          </section>
+
+          <section class="admin-card" id="analytics">
+            <div class="section-head">
+              <div>
+                <p class="admin-kicker">Интеграции</p>
+                <h2>Метрика, CRM, webhook</h2>
+              </div>
+            </div>
+
+            <div class="fields-grid">
+              <label class="field">
+                <span>Яндекс.Метрика ID</span>
+                <input type="text" name="analytics.yandexMetrikaId" />
+              </label>
+              <label class="field">
+                <span>Google Tag Manager ID</span>
+                <input type="text" name="analytics.googleTagManagerId" />
+              </label>
+              <label class="field">
+                <span>Bitrix24 webhook</span>
+                <input type="url" name="crm.bitrixWebhookUrl" placeholder="https://..." />
+              </label>
+              <label class="field">
+                <span>Webhook для лидов</span>
+                <input type="url" name="crm.leadWebhookUrl" placeholder="https://..." />
+              </label>
+              <label class="field">
+                <span>Webhook для обратного звонка</span>
+                <input type="url" name="crm.callbackWebhookUrl" placeholder="https://..." />
+              </label>
+              <label class="field">
+                <span>Webhook для записи в офис</span>
+                <input type="url" name="crm.appointmentWebhookUrl" placeholder="https://..." />
+              </label>
+              <label class="field">
+                <span>Webhook для документов</span>
+                <input type="url" name="crm.documentWebhookUrl" placeholder="https://..." />
+              </label>
+            </div>
+          </section>
+        </form>
+
+        <section class="admin-card" id="submissions">
+          <div class="section-head">
+            <div>
+              <p class="admin-kicker">Заявки</p>
+              <h2>Последние обращения</h2>
+            </div>
+            <button class="admin-btn admin-btn--secondary" id="reload-submissions" type="button">Обновить</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="submission-table">
+              <thead>
+                <tr>
+                  <th>Дата</th>
+                  <th>Тип</th>
+                  <th>Контакт</th>
+                  <th>Услуга / сообщение</th>
+                  <th>Файлы</th>
+                </tr>
+              </thead>
+              <tbody id="submissions-body">
+                <tr>
+                  <td colspan="5">Нет данных.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script src="/admin.js" defer></script>
+</body>
+</html>
