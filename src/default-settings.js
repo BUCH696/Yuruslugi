@@ -5,9 +5,11 @@ module.exports = {
       "Юридические услуги для частных клиентов, предпринимателей и компаний. Разбор ситуации, документы, переговоры, суды, офис и онлайн.",
     logoHeaderPath: "/assets/logo.png",
     logoFooterPath: "/assets/logo.png",
+    faviconPath: "/assets/logo.png",
     heroImagePath: "/assets/hero-placeholder.svg",
     contactImagePath: "/assets/contact-art.svg",
-    documentArtPath: "/assets/document-art.svg"
+    documentArtPath: "/assets/document-art.svg",
+    quickHelpIconPath: "/assets/quick-help-icon.svg"
   },
   contacts: {
     cityAddress: "Москва, ул. Тверская, 16, офис 812",
@@ -23,7 +25,7 @@ module.exports = {
     vkUrl: "#",
     vkIconPath: "/assets/socials/vk.svg",
     maxUrl: "#",
-    maxIconPath: "/assets/socials/max.svg"
+    maxIconPath: "/assets/socials/max.png"
   },
   hero: {
     eyebrow: "Юридические услуги для людей и бизнеса",

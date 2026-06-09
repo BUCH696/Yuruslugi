@@ -74,8 +74,9 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_admin_sessions_expires_at ON admin_sessions (expires_at);
 `);
 
-ensureSiteSettings();
-ensureAdminUser();
+  ensureSiteSettings();
+  purgeLegacyDefaultAdmin();
+  ensureAdminUser();
 
 const insertLeadStatement = db.prepare(`
   INSERT INTO leads (
@@ -205,6 +206,42 @@ function authenticateAdmin(username, password) {
   };
 }
 
+function countAdminUsers() {
+  const row = db.prepare("SELECT COUNT(*) AS total FROM admin_users").get();
+  return Number(row?.total || 0);
+}
+
+function hasAdminUsers() {
+  return countAdminUsers() > 0;
+}
+
+function createAdminUser(username, password) {
+  const normalizedUsername = String(username || "").trim();
+  const normalizedPassword = String(password || "");
+
+  if (!normalizedUsername || normalizedPassword.length < 6) {
+    throw new Error("INVALID_ADMIN_CREDENTIALS");
+  }
+
+  const existingUser = db
+    .prepare("SELECT id FROM admin_users WHERE username = ?")
+    .get(normalizedUsername);
+
+  if (existingUser) {
+    throw new Error("ADMIN_USERNAME_EXISTS");
+  }
+
+  const result = db.prepare(`
+    INSERT INTO admin_users (username, password_hash)
+    VALUES (?, ?)
+  `).run(normalizedUsername, hashPassword(normalizedPassword));
+
+  return {
+    id: result.lastInsertRowid,
+    username: normalizedUsername
+  };
+}
+
 function createAdminSession({ userId, ipAddress, userAgent }) {
   const token = createToken();
   const expiresAt = new Date(
@@ -268,6 +305,10 @@ function ensureSiteSettings() {
 }
 
 function ensureAdminUser() {
+  if (!config.admin.username || !config.admin.password) {
+    return;
+  }
+
   const existingUser = db
     .prepare("SELECT id, password_hash FROM admin_users WHERE username = ?")
     .get(config.admin.username);
@@ -287,6 +328,22 @@ function ensureAdminUser() {
     INSERT INTO admin_users (username, password_hash)
     VALUES (?, ?)
   `).run(config.admin.username, hashPassword(config.admin.password));
+}
+
+function purgeLegacyDefaultAdmin() {
+  const legacyUser = db
+    .prepare("SELECT id, password_hash FROM admin_users WHERE username = ?")
+    .get("admin");
+
+  if (!legacyUser) {
+    return;
+  }
+
+  if (!verifyPassword("admin", legacyUser.password_hash)) {
+    return;
+  }
+
+  db.prepare("DELETE FROM admin_users WHERE id = ?").run(legacyUser.id);
 }
 
 function parseJson(value, fallback) {
@@ -332,6 +389,8 @@ module.exports = {
   getSiteSettings,
   saveSiteSettings,
   authenticateAdmin,
+  hasAdminUsers,
+  createAdminUser,
   createAdminSession,
   getAdminSession,
   deleteAdminSession

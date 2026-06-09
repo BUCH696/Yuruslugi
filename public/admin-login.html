@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Manrope:wght@200..800&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+  <link rel="icon" id="site-favicon" href="/assets/logo.png" type="image/png" />
   <link rel="stylesheet" href="/admin.css" />
 </head>
 <body class="admin-body">
@@ -26,21 +27,21 @@
 
     <section class="auth-card">
       <div class="auth-card__content">
-        <p class="admin-kicker">Авторизация</p>
-        <h2>Введите логин и пароль</h2>
-        <p class="auth-card__text">
+        <p class="admin-kicker" id="auth-kicker">Авторизация</p>
+        <h2 id="auth-title">Введите логин и пароль</h2>
+        <p class="auth-card__text" id="auth-text">
           Доступ к настройкам, заявкам и загрузкам открыт только после серверной проверки сессии.
         </p>
         <form class="auth-form" id="login-form">
           <label class="field">
             <span>Логин</span>
-            <input type="text" name="username" autocomplete="username" value="admin" required />
+            <input type="text" name="username" autocomplete="username" required />
           </label>
           <label class="field">
             <span>Пароль</span>
-            <input type="password" name="password" autocomplete="current-password" value="admin" required />
+            <input type="password" name="password" autocomplete="current-password" required />
           </label>
-          <button class="admin-btn admin-btn--primary" type="submit">Войти</button>
+          <button class="admin-btn admin-btn--primary" id="auth-submit" type="submit">Войти</button>
         </form>
       </div>
     </section>

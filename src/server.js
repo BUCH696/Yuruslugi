@@ -16,6 +16,8 @@ const {
   getSiteSettings,
   saveSiteSettings,
   authenticateAdmin,
+  hasAdminUsers,
+  createAdminUser,
   createAdminSession,
   getAdminSession,
   deleteAdminSession
@@ -40,9 +42,11 @@ const demoAppointmentSlots = [
 const assetFieldMap = {
   logoHeader: ["branding", "logoHeaderPath"],
   logoFooter: ["branding", "logoFooterPath"],
+  favicon: ["branding", "faviconPath"],
   heroImage: ["branding", "heroImagePath"],
   contactImage: ["branding", "contactImagePath"],
   documentArt: ["branding", "documentArtPath"],
+  quickHelpIcon: ["branding", "quickHelpIconPath"],
   serviceImage0: ["services", 0, "imagePath"],
   serviceImage1: ["services", 1, "imagePath"],
   serviceImage2: ["services", 2, "imagePath"],
@@ -386,6 +390,67 @@ app.post("/api/admin/login", (req, res) => {
     ok: true,
     user
   });
+});
+
+app.get("/api/admin/bootstrap-status", (_req, res) => {
+  return res.json({
+    ok: true,
+    requiresSetup: !hasAdminUsers()
+  });
+});
+
+app.post("/api/admin/setup", (req, res) => {
+  if (hasAdminUsers()) {
+    return res.status(409).json({
+      ok: false,
+      error: "Администратор уже создан. Используйте обычный вход."
+    });
+  }
+
+  const username = String(req.body.username || "").trim();
+  const password = String(req.body.password || "");
+
+  if (username.length < 3 || password.length < 8) {
+    return res.status(400).json({
+      ok: false,
+      error: "Укажите логин от 3 символов и пароль не короче 8 символов."
+    });
+  }
+
+  try {
+    const user = createAdminUser(username, password);
+    const token = createAdminSession({
+      userId: user.id,
+      ipAddress: req.ip,
+      userAgent: req.headers["user-agent"] || ""
+    });
+
+    setAdminCookie(res, token);
+
+    return res.status(201).json({
+      ok: true,
+      user
+    });
+  } catch (error) {
+    if (error.message === "ADMIN_USERNAME_EXISTS") {
+      return res.status(409).json({
+        ok: false,
+        error: "Пользователь с таким логином уже существует."
+      });
+    }
+
+    if (error.message === "INVALID_ADMIN_CREDENTIALS") {
+      return res.status(400).json({
+        ok: false,
+        error: "Укажите корректные данные администратора."
+      });
+    }
+
+    return res.status(500).json({
+      ok: false,
+      error: "Не удалось создать администратора."
+    });
+  }
 });
 
 app.post("/api/admin/logout", requireAdmin, (req, res) => {

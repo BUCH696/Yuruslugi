@@ -271,9 +271,11 @@ function renderAssetPreviews() {
   const assetPathMap = {
     logoHeader: ["branding", "logoHeaderPath"],
     logoFooter: ["branding", "logoFooterPath"],
+    favicon: ["branding", "faviconPath"],
     heroImage: ["branding", "heroImagePath"],
     contactImage: ["branding", "contactImagePath"],
     documentArt: ["branding", "documentArtPath"],
+    quickHelpIcon: ["branding", "quickHelpIconPath"],
     serviceImage0: ["services", 0, "imagePath"],
     serviceImage1: ["services", 1, "imagePath"],
     serviceImage2: ["services", 2, "imagePath"],
@@ -300,6 +302,12 @@ function renderAssetPreviews() {
     image.src = src || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
     image.style.opacity = src ? "1" : ".25";
   });
+
+  const faviconPath = getNestedValue(state.settings, ["branding", "faviconPath"]);
+  const favicon = document.querySelector("#site-favicon");
+  if (favicon && faviconPath) {
+    favicon.setAttribute("href", faviconPath);
+  }
 }
 
 function renderMapPreview(url) {

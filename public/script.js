@@ -130,11 +130,13 @@ async function loadSiteSettings() {
 
   state.settings = data.settings;
   applySiteSettings(data.settings);
+  setImage("#quick-help-icon-image", data.settings.branding.quickHelpIconPath, "Иконка быстрого обращения");
   bootstrapAnalytics(data.settings.analytics || {});
 }
 
 function applySiteSettings(settings) {
   setMeta(settings);
+  setFaviconPath(settings.branding.faviconPath);
   setText("#hero-eyebrow", settings.hero.eyebrow);
   setText("#hero-title", settings.hero.title);
   setText("#hero-text", settings.hero.text);
@@ -226,6 +228,15 @@ function setImage(selector, path, alt) {
   if (alt) {
     image.alt = alt;
   }
+}
+
+function setFaviconPath(path) {
+  const favicon = $("#site-favicon");
+  if (!favicon || !path) {
+    return;
+  }
+
+  favicon.setAttribute("href", path);
 }
 
 function setContactLink(selector, label, phone, icon = "") {

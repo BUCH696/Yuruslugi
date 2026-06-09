@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Manrope:wght@200..800&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+  <link rel="icon" id="site-favicon" href="/assets/logo.png" type="image/png" />
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body class="policy-page">
@@ -67,5 +68,17 @@
       <p><a class="btn btn--primary" href="/#documents">Вернуться к форме отправки документов</a></p>
     </article>
   </main>
+  <script>
+    fetch('/api/site-config')
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => {
+        const href = data?.settings?.branding?.faviconPath;
+        const favicon = document.querySelector('#site-favicon');
+        if (href && favicon) {
+          favicon.setAttribute('href', href);
+        }
+      })
+      .catch(() => {});
+  </script>
 </body>
 </html>

@@ -22,8 +22,8 @@ const config = {
   uploadsPath: path.resolve(process.cwd(), process.env.UPLOADS_PATH || "./storage/uploads"),
   requestRateLimit: Number(process.env.REQUEST_RATE_LIMIT || 15),
   admin: {
-    username: String(process.env.ADMIN_USERNAME || "admin").trim(),
-    password: String(process.env.ADMIN_PASSWORD || "admin").trim(),
+    username: String(process.env.ADMIN_USERNAME || "").trim(),
+    password: String(process.env.ADMIN_PASSWORD || "").trim(),
     sessionTtlDays: Number(process.env.ADMIN_SESSION_TTL_DAYS || 7)
   },
   analytics: {
