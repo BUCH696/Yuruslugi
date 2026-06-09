@@ -425,7 +425,7 @@ img{max-width:100%;display:block}
 .service-card.has-background:before{
   inset:0;
   height:auto;
-  background:linear-gradient(0deg,rgba(7,25,54,.9) 0,rgba(7,25,54,.52) 34%,rgba(7,25,54,.14) 68%,rgba(7,25,54,.04) 100%);
+  background:linear-gradient(0deg,rgba(7,25,54,.94) 0,rgba(7,25,54,.78) 30%,rgba(7,25,54,.38) 58%,rgba(7,25,54,.08) 100%);
   transform:none;
   z-index:0;
 }
@@ -461,12 +461,8 @@ img{max-width:100%;display:block}
   transition:opacity .24s ease,transform .24s ease;
 }
 .service-card.has-background em{
-  order:1;
-  margin-top:0;
-  opacity:0;
-  transform:translateY(10px);
+  display:none;
 }
-.service-card:hover em{opacity:1;transform:translateY(0)}
 .service-card.is-active{border-color:rgba(11,99,246,.28);box-shadow:0 24px 60px rgba(6,68,200,.12)}
 
 .quick-help{padding:44px 0 34px;background:transparent}
@@ -484,14 +480,15 @@ img{max-width:100%;display:block}
 }
 .quick-help__content{
   display:grid;
-  grid-template-columns:128px 1fr;
+  grid-template-columns:minmax(180px,220px) 1fr;
   align-items:center;
-  gap:24px;
+  gap:28px;
 }
 .quick-help__icon{
-  width:128px;
-  height:128px;
-  border-radius:32px;
+  width:100%;
+  aspect-ratio:1 / 1;
+  height:auto;
+  border-radius:36px;
   display:block;
   overflow:hidden;
   background:transparent;
@@ -696,8 +693,8 @@ img{max-width:100%;display:block}
 .doc-form{display:grid;gap:16px;margin-top:26px}
 .upload-wide{
   min-height:180px;
-  border:1px dashed rgba(11,99,246,.22);
-  background:linear-gradient(180deg,#f9fbff 0,#eef5ff 100%);
+  border:2px dashed rgba(11,99,246,.34);
+  background:#f8fbff;
   border-radius:30px;
   display:grid;
   text-align:center;
@@ -1223,8 +1220,8 @@ img{max-width:100%;display:block}
   .quick-form{grid-template-columns:1fr}
   .quick-help__content{grid-template-columns:1fr}
   .quick-help__icon{
-    width:104px;
-    height:104px;
+    width:min(100%,140px);
+    height:auto;
     border-radius:28px;
   }
   .document-panel__intro{grid-template-columns:1fr}
@@ -1279,8 +1276,8 @@ img{max-width:100%;display:block}
     display:none;
   }
   .quick-help__icon{
-    width:96px;
-    height:96px;
+    width:min(100%,124px);
+    height:auto;
     border-radius:24px;
   }
   .process-flow{
