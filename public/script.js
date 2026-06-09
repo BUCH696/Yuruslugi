@@ -40,12 +40,22 @@ async function initialize() {
 function setupAnchorNavigation() {
   $$('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", (event) => {
-      const target = $(link.getAttribute("href"));
+      const selector = link.getAttribute("href");
+      const target = $(selector);
       if (!target) {
         return;
       }
 
       event.preventDefault();
+
+      if (selector === "#top") {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        $(".nav-links")?.classList.remove("is-open");
+        return;
+      }
+
       target.scrollIntoView({ behavior: "smooth", block: "start" });
       $(".nav-links")?.classList.remove("is-open");
     });
