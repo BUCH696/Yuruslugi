@@ -39,6 +39,18 @@ module.exports = {
     badgeTitle: "до 24 ч.",
     badgeText: "на первичный разбор"
   },
+  services: [
+    { title: "Для граждан", imagePath: "" },
+    { title: "Недвижимость", imagePath: "" },
+    { title: "Бизнесу", imagePath: "" },
+    { title: "Налоги и финансы", imagePath: "" },
+    { title: "Трудовые споры", imagePath: "" },
+    { title: "Арбитраж и суды", imagePath: "" },
+    { title: "Интеллектуальная собственность", imagePath: "" },
+    { title: "Банкротство", imagePath: "" },
+    { title: "Миграционные вопросы", imagePath: "" },
+    { title: "Другие услуги", imagePath: "" }
+  ],
   actions: {
     urgentButtonLabel: "Помощь за 5 минут",
     urgentButtonType: "modal",

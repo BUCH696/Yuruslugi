@@ -14,15 +14,11 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="site-header" id="top">
+    <header class="site-header" id="top">
     <div class="navbar">
       <div class="page-shell navbar__inner">
-                <a class="navbar-call" id="navbar-phone" href="tel:+74951282424" aria-label="Позвонить в Правовой партнёр">
-          <span class="navbar-call__icon" aria-hidden="true">☎</span>
-          <span class="navbar-call__body">
-            <strong id="navbar-phone-label">+7 (495) 128-24-24</strong>
-            <small>Звонок бесплатный</small>
-          </span>
+        <a class="brand" href="#top" aria-label="Правовой партнёр">
+          <img src="/assets/logo.png" alt="Правовой партнёр" class="brand__logo" id="brand-logo" />
         </a>
         <nav class="nav-links" aria-label="Основное меню">
           <a href="#services">Услуги</a>
@@ -33,7 +29,16 @@
           <a href="#faq">FAQ</a>
           <a href="#contacts">Контакты</a>
         </nav>
-        <button class="btn btn--primary navbar__cta" id="navbar-cta" type="button">Получить разбор</button>
+        <div class="navbar__actions">
+          <a class="navbar-call" id="navbar-phone" href="tel:+74951282424" aria-label="Позвонить в Правовой партнёр">
+            <span class="navbar-call__icon" aria-hidden="true">☎</span>
+            <span class="navbar-call__body">
+              <strong id="navbar-phone-label">+7 (495) 128-24-24</strong>
+              <small>Звонок бесплатный</small>
+            </span>
+          </a>
+          <button class="btn btn--primary navbar__cta" id="navbar-cta" type="button">Получить разбор</button>
+        </div>
         <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
     </div>
@@ -137,15 +142,53 @@
           <h2>Как мы решаем вашу проблему</h2>
           <p>Показываем весь маршрут заранее: от первичного запроса до документов, переговоров или представительства в суде.</p>
         </div>
-        <div class="process-flow reveal-group">
-          <div class="process-flow__line" aria-hidden="true"></div>
-          <article><span>1</span><div><h3>Запрос</h3><p>Вы описываете ситуацию на сайте, по телефону или на встрече.</p></div></article>
-          <article><span>2</span><div><h3>Разбор</h3><p>Юрист изучает вводные, документы и задаёт уточняющие вопросы.</p></div></article>
-          <article><span>3</span><div><h3>Стратегия</h3><p>Показываем варианты действий, риски, сроки и честную стоимость.</p></div></article>
-          <article><span>4</span><div><h3>Действия</h3><p>Готовим документы, ведём переговоры или представляем интересы в суде.</p></div></article>
-          <article><span>5</span><div><h3>Результат</h3><p>Доводим задачу до результата и объясняем дальнейшие шаги.</p></div></article>
-        </div>
-        <div class="stats reveal-group">
+                <div class="process-flow reveal-group" aria-label="Алгоритм решения">
+          <article class="process-step">
+            <div class="process-step__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="presentation"><path d="M8 4h6l4 4v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 4v4h4M9 12h6M9 16h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </div>
+            <div class="process-step__body">
+              <span class="process-step__index">1. Заявка</span>
+              <p>Вы описываете ситуацию на сайте, по телефону или на встрече.</p>
+            </div>
+          </article>
+          <article class="process-step">
+            <div class="process-step__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="presentation"><circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </div>
+            <div class="process-step__body">
+              <span class="process-step__index">2. Разбор</span>
+              <p>Юрист изучает вводные, документы и задаёт уточняющие вопросы.</p>
+            </div>
+          </article>
+          <article class="process-step">
+            <div class="process-step__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="presentation"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 12h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </div>
+            <div class="process-step__body">
+              <span class="process-step__index">3. Стратегия</span>
+              <p>Показываем варианты действий, риски, сроки и честную стоимость.</p>
+            </div>
+          </article>
+          <article class="process-step">
+            <div class="process-step__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="presentation"><path d="M5 6h14M9 6V4h6v2M7 6l1 12h8l1-12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 10v5M14 10v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </div>
+            <div class="process-step__body">
+              <span class="process-step__index">4. Действия</span>
+              <p>Готовим документы, ведём переговоры или представляем интересы в суде.</p>
+            </div>
+          </article>
+          <article class="process-step">
+            <div class="process-step__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="presentation"><path d="M7 4v16M7 5h9l-2.2 3L16 11H7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="process-step__body">
+              <span class="process-step__index">5. Результат</span>
+              <p>Доводим задачу до результата и объясняем дальнейшие шаги.</p>
+            </div>
+          </article>
+        </div>        <div class="stats reveal-group">
           <div><span class="stat-value" data-counter="12000" data-suffix="+">12 000+</span><p>довольных клиентов</p></div>
           <div><span class="stat-value" data-counter="8">8</span><p>лет успешной работы</p></div>
           <div><span class="stat-value" data-counter="93" data-suffix="%">93%</span><p>дел решены в пользу клиентов</p></div>
@@ -326,7 +369,7 @@
           </div>
           <textarea name="message" placeholder="Опишите вашу ситуацию"></textarea>
           <button class="btn btn--primary btn--block btn--xl" type="submit">Получить разбор</button>
-          <small class="lead-form__note"><span aria-hidden="true">✓</span>Ваши данные защищены и не передаются третьим лицам.</small>
+          <label class="consent consent--light"><input type="checkbox" checked /> <span>Отправляя заявку, вы соглашаетесь с <a href="privacy.html">политикой конфиденциальности</a> и обработкой персональных данных.</span></label>
         </form>
       </div>
     </section>

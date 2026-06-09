@@ -24,10 +24,10 @@ async function initialize() {
   setupModals();
   setupServiceSelection();
   setupCursorDot();
+  setupPhoneMasks();
 
   await loadSiteSettings();
   await loadAppointmentSlots();
-  syncProcessLineMetrics();
 
   setupReveal();
   setupStatCounters();
@@ -35,7 +35,6 @@ async function initialize() {
   setupCallbackForms();
   setupAppointmentForm();
   setupDocumentForm();
-  window.addEventListener("resize", syncProcessLineMetrics, { passive: true });
 }
 
 function setupAnchorNavigation() {
@@ -147,6 +146,7 @@ function applySiteSettings(settings) {
   setImage("#hero-image", settings.branding.heroImagePath, "Юридическая консультация");
   setImage("#contact-image", settings.branding.contactImagePath, "Юрист изучает документы");
   setImage("#documents-art-image", settings.branding.documentArtPath, "Папка с документами");
+  applyServiceCards(settings.services || []);
 
   setText("#footer-description", settings.contacts.footerDescription);
   setContactLink("#topbar-phone", settings.contacts.phoneDisplay, settings.contacts.phoneHref, "☎");
@@ -316,6 +316,29 @@ function bindNavbarAction(settings) {
   });
 }
 
+function applyServiceCards(services) {
+  $$(".service-card").forEach((card, index) => {
+    const config = services[index] || {};
+    const imagePath = String(config.imagePath || "").trim();
+    const media = $(".service-card__media", card);
+
+    if (imagePath) {
+      card.style.setProperty("--service-bg-image", `url("${escapeCssUrl(imagePath)}")`);
+      card.classList.add("has-background");
+      if (media) {
+        media.setAttribute("hidden", "hidden");
+      }
+      return;
+    }
+
+    card.style.removeProperty("--service-bg-image");
+    card.classList.remove("has-background");
+    if (media) {
+      media.removeAttribute("hidden");
+    }
+  });
+}
+
 function bindAnchorAction(element, selector) {
   if (element.tagName === "A") {
     element.href = selector;
@@ -482,7 +505,7 @@ function setupLeadForm() {
     const formData = new FormData(form);
     const payload = {
       name: String(formData.get("name") || "").trim(),
-      phone: String(formData.get("phone") || "").trim(),
+      phone: normalizePhoneValue(formData.get("phone")),
       service: String(formData.get("service") || "Общий запрос").trim(),
       comment: String(formData.get("message") || "").trim(),
       sourceUrl: window.location.href,
@@ -514,7 +537,7 @@ function setupCallbackForms() {
       event.preventDefault();
 
       const payload = {
-        phone: String(new FormData(form).get("phone") || "").trim()
+        phone: normalizePhoneValue(new FormData(form).get("phone"))
       };
 
       const response = await fetch("/api/forms/callback", {
@@ -538,6 +561,27 @@ function setupCallbackForms() {
   });
 }
 
+function setupPhoneMasks() {
+  $$('input[type="tel"]').forEach((input) => {
+    input.addEventListener("focus", () => {
+      if (!input.value.trim()) {
+        input.value = formatPhoneMask("");
+      }
+    });
+
+    input.addEventListener("input", () => {
+      const digits = extractPhoneDigits(input.value);
+      input.value = formatPhoneMask(digits);
+      setCaretToFirstPlaceholder(input);
+    });
+
+    input.addEventListener("blur", () => {
+      const digits = extractPhoneDigits(input.value);
+      input.value = digits ? formatPhoneMask(digits) : "";
+    });
+  });
+}
+
 function setupAppointmentForm() {
   const form = $(".appointment-form");
   if (!form) {
@@ -548,6 +592,7 @@ function setupAppointmentForm() {
     event.preventDefault();
 
     const payload = Object.fromEntries(new FormData(form).entries());
+    payload.phone = normalizePhoneValue(payload.phone);
     const response = await fetch("/api/forms/appointment", {
       method: "POST",
       headers: {
@@ -634,6 +679,53 @@ function syncUploadText(element, count) {
     : "Перетащите файлы сюда или выберите на компьютере";
 }
 
+function extractPhoneDigits(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+  if (digits.startsWith("8")) {
+    return digits.slice(1, 11);
+  }
+  if (digits.startsWith("7")) {
+    return digits.slice(1, 11);
+  }
+  return digits.slice(0, 10);
+}
+
+function formatPhoneMask(value) {
+  const digits = extractPhoneDigits(value);
+  const mask = ["+7 (", "_", "_", "_", ") ", "_", "_", "_", "-", "_", "_", "-", "_", "_"];
+  const positions = [4, 5, 6, 9, 10, 11, 13, 14, 16, 17];
+  digits.split("").forEach((digit, index) => {
+    if (positions[index] !== undefined) {
+      mask[positions[index]] = digit;
+    }
+  });
+  return mask.join("");
+}
+
+function setCaretToFirstPlaceholder(input) {
+  if (document.activeElement !== input) {
+    return;
+  }
+
+  const position = input.value.indexOf("_");
+  const nextPosition = position >= 0 ? position : input.value.length;
+  window.requestAnimationFrame(() => {
+    input.setSelectionRange(nextPosition, nextPosition);
+  });
+}
+
+function escapeCssUrl(value) {
+  return String(value).replace(/"/g, '\\"');
+}
+
+function normalizePhoneValue(value) {
+  const digits = extractPhoneDigits(value);
+  if (!digits) {
+    return "";
+  }
+  return formatPhoneMask(digits).replace(/_/g, "").trim();
+}
+
 function openModal(name) {
   const modal = modals[name];
   if (!modal) {
@@ -671,39 +763,6 @@ function setupReveal() {
     });
 
     $$(".reveal-group").forEach((group) => {
-      if (group.classList.contains("process-flow")) {
-        const line = $(".process-flow__line", group);
-        const cards = $$(":scope > article", group);
-        syncProcessLineMetrics();
-        const timeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: group,
-            start: "top 82%"
-          }
-        });
-
-        if (line) {
-          timeline.fromTo(
-            line,
-            { scaleX: 0, opacity: 0.72 },
-            { scaleX: 1, opacity: 1, duration: 3.2, ease: "power2.inOut" }
-          );
-        }
-
-        timeline.to(
-          cards,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.78,
-            ease: "power3.out",
-            stagger: 0.4
-          },
-          line ? 0.24 : 0
-        );
-        return;
-      }
-
       if (group.classList.contains("pricing")) {
         gsap.to($$(":scope > .price-card", group), {
           opacity: 1,
@@ -741,8 +800,6 @@ function setupReveal() {
         if (entry.isIntersecting) {
           if (entry.target.classList.contains("reveal")) {
             animateRevealItem(entry.target);
-          } else if (entry.target.classList.contains("process-flow")) {
-            animateRevealProcess(entry.target);
           } else if (entry.target.classList.contains("pricing")) {
             animateRevealGroup($$(":scope > .price-card", entry.target), 260);
           } else if (entry.target.classList.contains("reveal-group")) {
@@ -756,28 +813,6 @@ function setupReveal() {
   );
 
   $$(".reveal, .reveal-group").forEach((element) => observer.observe(element));
-}
-
-function animateRevealProcess(group) {
-  const line = $(".process-flow__line", group);
-  const cards = $$(":scope > article", group);
-  syncProcessLineMetrics();
-
-  if (line) {
-    line.animate(
-      [
-        { transform: "scaleX(0)", opacity: 0.72 },
-        { transform: "scaleX(1)", opacity: 1 }
-      ],
-      {
-        duration: 3200,
-        easing: "cubic-bezier(.4,0,.2,1)",
-        fill: "forwards"
-      }
-    );
-  }
-
-  animateRevealGroup(cards, 400, line ? 240 : 0);
 }
 
 function animateRevealGroup(elements, staggerMs, initialDelay = 0) {
@@ -811,27 +846,6 @@ function refreshFaqHeights() {
 
     item.style.setProperty("--faq-height", `${content.scrollHeight + 26}px`);
   });
-}
-
-function syncProcessLineMetrics() {
-  const group = $(".process-flow");
-  const line = $(".process-flow__line", group);
-  const circles = group ? $$(":scope > article > span", group) : [];
-
-  if (!group || !line || circles.length < 2 || window.innerWidth <= 980) {
-    return;
-  }
-
-  const groupRect = group.getBoundingClientRect();
-  const firstRect = circles[0].getBoundingClientRect();
-  const lastRect = circles[circles.length - 1].getBoundingClientRect();
-  const left = firstRect.left + firstRect.width / 2 - groupRect.left;
-  const right = groupRect.right - (lastRect.left + lastRect.width / 2);
-  const top = firstRect.top + firstRect.height / 2 - groupRect.top - line.offsetHeight / 2;
-
-  line.style.left = `${left}px`;
-  line.style.right = `${right}px`;
-  line.style.top = `${top}px`;
 }
 
 function setupCursorDot() {
