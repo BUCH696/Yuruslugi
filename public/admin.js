@@ -273,9 +273,11 @@ function renderAssetPreviews() {
     logoFooter: ["branding", "logoFooterPath"],
     heroImage: ["branding", "heroImagePath"],
     contactImage: ["branding", "contactImagePath"],
+    documentArt: ["branding", "documentArtPath"],
     telegramIcon: ["contacts", "telegramIconPath"],
     whatsappIcon: ["contacts", "whatsappIconPath"],
-    vkIcon: ["contacts", "vkIconPath"]
+    vkIcon: ["contacts", "vkIconPath"],
+    maxIcon: ["contacts", "maxIconPath"]
   };
 
   Object.entries(assetPathMap).forEach(([field, pathParts]) => {

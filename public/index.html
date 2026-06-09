@@ -8,9 +8,6 @@
     name="description"
     content="Юридические услуги для частных клиентов, предпринимателей и компаний. Разбор ситуации, документы, переговоры, суды, офис и онлайн."
   />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -200,17 +197,14 @@
           <div class="document-panel__head">
             <div class="document-panel__intro">
               <div class="document-panel__art" aria-hidden="true">
-                <svg viewBox="0 0 64 64" role="presentation">
-                  <path d="M19 10h18l8 8v30a6 6 0 0 1-6 6H19a6 6 0 0 1-6-6V16a6 6 0 0 1 6-6Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
-                  <path d="M37 10v11h11M23 28h14M23 36h14M23 44h10" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
-                </svg>
+                <img src="/assets/document-art.svg" alt="" id="documents-art-image" />
               </div>
               <div>
                 <span class="eyebrow">Быстрая проверка</span>
                 <h2 id="documents-title">Загрузите документы — мы посмотрим и подскажем первый шаг</h2>
               </div>
             </div>
-            <p id="documents-description">Подойдут PDF, DOCX, JPG, PNG. Документы нужны только для предварительной оценки ситуации.</p>
+            <p id="documents-description" hidden>Подойдут PDF, DOCX, JPG, PNG. Документы нужны только для предварительной оценки ситуации.</p>
           </div>
           <form class="doc-form" enctype="multipart/form-data">
             <label class="upload-wide" for="docs-input">
@@ -228,7 +222,7 @@
               <input type="text" name="name" placeholder="Ваше имя" />
               <input type="tel" name="phone" placeholder="Телефон или мессенджер" />
             </div>
-            <label class="consent"><input type="checkbox" checked /> <span>Отправляя документы, вы соглашаетесь с <a href="privacy.html">политикой конфиденциальности</a> и обработкой персональных данных.</span></label>
+            <label class="consent consent--light"><input type="checkbox" checked /> <span>Отправляя документы, вы соглашаетесь с <a href="privacy.html">политикой конфиденциальности</a> и обработкой персональных данных.</span></label>
             <button class="btn btn--primary btn--block btn--xl" id="documents-submit-label" type="submit">Отправить документы на проверку</button>
           </form>
         </div>
@@ -281,6 +275,13 @@
             <strong>ВКонтакте</strong>
             <small>Новости, материалы и дополнительное доверие</small>
           </a>
+          <a class="social-hub__card" href="#" id="social-max">
+            <div class="social-hub__logo-wrap">
+              <img class="social-hub__logo" id="social-max-icon" src="/assets/socials/max.svg" alt="MAX" />
+            </div>
+            <strong>MAX</strong>
+            <small>Дополнительный канал связи для оперативного обращения</small>
+          </a>
         </div>
       </div>
     </section>
@@ -318,7 +319,7 @@
           </div>
           <textarea name="message" placeholder="Опишите вашу ситуацию"></textarea>
           <button class="btn btn--primary btn--block btn--xl" type="submit">Получить разбор</button>
-          <small>Ваши данные защищены и не передаются третьим лицам.</small>
+          <small class="lead-form__note"><span aria-hidden="true">✓</span>Ваши данные защищены и не передаются третьим лицам.</small>
         </form>
       </div>
     </section>

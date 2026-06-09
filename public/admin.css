@@ -1,3 +1,43 @@
+@font-face{
+  font-family:"Bounded";
+  src:url("/assets/fonts/Bounded-Regular.otf") format("opentype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+
+@font-face{
+  font-family:"Bounded";
+  src:url("/assets/fonts/Bounded-Medium.otf") format("opentype");
+  font-weight:500;
+  font-style:normal;
+  font-display:swap;
+}
+
+@font-face{
+  font-family:"Bounded";
+  src:url("/assets/fonts/Bounded-SemiBold.otf") format("opentype");
+  font-weight:600;
+  font-style:normal;
+  font-display:swap;
+}
+
+@font-face{
+  font-family:"Bounded";
+  src:url("/assets/fonts/Bounded-Bold.otf") format("opentype");
+  font-weight:700;
+  font-style:normal;
+  font-display:swap;
+}
+
+@font-face{
+  font-family:"Bounded";
+  src:url("/assets/fonts/Bounded-ExtraBold.otf") format("opentype");
+  font-weight:800;
+  font-style:normal;
+  font-display:swap;
+}
+
 :root{
   --bg:#eef2f7;
   --paper:#ffffff;
@@ -15,7 +55,7 @@
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;font-family:"Montserrat",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f9fbfd 0,#eef2f7 100%)}
+body{margin:0;font-family:"Bounded",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f9fbfd 0,#eef2f7 100%)}
 button,input,textarea,select{font:inherit}
 a{text-decoration:none;color:inherit}
 img{display:block;max-width:100%}

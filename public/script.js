@@ -147,6 +147,7 @@ function applySiteSettings(settings) {
   setImage("#footer-logo", settings.branding.logoFooterPath, settings.branding.siteTitle);
   setImage("#hero-image", settings.branding.heroImagePath, "Юридическая консультация");
   setImage("#contact-image", settings.branding.contactImagePath, "Юрист изучает документы");
+  setImage("#documents-art-image", settings.branding.documentArtPath, "Папка с документами");
 
   setText("#footer-description", settings.contacts.footerDescription);
   setContactLink("#topbar-phone", settings.contacts.phoneDisplay, settings.contacts.phoneHref, "☎");
@@ -160,9 +161,11 @@ function applySiteSettings(settings) {
   setImage("#social-telegram-icon", settings.contacts.telegramIconPath, "Telegram");
   setImage("#social-whatsapp-icon", settings.contacts.whatsappIconPath, "WhatsApp");
   setImage("#social-vk-icon", settings.contacts.vkIconPath, "ВКонтакте");
+  setImage("#social-max-icon", settings.contacts.maxIconPath, "MAX");
   setSocialLink("#social-telegram", settings.contacts.telegramUrl);
   setSocialLink("#social-whatsapp", settings.contacts.whatsappUrl);
   setSocialLink("#social-vk", settings.contacts.vkUrl);
+  setSocialLink("#social-max", settings.contacts.maxUrl);
 
   bindAction("#hero-primary-action", {
     label: settings.hero.primaryButtonLabel,
@@ -240,10 +243,19 @@ function setContactLink(selector, label, phone, icon = "") {
 
 function setSocialLink(selector, url) {
   const link = $(selector);
-  if (!link || !url) {
+  if (!link) {
     return;
   }
 
+  if (!url || url === "#") {
+    link.removeAttribute("href");
+    link.removeAttribute("target");
+    link.removeAttribute("rel");
+    link.classList.add("is-disabled");
+    return;
+  }
+
+  link.classList.remove("is-disabled");
   link.href = url;
   link.target = "_blank";
   link.rel = "noreferrer";
@@ -360,7 +372,12 @@ function applyPrices(prices) {
 function applyDocumentSettings(documents) {
   setText("#documents-title", documents.title);
   setText("#documents-description", documents.description);
-  setText("#documents-upload-hint", documents.uploadHint);
+  const uploadHint = $("#documents-upload-hint");
+  if (uploadHint) {
+    const primaryHint = String(documents.uploadHint || "").trim();
+    const description = String(documents.description || "").trim();
+    uploadHint.textContent = [primaryHint, description].filter(Boolean).join(" ");
+  }
   setText("#documents-submit-label", documents.buttonLabel);
 }
 
@@ -808,7 +825,7 @@ function syncProcessLineMetrics() {
   const lastRect = circles[circles.length - 1].getBoundingClientRect();
   const left = firstRect.left + firstRect.width / 2 - groupRect.left;
   const right = groupRect.right - (lastRect.left + lastRect.width / 2);
-  const top = firstRect.top + firstRect.height / 2 - groupRect.top;
+  const top = firstRect.top + firstRect.height / 2 - groupRect.top - line.offsetHeight / 2;
 
   line.style.left = `${left}px`;
   line.style.right = `${right}px`;
@@ -823,36 +840,39 @@ function setupSmoothScroll() {
     return;
   }
 
-  let targetScrollY = window.scrollY;
-  let currentScrollY = window.scrollY;
+  let velocity = 0;
   let frameId = 0;
   let isAnimating = false;
-  let isInternalScroll = false;
-  const scrollEase = 0.22;
-  const wheelStrength = 0.92;
+  const wheelStrength = 0.14;
+  const damping = 0.84;
+  const maxVelocity = 56;
 
   const maxScroll = () =>
     Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
 
   const animate = () => {
-    const delta = targetScrollY - currentScrollY;
-    currentScrollY += delta * scrollEase;
-
-    if (Math.abs(delta) < 0.2) {
-      currentScrollY = targetScrollY;
-    }
-
-    isInternalScroll = true;
-    window.scrollTo(0, currentScrollY);
-    isInternalScroll = false;
-
-    if (Math.abs(targetScrollY - currentScrollY) > 0.35) {
-      frameId = window.requestAnimationFrame(animate);
+    if (Math.abs(velocity) < 0.2) {
+      velocity = 0;
+      isAnimating = false;
+      frameId = 0;
       return;
     }
 
-    isAnimating = false;
-    frameId = 0;
+    const nextScrollY = Math.min(
+      maxScroll(),
+      Math.max(0, window.scrollY + velocity)
+    );
+
+    if (nextScrollY === window.scrollY) {
+      velocity = 0;
+      isAnimating = false;
+      frameId = 0;
+      return;
+    }
+
+    window.scrollTo(0, nextScrollY);
+    velocity *= damping;
+    frameId = window.requestAnimationFrame(animate);
   };
 
   const startAnimation = () => {
@@ -885,33 +905,19 @@ function setupSmoothScroll() {
       }
 
       event.preventDefault();
-      targetScrollY = Math.min(
-        maxScroll(),
-        Math.max(0, targetScrollY + event.deltaY * wheelStrength)
-      );
+      velocity += event.deltaY * wheelStrength;
+      velocity = Math.max(-maxVelocity, Math.min(maxVelocity, velocity));
       startAnimation();
     },
     { passive: false }
   );
 
   window.addEventListener(
-    "scroll",
-    () => {
-      if (isInternalScroll || isAnimating) {
-        return;
-      }
-
-      currentScrollY = window.scrollY;
-      targetScrollY = window.scrollY;
-    },
-    { passive: true }
-  );
-
-  window.addEventListener(
     "resize",
     () => {
-      targetScrollY = Math.min(targetScrollY, maxScroll());
-      currentScrollY = Math.min(currentScrollY, maxScroll());
+      if (window.scrollY > maxScroll()) {
+        window.scrollTo(0, maxScroll());
+      }
     },
     { passive: true }
   );

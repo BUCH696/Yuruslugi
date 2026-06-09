@@ -6,7 +6,8 @@ module.exports = {
     logoHeaderPath: "/assets/logo.png",
     logoFooterPath: "/assets/logo.png",
     heroImagePath: "/assets/hero-placeholder.svg",
-    contactImagePath: "/assets/contact-art.svg"
+    contactImagePath: "/assets/contact-art.svg",
+    documentArtPath: "/assets/document-art.svg"
   },
   contacts: {
     cityAddress: "Москва, ул. Тверская, 16, офис 812",
@@ -20,7 +21,9 @@ module.exports = {
     whatsappUrl: "#",
     whatsappIconPath: "/assets/socials/whatsapp.svg",
     vkUrl: "#",
-    vkIconPath: "/assets/socials/vk.svg"
+    vkIconPath: "/assets/socials/vk.svg",
+    maxUrl: "#",
+    maxIconPath: "/assets/socials/max.svg"
   },
   hero: {
     eyebrow: "Юридические услуги для людей и бизнеса",
