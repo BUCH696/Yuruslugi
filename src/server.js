@@ -696,16 +696,18 @@ function requireAdmin(req, res, next) {
 
 function setAdminCookie(res, token) {
   const maxAge = config.admin.sessionTtlDays * 24 * 60 * 60;
+  const secureFlag = config.admin.cookieSecure ? "; Secure" : "";
   res.setHeader(
     "Set-Cookie",
-    `${adminCookieName}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}`
+    `${adminCookieName}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${secureFlag}`
   );
 }
 
 function clearAdminCookie(res) {
+  const secureFlag = config.admin.cookieSecure ? "; Secure" : "";
   res.setHeader(
     "Set-Cookie",
-    `${adminCookieName}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`
+    `${adminCookieName}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${secureFlag}`
   );
 }
 
