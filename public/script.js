@@ -23,7 +23,6 @@ async function initialize() {
   setupFaq();
   setupModals();
   setupServiceSelection();
-  setupSmoothScroll();
   setupCursorDot();
 
   await loadSiteSettings();
@@ -182,6 +181,7 @@ function applySiteSettings(settings) {
     type: settings.actions.urgentButtonType,
     value: settings.actions.urgentButtonValue
   });
+  bindNavbarPhone(settings);
   bindNavbarAction(settings);
   bindAction("#office-button", {
     label: settings.actions.officeButtonLabel,
@@ -291,26 +291,28 @@ function bindAction(selector, action) {
   }
 }
 
-function bindNavbarAction(settings) {
-  const button = $("#navbar-cta");
-  if (!button) {
+function bindNavbarPhone(settings) {
+  const link = $("#navbar-phone");
+  const label = $("#navbar-phone-label");
+
+  if (!link || !label) {
     return;
   }
 
-  const cloned = button.cloneNode(true);
-  button.replaceWith(cloned);
-  cloned.textContent = settings.contacts.phoneDisplay || "+7 (495) 128-24-24";
+  const phoneDisplay = settings.contacts.phoneDisplay || "+7 (495) 128-24-24";
+  const phoneValue = String(
+    settings.contacts.phoneHref || settings.contacts.phoneDisplay || phoneDisplay
+  ).replace(/[^\d+]/g, "");
 
-  cloned.addEventListener("click", () => {
-    const telHref = `tel:${String(settings.contacts.phoneHref || settings.contacts.phoneDisplay || "").replace(/[^\d+]/g, "")}`;
-    const isMobileViewport = window.matchMedia("(max-width: 980px)").matches;
+  label.textContent = phoneDisplay;
+  link.href = `tel:${phoneValue}`;
+}
 
-    if (isMobileViewport) {
-      window.location.href = telHref;
-      return;
-    }
-
-    $("#contacts")?.scrollIntoView({ behavior: "smooth", block: "start" });
+function bindNavbarAction(settings) {
+  bindAction("#navbar-cta", {
+    label: settings.hero.primaryButtonLabel || "Получить разбор",
+    type: settings.hero.primaryButtonType || "anchor",
+    value: settings.hero.primaryButtonValue || "#lead"
   });
 }
 
@@ -830,109 +832,6 @@ function syncProcessLineMetrics() {
   line.style.left = `${left}px`;
   line.style.right = `${right}px`;
   line.style.top = `${top}px`;
-}
-
-function setupSmoothScroll() {
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const hasCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
-
-  if (prefersReducedMotion || hasCoarsePointer) {
-    return;
-  }
-
-  let velocity = 0;
-  let frameId = 0;
-  let isAnimating = false;
-  const wheelStrength = 0.14;
-  const damping = 0.84;
-  const maxVelocity = 56;
-
-  const maxScroll = () =>
-    Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-
-  const animate = () => {
-    if (Math.abs(velocity) < 0.2) {
-      velocity = 0;
-      isAnimating = false;
-      frameId = 0;
-      return;
-    }
-
-    const nextScrollY = Math.min(
-      maxScroll(),
-      Math.max(0, window.scrollY + velocity)
-    );
-
-    if (nextScrollY === window.scrollY) {
-      velocity = 0;
-      isAnimating = false;
-      frameId = 0;
-      return;
-    }
-
-    window.scrollTo(0, nextScrollY);
-    velocity *= damping;
-    frameId = window.requestAnimationFrame(animate);
-  };
-
-  const startAnimation = () => {
-    if (isAnimating) {
-      return;
-    }
-
-    isAnimating = true;
-    frameId = window.requestAnimationFrame(animate);
-  };
-
-  const canHandleWheel = (event) => {
-    if (event.ctrlKey || event.metaKey) {
-      return false;
-    }
-
-    const dialog = event.target.closest(".modal__dialog");
-    if (dialog && dialog.scrollHeight > dialog.clientHeight) {
-      return false;
-    }
-
-    return true;
-  };
-
-  window.addEventListener(
-    "wheel",
-    (event) => {
-      if (!canHandleWheel(event)) {
-        return;
-      }
-
-      event.preventDefault();
-      velocity += event.deltaY * wheelStrength;
-      velocity = Math.max(-maxVelocity, Math.min(maxVelocity, velocity));
-      startAnimation();
-    },
-    { passive: false }
-  );
-
-  window.addEventListener(
-    "resize",
-    () => {
-      if (window.scrollY > maxScroll()) {
-        window.scrollTo(0, maxScroll());
-      }
-    },
-    { passive: true }
-  );
-
-  document.addEventListener(
-    "visibilitychange",
-    () => {
-      if (document.hidden && frameId) {
-        window.cancelAnimationFrame(frameId);
-        isAnimating = false;
-        frameId = 0;
-      }
-    },
-    { passive: true }
-  );
 }
 
 function setupCursorDot() {

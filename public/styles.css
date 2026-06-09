@@ -1,43 +1,3 @@
-@font-face{
-  font-family:"Bounded";
-  src:url("/assets/fonts/Bounded-Regular.otf") format("opentype");
-  font-weight:400;
-  font-style:normal;
-  font-display:swap;
-}
-
-@font-face{
-  font-family:"Bounded";
-  src:url("/assets/fonts/Bounded-Medium.otf") format("opentype");
-  font-weight:500;
-  font-style:normal;
-  font-display:swap;
-}
-
-@font-face{
-  font-family:"Bounded";
-  src:url("/assets/fonts/Bounded-SemiBold.otf") format("opentype");
-  font-weight:600;
-  font-style:normal;
-  font-display:swap;
-}
-
-@font-face{
-  font-family:"Bounded";
-  src:url("/assets/fonts/Bounded-Bold.otf") format("opentype");
-  font-weight:700;
-  font-style:normal;
-  font-display:swap;
-}
-
-@font-face{
-  font-family:"Bounded";
-  src:url("/assets/fonts/Bounded-ExtraBold.otf") format("opentype");
-  font-weight:800;
-  font-style:normal;
-  font-display:swap;
-}
-
 :root{
   --bg:#f5f7fb;
   --paper:#ffffff;
@@ -60,7 +20,8 @@
 html{scroll-behavior:smooth;scroll-padding-top:112px}
 body{
   margin:0;
-  font-family:"Bounded",system-ui,sans-serif;
+  font-family:"Manrope",sans-serif;
+  font-optical-sizing:auto;
   color:var(--ink);
   background:linear-gradient(180deg,#fff 0,#f5f7fb 100%);
   overflow-x:hidden;
@@ -120,9 +81,10 @@ img{max-width:100%;display:block}
   position:sticky;
   top:0;
   z-index:30;
-  background:rgba(255,255,255,.82);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid rgba(223,230,242,.78);
+  background:transparent;
+  padding-top:14px;
+  padding-left:12px;
+  padding-right:12px;
 }
 
 .topbar{
@@ -163,11 +125,53 @@ img{max-width:100%;display:block}
   cursor:pointer;
 }
 
+.navbar{position:relative}
 .navbar__inner{
-  min-height:78px;
-  display:flex;
+  min-height:86px;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto auto;
   align-items:center;
-  gap:24px;
+  gap:22px;
+  position:relative;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(223,230,242,.82);
+  border-radius:28px;
+  box-shadow:0 20px 52px rgba(8,31,72,.1);
+}
+.navbar-call{
+  display:inline-flex;
+  align-items:center;
+  gap:14px;
+  min-width:240px;
+  color:#163154;
+  justify-self:start;
+}
+.navbar-call__icon{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#eef4ff,#dbe8ff);
+  color:var(--blue);
+  font-size:16px;
+  box-shadow:inset 0 0 0 1px rgba(11,99,246,.12);
+}
+.navbar-call__body{
+  display:grid;
+  gap:3px;
+  line-height:1;
+}
+.navbar-call__body strong{
+  font-size:20px;
+  font-weight:800;
+  letter-spacing:-.03em;
+}
+.navbar-call__body small{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
 }
 .brand{
   display:flex;
@@ -195,8 +199,9 @@ img{max-width:100%;display:block}
 
 .nav-links{
   display:flex;
-  gap:28px;
-  margin-left:auto;
+  justify-content:center;
+  gap:clamp(16px,1.8vw,28px);
+  margin:0;
   align-items:center;
   font-size:14px;
   font-weight:700;
@@ -215,7 +220,7 @@ img{max-width:100%;display:block}
 }
 .nav-links a:hover:after{right:0}
 
-.burger{display:none;background:transparent;border:0;gap:5px;flex-direction:column}
+.burger{display:none;background:transparent;border:0;gap:5px;flex-direction:column;justify-self:end}
 .burger span{width:24px;height:2px;background:var(--ink);display:block;border-radius:2px}
 
 .btn{
@@ -257,9 +262,9 @@ img{max-width:100%;display:block}
 }
 .hero__grid{
   display:grid;
-  grid-template-columns:minmax(0,1.04fr) minmax(420px,.96fr);
+  grid-template-columns:minmax(0,.9fr) minmax(520px,1.1fr);
   align-items:stretch;
-  gap:clamp(40px,6vw,100px);
+  gap:clamp(44px,5vw,88px);
 }
 .hero__content{opacity:1;transform:none}
 .hero h1{
@@ -308,7 +313,7 @@ img{max-width:100%;display:block}
   position:relative;
   border-radius:42px;
   overflow:hidden;
-  height:620px;
+  height:700px;
   background:#eaf1fb;
   box-shadow:var(--shadow);
   isolation:isolate;
@@ -319,7 +324,7 @@ img{max-width:100%;display:block}
   min-height:0;
   object-fit:cover;
   object-position:center;
-  transform:scale(1.05);
+  transform:scale(1.08);
   transform-origin:center;
 }
 .hero-visual__badge{
@@ -1050,7 +1055,7 @@ img{max-width:100%;display:block}
   .service-grid{grid-template-columns:repeat(3,1fr)}
   .cards--five{grid-template-columns:repeat(3,1fr)}
   .hero__grid{grid-template-columns:1fr}
-  .hero-visual{height:460px}
+  .hero-visual{height:520px}
   .hero-visual img{min-height:0}
   .process-flow{grid-template-columns:1fr}
   .process-flow__line{display:none}
@@ -1063,13 +1068,13 @@ img{max-width:100%;display:block}
 
 @media(max-width:980px){
   .nav-links{display:none}
-  .burger{display:flex;margin-left:auto}
+  .burger{display:flex}
   .nav-links.is-open{
     display:flex;
     position:absolute;
-    top:128px;
-    left:16px;
-    right:16px;
+    top:calc(100% + 12px);
+    left:0;
+    right:0;
     background:#fff;
     border:1px solid var(--line);
     border-radius:24px;
@@ -1088,10 +1093,17 @@ img{max-width:100%;display:block}
   .document-panel__intro{grid-template-columns:1fr}
   .lead-card__visual{padding:0;min-height:280px}
   .slot-grid{grid-template-columns:repeat(2,1fr)}
-  .brand{min-width:0;width:min(100%,300px)}
+  .navbar__inner{
+    grid-template-columns:minmax(0,1fr) auto auto;
+    min-height:78px;
+    gap:14px;
+  }
+  .navbar-call{min-width:0}
+  .navbar-call__body strong{font-size:18px}
+  .navbar-call__body small{font-size:11px}
   .navbar__cta{
     display:inline-flex;
-    min-width:200px;
+    min-width:0;
     padding-left:18px;
     padding-right:18px;
     font-size:14px;
@@ -1107,18 +1119,15 @@ img{max-width:100%;display:block}
   .stats div{border-right:0;border-bottom:1px solid var(--line)}
   .stats div:last-child{border-bottom:0}
   .hero__actions{flex-direction:column}
-  .hero-visual{height:380px}
+  .hero-visual{height:430px}
   .btn{width:100%}
   .topbar{display:none}
   .hide-sm{display:none}
-  .navbar__inner{gap:12px}
-  .brand{width:min(100%,220px)}
-  .brand__logo{max-height:58px}
+  .navbar__inner{gap:12px;grid-template-columns:minmax(0,1fr) auto}
+  .navbar-call__icon{width:36px;height:36px;font-size:14px}
+  .navbar-call__body strong{font-size:16px}
   .navbar__cta{
-    min-width:auto;
-    font-size:13px;
-    padding:12px 14px;
-    width:auto;
+    display:none;
   }
   .document-panel,.lead-card,.office__content,.office-map,.policy-card{border-radius:28px}
   .footer__bottom{flex-direction:column;gap:8px}

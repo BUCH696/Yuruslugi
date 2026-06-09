@@ -8,16 +8,22 @@
     name="description"
     content="Юридические услуги для частных клиентов, предпринимателей и компаний. Разбор ситуации, документы, переговоры, суды, офис и онлайн."
   />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Manrope:wght@200..800&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="site-header" id="top">
     <div class="navbar">
       <div class="page-shell navbar__inner">
-        <a class="brand" href="#top" aria-label="Правовой партнёр">
-          <img src="/assets/logo.png" alt="Правовой партнёр" class="brand__logo" id="brand-logo" />
+                <a class="navbar-call" id="navbar-phone" href="tel:+74951282424" aria-label="Позвонить в Правовой партнёр">
+          <span class="navbar-call__icon" aria-hidden="true">☎</span>
+          <span class="navbar-call__body">
+            <strong id="navbar-phone-label">+7 (495) 128-24-24</strong>
+            <small>Звонок бесплатный</small>
+          </span>
         </a>
-        <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
         <nav class="nav-links" aria-label="Основное меню">
           <a href="#services">Услуги</a>
           <a href="#process">Как работаем</a>
@@ -27,7 +33,8 @@
           <a href="#faq">FAQ</a>
           <a href="#contacts">Контакты</a>
         </nav>
-        <button class="btn btn--primary navbar__cta" id="navbar-cta" type="button">+7 (495) 128-24-24</button>
+        <button class="btn btn--primary navbar__cta" id="navbar-cta" type="button">Получить разбор</button>
+        <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
     </div>
   </header>
@@ -390,6 +397,23 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.4.10/SmoothScroll.min.js" integrity="sha256-huW7yWl7tNfP7lGk46XE+Sp0nCotjzYodhVKlwaNeco=" crossorigin="anonymous"></script>
+  <script>
+    if (window.SmoothScroll) {
+      SmoothScroll({
+        animationTime: 650,
+        stepSize: 90,
+        accelerationDelta: 30,
+        accelerationMax: 2,
+        keyboardSupport: true,
+        arrowScroll: 50,
+        pulseAlgorithm: true,
+        pulseScale: 4,
+        pulseNormalize: 1,
+        touchpadSupport: true
+      });
+    }
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
