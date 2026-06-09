@@ -828,15 +828,17 @@ function setupSmoothScroll() {
   let frameId = 0;
   let isAnimating = false;
   let isInternalScroll = false;
+  const scrollEase = 0.22;
+  const wheelStrength = 0.92;
 
   const maxScroll = () =>
     Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
 
   const animate = () => {
     const delta = targetScrollY - currentScrollY;
-    currentScrollY += delta * 0.12;
+    currentScrollY += delta * scrollEase;
 
-    if (Math.abs(delta) < 0.35) {
+    if (Math.abs(delta) < 0.2) {
       currentScrollY = targetScrollY;
     }
 
@@ -885,7 +887,7 @@ function setupSmoothScroll() {
       event.preventDefault();
       targetScrollY = Math.min(
         maxScroll(),
-        Math.max(0, targetScrollY + event.deltaY * 1.05)
+        Math.max(0, targetScrollY + event.deltaY * wheelStrength)
       );
       startAnimation();
     },
@@ -950,6 +952,8 @@ function setupCursorDot() {
   let currentY = targetY;
   let rafId = 0;
   let isVisible = false;
+  const hotspotOffsetX = 1;
+  const hotspotOffsetY = 1;
   const interactiveSelector =
     'a, button, .btn, .service-card, .price-card, .social-hub__card, .slot-btn, .faq-item button, .burger';
 
@@ -963,8 +967,8 @@ function setupCursorDot() {
   document.addEventListener(
     "pointermove",
     (event) => {
-      targetX = event.clientX;
-      targetY = event.clientY;
+      targetX = event.clientX + hotspotOffsetX;
+      targetY = event.clientY + hotspotOffsetY;
       cursorDot.classList.toggle(
         "is-hovering",
         Boolean(event.target.closest(interactiveSelector))
