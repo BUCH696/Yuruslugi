@@ -31,13 +31,13 @@
           <a href="#contacts">Контакты</a>
         </nav>
         <div class="navbar__actions">
-          <a class="navbar-call" id="navbar-phone" href="tel:+74951282424" aria-label="Позвонить в Правовой партнёр">
-            <span class="navbar-call__icon" aria-hidden="true">☎</span>
-            <span class="navbar-call__body">
-              <strong id="navbar-phone-label">+7 (495) 128-24-24</strong>
-              <small>Звонок бесплатный</small>
-            </span>
-          </a>
+            <a class="navbar-call" id="navbar-phone" href="tel:+74951282424" aria-label="Позвонить в Правовой партнёр">
+              <span class="navbar-call__icon" aria-hidden="true">☎</span>
+              <span class="navbar-call__body">
+                <strong id="navbar-phone-label">+7 (495) 128-24-24</strong>
+                <small>Консультация бесплатно</small>
+              </span>
+            </a>
           <button class="btn btn--primary navbar__cta" id="navbar-cta" type="button">Получить разбор</button>
         </div>
         <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
@@ -185,14 +185,9 @@
               <p>Доводим задачу до результата и объясняем дальнейшие шаги.</p>
             </div>
           </article>
-        </div>        <div class="stats reveal-group">
-          <div><span class="stat-value" data-counter="12000" data-suffix="+">12 000+</span><p>довольных клиентов</p></div>
-          <div><span class="stat-value" data-counter="8">8</span><p>лет успешной работы</p></div>
-          <div><span class="stat-value" data-counter="93" data-suffix="%">93%</span><p>дел решены в пользу клиентов</p></div>
-          <div><span class="stat-value" data-counter="80" data-suffix="+">80+</span><p>городов России</p></div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
     <section class="section-full" id="prices">
       <div class="page-shell">
@@ -370,9 +365,38 @@
         </form>
       </div>
     </section>
+    <section class="section-full contacts-section" id="contacts">
+      <div class="page-shell">
+        <div class="contacts-card reveal">
+          <div class="contacts-card__intro">
+            <span class="eyebrow">Контакты компании</span>
+            <h2 id="contact-company-name">Правовой партнёр</h2>
+            <p id="contact-company-description">Юридические решения для жизни и бизнеса.</p>
+          </div>
+          <div class="contacts-card__grid">
+            <article class="contact-item">
+              <span>Телефон</span>
+              <a id="contact-company-phone" href="tel:+74951282424">+7 (495) 128-24-24</a>
+            </article>
+            <article class="contact-item">
+              <span>Email</span>
+              <a id="contact-company-email" href="mailto:info@prav-partner.ru">info@prav-partner.ru</a>
+            </article>
+            <article class="contact-item">
+              <span>Адрес</span>
+              <p id="contact-company-address">г. Москва, ул. Тверская, 16, офис 812</p>
+            </article>
+            <article class="contact-item">
+              <span>График работы</span>
+              <p id="contact-company-hours">Пн–Пт: 9:00–19:00, Сб: 10:00–16:00</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <footer class="footer" id="contacts">
+  <footer class="footer">
     <div class="page-shell footer__grid">
       <div>
         <img src="/assets/logo.png" alt="Правовой партнёр" class="footer__logo" id="footer-logo" />

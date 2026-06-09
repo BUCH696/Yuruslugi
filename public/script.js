@@ -161,11 +161,17 @@ function applySiteSettings(settings) {
   applyServiceCards(settings.services || []);
 
   setText("#footer-description", settings.contacts.footerDescription);
+  setText("#contact-company-name", settings.branding.siteTitle);
+  setText("#contact-company-description", settings.contacts.footerDescription);
   setContactLink("#topbar-phone", settings.contacts.phoneDisplay, settings.contacts.phoneHref, "☎");
   setContactLink("#footer-phone", settings.contacts.phoneDisplay, settings.contacts.phoneHref);
+  setContactLink("#contact-company-phone", settings.contacts.phoneDisplay, settings.contacts.phoneHref);
   setText("#footer-email", settings.contacts.email);
+  setEmailLink("#contact-company-email", settings.contacts.email);
   setText("#footer-hours", settings.contacts.workingHours);
+  setText("#contact-company-hours", settings.contacts.workingHours);
   setText("#footer-address", settings.contacts.cityAddress);
+  setText("#contact-company-address", settings.contacts.cityAddress);
   setText("#topbar-hours", settings.contacts.workingHours, '<span class="icon">◷</span> ');
   setText("#topbar-address", settings.contacts.cityAddress, '<span class="icon">⌖</span> ');
 
@@ -260,6 +266,19 @@ function setContactLink(selector, label, phone, icon = "") {
   }
 
   element.innerHTML = icon ? `${icon} ${escapeHtml(label)}` : escapeHtml(label);
+}
+
+function setEmailLink(selector, email) {
+  const element = $(selector);
+  if (!element || !email) {
+    return;
+  }
+
+  if (element.tagName === "A") {
+    element.href = `mailto:${String(email).trim()}`;
+  }
+
+  element.textContent = String(email).trim();
 }
 
 function setSocialLink(selector, url) {
