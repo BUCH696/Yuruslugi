@@ -346,23 +346,39 @@
     </section>
 
     <section class="section-full lead-section" id="lead">
-      <div class="page-shell lead-card reveal">
-        <div class="lead-card__visual">
-          <img src="/assets/contact-art.svg" alt="Юрист изучает документы" id="contact-image" />
-        </div>
-        <form class="lead-form" aria-label="Форма заявки">
-          <span class="eyebrow">Начать с разбора</span>
-          <h2>Оставьте заявку на юридический разбор</h2>
-          <p>Мы свяжемся с вами в течение 15 минут, уточним задачу и предложим удобный формат консультации.</p>
-          <input type="hidden" name="service" id="selected-service" />
-          <div class="form-row">
-            <input type="text" name="name" placeholder="Ваше имя" />
-            <input type="tel" name="phone" placeholder="Телефон" />
+      <div class="page-shell">
+        <div class="lead-card reveal">
+          <div class="lead-card__visual">
+            <img src="/assets/contact-art.svg" alt="Юрист изучает документы" id="contact-image" />
+            <div class="lead-card__note" aria-hidden="true">
+              <span class="lead-card__note-icon"></span>
+              <strong>Быстрый<br />разбор ситуации</strong>
+            </div>
           </div>
-          <textarea name="message" placeholder="Опишите вашу ситуацию"></textarea>
-          <button class="btn btn--primary btn--block btn--xl" type="submit">Получить разбор</button>
-          <label class="consent consent--light"><input type="checkbox" checked /> <span>Отправляя заявку, вы соглашаетесь с <a href="privacy.html">политикой конфиденциальности</a> и обработкой персональных данных.</span></label>
-        </form>
+          <form class="lead-form" aria-label="Форма заявки">
+            <div class="lead-form__shell">
+              <span class="lead-form__mark" aria-hidden="true"></span>
+              <h2>Оставьте заявку на юридический разбор</h2>
+              <p>Мы свяжемся с вами в течение 15 минут, уточним задачу и предложим удобный формат консультации.</p>
+              <input type="hidden" name="service" id="selected-service" />
+              <div class="lead-form__grid">
+                <label class="lead-field">
+                  <span class="lead-field__icon lead-field__icon--user" aria-hidden="true"></span>
+                  <input type="text" name="name" placeholder="Ваше имя" />
+                </label>
+                <label class="lead-field">
+                  <span class="lead-field__icon lead-field__icon--phone" aria-hidden="true"></span>
+                  <input type="tel" name="phone" placeholder="Телефон" />
+                </label>
+              </div>
+              <label class="lead-field lead-field--textarea">
+                <textarea name="message" placeholder="Опишите вашу ситуацию"></textarea>
+              </label>
+              <button class="btn btn--primary btn--block btn--xl" type="submit">Получить разбор</button>
+              <label class="consent consent--light"><input type="checkbox" checked /> <span>Отправляя заявку, вы соглашаетесь с <a href="privacy.html">политикой конфиденциальности</a> и обработкой персональных данных.</span></label>
+            </div>
+          </form>
+        </div>
       </div>
     </section>
     <section class="section-full contacts-section" id="contacts">
