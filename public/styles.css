@@ -147,6 +147,9 @@ img{max-width:100%;display:block}
   justify-self:end;
   margin-left:auto;
 }
+.navbar__cta{
+  padding:20px;
+}
 .navbar-call{
   display:inline-flex;
   align-items:center;
@@ -850,9 +853,10 @@ img{max-width:100%;display:block}
 .consent{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:14px;
   color:var(--muted);
   font-size:14px;
+  cursor:pointer;
 }
 .consent span{
   display:block;
@@ -862,27 +866,28 @@ img{max-width:100%;display:block}
 .consent input{
   appearance:none;
   -webkit-appearance:none;
-  width:30px;
-  height:30px;
-  min-width:30px;
+  width:28px;
+  height:28px;
+  min-width:28px;
   margin:0;
-  border-radius:8px;
+  border-radius:9px;
   border:2px solid #0b63f6;
   background:#fff;
-  display:grid;
-  place-items:center;
+  display:block;
   cursor:pointer;
-  transition:border-color .18s ease,background .18s ease,box-shadow .18s ease,transform .18s ease;
-  flex:0 0 30px;
+  transition:border-color .18s ease,background .18s ease,box-shadow .18s ease;
+  flex:0 0 28px;
+  position:relative;
 }
 .consent input::after{
   content:"";
-  width:10px;
-  height:6px;
-  border-left:2px solid transparent;
-  border-bottom:2px solid transparent;
-  transform:rotate(-45deg) translateY(-1px);
+  position:absolute;
+  inset:0;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 12.5l4 4 8-9' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 15px 15px no-repeat;
   opacity:0;
+  transform:none;
 }
 .consent input:checked{
   background:#0b63f6;
@@ -890,7 +895,6 @@ img{max-width:100%;display:block}
   box-shadow:none;
 }
 .consent input:checked::after{
-  border-color:#fff;
   opacity:1;
 }
 .consent input:hover{
@@ -898,7 +902,7 @@ img{max-width:100%;display:block}
 }
 .consent input:focus-visible{
   outline:none;
-  box-shadow:0 0 0 4px rgba(11,99,246,.14);
+  box-shadow:0 0 0 4px rgba(11,99,246,.12);
 }
 .consent--light{color:#546684}
 .consent--light a{color:var(--blue-dark)}

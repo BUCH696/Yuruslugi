@@ -11,6 +11,35 @@ const views = {
   admin: $("#admin-view")
 };
 
+async function readApiResponse(response) {
+  const contentType = response.headers.get("content-type") || "";
+
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+
+  const text = await response.text();
+
+  if (response.status === 413) {
+    return {
+      ok: false,
+      error: "Файл слишком большой для загрузки на сервер. Увеличьте лимит в nginx или выберите файл меньше."
+    };
+  }
+
+  if (text.includes("<html")) {
+    return {
+      ok: false,
+      error: `Сервер вернул HTML вместо JSON. HTTP ${response.status}. Проверьте nginx и лимиты загрузки.`
+    };
+  }
+
+  return {
+    ok: false,
+    error: `Некорректный ответ сервера. HTTP ${response.status}.`
+  };
+}
+
 initialize().catch((error) => {
   console.error(error);
   showStatus("Не удалось загрузить админ-панель.", "error");
@@ -52,7 +81,7 @@ function bindLoginForm() {
         },
         body: JSON.stringify(payload)
       });
-      const data = await response.json();
+      const data = await readApiResponse(response);
 
       if (!response.ok || !data.ok) {
         throw new Error(data.error || "Не удалось выполнить вход.");
@@ -91,7 +120,7 @@ function bindSettingsForm() {
         },
         body: JSON.stringify({ settings: nextSettings })
       });
-      const data = await response.json();
+      const data = await readApiResponse(response);
 
       if (!response.ok || !data.ok) {
         throw new Error(data.error || "Не удалось сохранить настройки.");
@@ -144,7 +173,7 @@ function bindAssetActions() {
           method: "POST",
           body: formData
         });
-        const data = await response.json();
+        const data = await readApiResponse(response);
 
         if (!response.ok || !data.ok) {
           throw new Error(data.error || "Не удалось загрузить файл.");
@@ -177,7 +206,7 @@ function bindAssetActions() {
         const response = await fetch(`/api/admin/assets/${field}`, {
           method: "DELETE"
         });
-        const data = await response.json();
+        const data = await readApiResponse(response);
 
         if (!response.ok || !data.ok) {
           throw new Error(data.error || "Не удалось удалить файл.");
@@ -215,7 +244,7 @@ function bindMapPreview() {
 async function fetchAdminSession() {
   try {
     const response = await fetch("/api/admin/session");
-    const data = await response.json();
+    const data = await readApiResponse(response);
     if (!response.ok || !data.ok) {
       return null;
     }
@@ -241,7 +270,7 @@ function showLogin() {
 
 async function loadAdminData() {
   const response = await fetch("/api/admin/settings");
-  const data = await response.json();
+  const data = await readApiResponse(response);
 
   if (!response.ok || !data.ok) {
     if (response.status === 401) {

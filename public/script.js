@@ -10,6 +10,35 @@ const state = {
   settings: null
 };
 
+async function readApiResponse(response) {
+  const contentType = response.headers.get("content-type") || "";
+
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+
+  const text = await response.text();
+
+  if (response.status === 413) {
+    return {
+      ok: false,
+      error: "Файл слишком большой для текущего лимита сервера. Нужно увеличить client_max_body_size в nginx или выбрать файл меньше."
+    };
+  }
+
+  if (text.includes("<html")) {
+    return {
+      ok: false,
+      error: `Сервер вернул HTML вместо JSON. HTTP ${response.status}. Проверьте nginx и лимиты загрузки.`
+    };
+  }
+
+  return {
+    ok: false,
+    error: `Некорректный ответ сервера. HTTP ${response.status}.`
+  };
+}
+
 const DEFAULT_OFFICE_MAP_URL =
   "https://yandex.ru/map-widget/v1/?ll=39.869363%2C57.630114&mode=search&oid=1787836671&ol=biz&z=19.97";
 
@@ -132,7 +161,7 @@ function setupServiceSelection() {
 
 async function loadSiteSettings() {
   const response = await fetch("/api/site-config");
-  const data = await response.json();
+  const data = await readApiResponse(response);
 
   if (!response.ok || !data.ok) {
     return;
@@ -495,7 +524,7 @@ async function loadAppointmentSlots() {
 
   try {
     const response = await fetch("/api/appointment-slots");
-    const data = await response.json();
+    const data = await readApiResponse(response);
 
     if (!response.ok || !data.ok) {
       return;
@@ -560,7 +589,7 @@ function setupLeadForm() {
       body: JSON.stringify(payload)
     });
 
-    const data = await response.json();
+    const data = await readApiResponse(response);
     if (!response.ok || !data.ok) {
       showFormStatus(form, data.error || "Не удалось отправить заявку.", "error");
       return;
@@ -588,7 +617,7 @@ function setupCallbackForms() {
         body: JSON.stringify(payload)
       });
 
-      const data = await response.json();
+      const data = await readApiResponse(response);
       if (!response.ok || !data.ok) {
         showFormStatus(form, data.error || "Не удалось отправить запрос.", "error");
         return;
@@ -641,7 +670,7 @@ function setupAppointmentForm() {
       body: JSON.stringify(payload)
     });
 
-    const data = await response.json();
+    const data = await readApiResponse(response);
     if (!response.ok || !data.ok) {
       showFormStatus(form, data.error || "Не удалось отправить запись.", "error");
       return;
@@ -697,7 +726,7 @@ function setupDocumentForm() {
       body: payload
     });
 
-    const data = await response.json();
+    const data = await readApiResponse(response);
     if (!response.ok || !data.ok) {
       showFormStatus(form, data.error || "Не удалось отправить документы.", "error");
       return;
