@@ -67,6 +67,7 @@ const allowedScriptSources = [
   "'self'",
   "'unsafe-inline'",
   "https://cdnjs.cloudflare.com",
+  "https://cdn-ru.bitrix24.ru",
   "https://mc.yandex.ru",
   "https://www.googletagmanager.com",
   "https://www.google-analytics.com"
@@ -76,6 +77,8 @@ const allowedConnectSources = [
   "'self'",
   "https://fonts.googleapis.com",
   "https://fonts.gstatic.com",
+  "https://cdn-ru.bitrix24.ru",
+  "https://*.bitrix24.ru",
   "https://mc.yandex.ru",
   "https://www.google-analytics.com",
   "https://region1.google-analytics.com"
@@ -127,11 +130,11 @@ app.use(
       directives: {
         defaultSrc: ["'self'"],
         styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-        imgSrc: ["'self'", "data:", "https://mc.yandex.ru"],
+        imgSrc: ["'self'", "data:", "https://mc.yandex.ru", "https://cdn-ru.bitrix24.ru", "https://*.bitrix24.ru"],
         scriptSrc: allowedScriptSources,
         connectSrc: allowedConnectSources,
         fontSrc: ["'self'", "data:", "https://fonts.gstatic.com"],
-        frameSrc: ["'self'", "https://yandex.ru", "https://yandex.com", "https://*.yandex.ru"],
+        frameSrc: ["'self'", "https://yandex.ru", "https://yandex.com", "https://*.yandex.ru", "https://cdn-ru.bitrix24.ru", "https://*.bitrix24.ru"],
         objectSrc: ["'none'"],
         baseUri: ["'self'"],
         formAction: ["'self'"],
