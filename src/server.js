@@ -47,6 +47,10 @@ const assetFieldMap = {
   contactImage: ["branding", "contactImagePath"],
   documentArt: ["branding", "documentArtPath"],
   quickHelpIcon: ["branding", "quickHelpIconPath"],
+  reviewsBackground: ["reviews", "backgroundImagePath"],
+  reviewsColumn: ["reviews", "columnImagePath"],
+  reviewsLaurelLeft: ["reviews", "laurelLeftPath"],
+  reviewsLaurelRight: ["reviews", "laurelRightPath"],
   serviceImage0: ["services", 0, "imagePath"],
   serviceImage1: ["services", 1, "imagePath"],
   serviceImage2: ["services", 2, "imagePath"],
@@ -523,6 +527,37 @@ app.post("/api/admin/assets/:field", requireAdmin, assetUpload.single("file"), (
   });
 });
 
+app.post("/api/admin/uploads", requireAdmin, assetUpload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({
+      ok: false,
+      error: "Файл не был передан."
+    });
+  }
+
+  return res.json({
+    ok: true,
+    path: toPublicUploadUrl(req.file)
+  });
+});
+
+app.delete("/api/admin/uploads", requireAdmin, (req, res) => {
+  const publicPath = String(req.body.path || "").trim();
+
+  if (!publicPath) {
+    return res.status(400).json({
+      ok: false,
+      error: "Не указан путь к файлу."
+    });
+  }
+
+  removeStoredFile(publicPath);
+
+  return res.json({
+    ok: true
+  });
+});
+
 app.delete("/api/admin/assets/:field", requireAdmin, (req, res) => {
   const settingPath = assetFieldMap[req.params.field];
 
@@ -547,6 +582,10 @@ app.delete("/api/admin/assets/:field", requireAdmin, (req, res) => {
 
 app.get("/", (_req, res, next) => {
   renderPage("index.html", res, next);
+});
+
+app.get(["/test", "/test.html"], (_req, res, next) => {
+  renderPage("test.html", res, next);
 });
 
 app.get(["/admin", "/admin.html"], (req, res, next) => {
@@ -770,6 +809,29 @@ function sanitizeSettings(settings) {
     sanitized.documents.uploadDirectory = sanitizeSubdirectory(
       sanitized.documents.uploadDirectory
     );
+  }
+
+  if (sanitized.reviews) {
+    sanitized.reviews.platforms = Array.isArray(sanitized.reviews.platforms)
+      ? sanitized.reviews.platforms
+          .map((platform) => ({
+            id: String(platform?.id || "").trim(),
+            name: String(platform?.name || "").trim(),
+            logoPath: String(platform?.logoPath || "").trim()
+          }))
+          .filter((platform) => platform.id || platform.name || platform.logoPath)
+      : [];
+
+    sanitized.reviews.items = Array.isArray(sanitized.reviews.items)
+      ? sanitized.reviews.items
+          .map((item) => ({
+            platformId: String(item?.platformId || "").trim(),
+            date: String(item?.date || "").trim(),
+            rating: String(item?.rating || "").trim(),
+            imagePath: String(item?.imagePath || "").trim()
+          }))
+          .filter((item) => item.platformId || item.date || item.rating || item.imagePath)
+      : [];
   }
 
   return sanitized;

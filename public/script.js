@@ -184,25 +184,29 @@ function applySiteSettings(settings) {
 
   setImage("#brand-logo", settings.branding.logoHeaderPath, settings.branding.siteTitle);
   setImage("#footer-logo", settings.branding.logoFooterPath, settings.branding.siteTitle);
+  setImage("#lead-form-logo", settings.branding.logoHeaderPath, settings.branding.siteTitle);
   setImage("#hero-image", settings.branding.heroImagePath, "Юридическая консультация");
   setImage("#contact-image", settings.branding.contactImagePath, "Юрист изучает документы");
   setImage("#documents-art-image", settings.branding.documentArtPath, "Папка с документами");
   applyServiceCards(settings.services || []);
+  setImage("#contacts-visual-image", settings.branding.contactImagePath, "Contacts visual");
 
   setText("#footer-description", settings.contacts.footerDescription);
-  setText("#contact-company-name", settings.branding.siteTitle);
-  setText("#contact-company-description", settings.contacts.footerDescription);
   setContactLink("#topbar-phone", settings.contacts.phoneDisplay, settings.contacts.phoneHref, "☎");
   setContactLink("#footer-phone", settings.contacts.phoneDisplay, settings.contacts.phoneHref);
   setContactLink("#contact-company-phone", settings.contacts.phoneDisplay, settings.contacts.phoneHref);
   setText("#footer-email", settings.contacts.email);
   setEmailLink("#contact-company-email", settings.contacts.email);
   setText("#footer-hours", settings.contacts.workingHours);
-  setText("#contact-company-hours", settings.contacts.workingHours);
+  setMultilineText("#contact-company-hours", settings.contacts.workingHours);
   setText("#footer-address", settings.contacts.cityAddress);
   setText("#contact-company-address", settings.contacts.cityAddress);
+  setText("#contact-address-note", settings.office.mapSubtitle || "м. Тверская, Пушкинская");
   setText("#topbar-hours", settings.contacts.workingHours, '<span class="icon">◷</span> ');
   setText("#topbar-address", settings.contacts.cityAddress, '<span class="icon">⌖</span> ');
+
+  setMapEmbed("#contacts-map-frame", settings.office.mapEmbedUrl || DEFAULT_OFFICE_MAP_URL);
+  setExternalLink("#contact-route", buildRouteUrl(settings));
 
   setImage("#social-telegram-icon", settings.contacts.telegramIconPath, "Telegram");
   setImage("#social-whatsapp-icon", settings.contacts.whatsappIconPath, "WhatsApp");
@@ -239,6 +243,7 @@ function applySiteSettings(settings) {
   applyPrices(settings.prices || []);
   applyDocumentSettings(settings.documents || {});
   applyOfficeSettings(settings.office || {});
+  applyReviewsSettings(settings.reviews || {});
 }
 
 function setMeta(settings) {
@@ -263,6 +268,15 @@ function setText(selector, value, prefix = "") {
   element.textContent = value;
 }
 
+function setMultilineText(selector, value) {
+  const element = $(selector);
+  if (!element || value === undefined || value === null || value === "") {
+    return;
+  }
+
+  element.innerHTML = escapeHtml(String(value)).replace(/\s*,\s*/g, "<br>");
+}
+
 function setImage(selector, path, alt) {
   const image = $(selector);
   if (!image || !path) {
@@ -282,6 +296,40 @@ function setFaviconPath(path) {
   }
 
   favicon.setAttribute("href", path);
+}
+
+function setMapEmbed(selector, url) {
+  const frame = $(selector);
+  if (!frame || !url) {
+    return;
+  }
+
+  frame.setAttribute("src", url);
+}
+
+function setExternalLink(selector, url) {
+  const link = $(selector);
+  if (!link || !url) {
+    return;
+  }
+
+  link.href = url;
+  link.target = "_blank";
+  link.rel = "noreferrer";
+}
+
+function buildRouteUrl(settings) {
+  const embedUrl = String(settings?.office?.mapEmbedUrl || "").trim();
+  if (embedUrl) {
+    return embedUrl;
+  }
+
+  const address = String(settings?.contacts?.cityAddress || settings?.office?.mapTitle || "").trim();
+  if (address) {
+    return `https://yandex.ru/maps/?text=${encodeURIComponent(address)}`;
+  }
+
+  return "https://yandex.ru/maps/";
 }
 
 function setContactLink(selector, label, phone, icon = "") {
@@ -514,6 +562,128 @@ function applyOfficeSettings(office) {
     <strong id="office-map-title">${escapeHtml(office.mapTitle || "Тверская, 16")}</strong>
     <small id="office-map-subtitle">${escapeHtml(office.mapSubtitle || "офис 812")}</small>
   `;
+}
+
+function applyReviewsSettings(reviews) {
+  setText("#reviews-eyebrow", reviews.eyebrow);
+  setText("#reviews-title", reviews.title);
+  setText("#reviews-text", reviews.text);
+  setText("#reviews-score-value", reviews.summaryScore);
+  setText("#reviews-score-scale", reviews.summaryScaleText);
+  setText("#reviews-count-prefix", reviews.reviewCountPrefix);
+  setText("#reviews-count-value", reviews.reviewCount);
+  setText("#reviews-count-suffix", reviews.reviewCountSuffix);
+  setText("#reviews-trust-note", reviews.trustNote);
+
+  setDecorativeImage("#reviews-background-image", reviews.backgroundImagePath);
+  setDecorativeImage("#reviews-column-image", reviews.columnImagePath);
+  setDecorativeImage("#reviews-laurel-left", reviews.laurelLeftPath);
+  setDecorativeImage("#reviews-laurel-right", reviews.laurelRightPath);
+
+  bindAction("#reviews-cta", {
+    label: reviews.ctaLabel,
+    type: reviews.ctaType,
+    value: reviews.ctaValue
+  });
+
+  renderReviewsList(reviews);
+  bindReviewsScroller();
+}
+
+function renderReviewsList(reviews) {
+  const root = $("#reviews-list");
+  if (!root) {
+    return;
+  }
+
+  const platforms = Array.isArray(reviews.platforms) ? reviews.platforms : [];
+  const items = Array.isArray(reviews.items) ? reviews.items : [];
+  const platformMap = new Map(platforms.map((platform) => [platform.id, platform]));
+
+  root.innerHTML = items
+    .map((item) => renderReviewCard(item, platformMap.get(item.platformId)))
+    .join("");
+}
+
+function renderReviewCard(item, platform) {
+  const sourceName = String(platform?.name || "Источник отзыва").trim();
+  const logoPath = String(platform?.logoPath || "").trim();
+  const rating = String(item?.rating || "5.0").trim();
+  const date = String(item?.date || "").trim();
+  const screenshot = String(item?.imagePath || "").trim();
+  const initial = escapeHtml(sourceName.slice(0, 1).toUpperCase() || "R");
+
+  return `
+    <article class="review-card">
+      <div class="review-card__meta">
+        <div class="review-card__source">
+          ${
+            logoPath
+              ? `<img class="review-card__logo" src="${escapeHtmlAttribute(logoPath)}" alt="${escapeHtmlAttribute(sourceName)}" />`
+              : `<span class="review-card__logo review-card__logo--placeholder">${initial}</span>`
+          }
+          <div>
+            <strong>${escapeHtml(sourceName)}</strong>
+          </div>
+        </div>
+        <div class="review-card__date">${escapeHtml(date)}</div>
+        <div class="review-card__rating"><span>★</span>${escapeHtml(rating)}</div>
+      </div>
+      <div class="review-card__media">
+        <div class="review-card__shot">
+          ${
+            screenshot
+              ? `<img src="${escapeHtmlAttribute(screenshot)}" alt="Скриншот отзыва" loading="lazy" />`
+              : `<div class="review-card__placeholder">
+                   <span class="review-card__placeholder-icon" aria-hidden="true"></span>
+                   <div>
+                     <strong>Скриншот отзыва</strong>
+                     <small>Здесь будет загружено изображение отзыва</small>
+                   </div>
+                 </div>`
+          }
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function setDecorativeImage(selector, path) {
+  const image = $(selector);
+  if (!image) {
+    return;
+  }
+
+  if (!path) {
+    image.hidden = true;
+    image.removeAttribute("src");
+    return;
+  }
+
+  image.hidden = false;
+  image.src = path;
+}
+
+function bindReviewsScroller() {
+  const viewport = $("#reviews-scroll-viewport");
+  const upButton = $("#reviews-scroll-up");
+  const downButton = $("#reviews-scroll-down");
+
+  if (!viewport || !upButton || !downButton || viewport.dataset.bound === "true") {
+    return;
+  }
+
+  const scrollStep = () => Math.max(280, Math.round(viewport.clientHeight * 0.42));
+
+  upButton.addEventListener("click", () => {
+    viewport.scrollBy({ top: -scrollStep(), behavior: "smooth" });
+  });
+
+  downButton.addEventListener("click", () => {
+    viewport.scrollBy({ top: scrollStep(), behavior: "smooth" });
+  });
+
+  viewport.dataset.bound = "true";
 }
 
 async function loadAppointmentSlots() {

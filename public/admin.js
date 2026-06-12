@@ -46,10 +46,12 @@ initialize().catch((error) => {
 });
 
 async function initialize() {
+  ensureReviewsNavLink();
   bindLoginForm();
   bindSettingsForm();
   bindLogout();
   bindAssetActions();
+  bindReviewEditors();
   bindRefreshButton();
   bindMapPreview();
 
@@ -111,6 +113,7 @@ function bindSettingsForm() {
 
     try {
       const partialSettings = collectFormValues(event.currentTarget);
+      mergeDeep(partialSettings, collectReviewsSettings());
       const nextSettings = mergeDeep(structuredCloneSafe(state.settings), partialSettings);
 
       const response = await fetch("/api/admin/settings", {
@@ -224,6 +227,34 @@ function bindAssetActions() {
   });
 }
 
+function bindReviewEditors() {
+  $("#add-review-platform")?.addEventListener("click", () => {
+    syncReviewsFromEditor();
+    const reviews = ensureReviewsSettings();
+    reviews.platforms.push({
+      id: `platform-${Date.now()}`,
+      name: "Новая платформа",
+      logoPath: ""
+    });
+    renderReviewsEditor();
+  });
+
+  $("#add-review-item")?.addEventListener("click", () => {
+    syncReviewsFromEditor();
+    const reviews = ensureReviewsSettings();
+    reviews.items.push({
+      platformId: reviews.platforms[0]?.id || "",
+      date: "",
+      rating: "5.0",
+      imagePath: ""
+    });
+    renderReviewsEditor();
+  });
+
+  $("#review-platforms")?.addEventListener("click", handleReviewPlatformActions);
+  $("#review-items")?.addEventListener("click", handleReviewItemActions);
+}
+
 function bindRefreshButton() {
   $("#reload-submissions")?.addEventListener("click", async () => {
     try {
@@ -233,6 +264,25 @@ function bindRefreshButton() {
       showStatus(error.message, "error");
     }
   });
+}
+
+function ensureReviewsNavLink() {
+  const nav = $(".admin-nav");
+  if (!nav || $('[href="#reviews"]', nav)) {
+    return;
+  }
+
+  const analyticsLink = $('[href="#analytics"]', nav);
+  const link = document.createElement("a");
+  link.href = "#reviews";
+  link.textContent = "Отзывы";
+
+  if (analyticsLink) {
+    nav.insertBefore(link, analyticsLink);
+    return;
+  }
+
+  nav.append(link);
 }
 
 function bindMapPreview() {
@@ -293,6 +343,7 @@ function renderSettings() {
 
   fillForm($("#settings-form"), state.settings);
   renderAssetPreviews();
+  renderReviewsEditor();
   renderMapPreview(getNestedValue(state.settings, ["office", "mapEmbedUrl"]));
 }
 
@@ -305,6 +356,10 @@ function renderAssetPreviews() {
     contactImage: ["branding", "contactImagePath"],
     documentArt: ["branding", "documentArtPath"],
     quickHelpIcon: ["branding", "quickHelpIconPath"],
+    reviewsBackground: ["reviews", "backgroundImagePath"],
+    reviewsColumn: ["reviews", "columnImagePath"],
+    reviewsLaurelLeft: ["reviews", "laurelLeftPath"],
+    reviewsLaurelRight: ["reviews", "laurelRightPath"],
     serviceImage0: ["services", 0, "imagePath"],
     serviceImage1: ["services", 1, "imagePath"],
     serviceImage2: ["services", 2, "imagePath"],
@@ -339,6 +394,104 @@ function renderAssetPreviews() {
   }
 }
 
+function renderReviewsEditor() {
+  const reviews = ensureReviewsSettings();
+  const platformRoot = $("#review-platforms");
+  const itemRoot = $("#review-items");
+
+  if (!platformRoot || !itemRoot) {
+    return;
+  }
+
+  platformRoot.innerHTML = reviews.platforms
+    .map(
+      (platform, index) => `
+        <article class="dynamic-card" data-review-platform-index="${index}">
+          <div class="dynamic-card__preview">
+            <img src="${escapeHtmlAttribute(platform.logoPath || transparentPixel())}" alt="${escapeHtmlAttribute(platform.name || "Платформа")}" data-review-platform-preview="${index}" style="opacity:${platform.logoPath ? "1" : ".22"}" />
+          </div>
+          <div class="dynamic-card__fields">
+            <label class="field">
+              <span>Код платформы</span>
+              <input type="text" value="${escapeHtmlAttribute(platform.id || "")}" data-review-platform-id />
+            </label>
+            <label class="field">
+              <span>Название платформы</span>
+              <input type="text" value="${escapeHtmlAttribute(platform.name || "")}" data-review-platform-name />
+            </label>
+            <input class="asset-input" type="file" accept="image/*" data-review-platform-file />
+            <input type="hidden" value="${escapeHtmlAttribute(platform.logoPath || "")}" data-review-platform-logo />
+            <div class="asset-actions">
+              <button class="admin-btn admin-btn--secondary" type="button" data-review-platform-upload>Загрузить логотип</button>
+              <button class="admin-btn admin-btn--ghost" type="button" data-review-platform-clear-logo>Удалить логотип</button>
+              <button class="admin-btn admin-btn--ghost" type="button" data-review-platform-remove>Удалить платформу</button>
+            </div>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+
+  itemRoot.innerHTML = reviews.items
+    .map(
+      (item, index) => `
+        <article class="dynamic-card" data-review-item-index="${index}">
+          <div class="dynamic-card__preview dynamic-card__preview--wide">
+            <img src="${escapeHtmlAttribute(item.imagePath || transparentPixel())}" alt="Скриншот отзыва" data-review-item-preview="${index}" style="opacity:${item.imagePath ? "1" : ".22"}" />
+          </div>
+          <div class="dynamic-card__fields">
+            <label class="field">
+              <span>Источник</span>
+              <select data-review-item-platform>
+                ${reviews.platforms
+                  .map(
+                    (platform) =>
+                      `<option value="${escapeHtmlAttribute(platform.id || "")}" ${platform.id === item.platformId ? "selected" : ""}>${escapeHtml(platform.name || "Платформа")}</option>`
+                  )
+                  .join("")}
+              </select>
+            </label>
+            <label class="field">
+              <span>Дата отзыва</span>
+              <input type="text" value="${escapeHtmlAttribute(item.date || "")}" data-review-item-date />
+            </label>
+            <label class="field">
+              <span>Оценка</span>
+              <input type="text" value="${escapeHtmlAttribute(item.rating || "")}" data-review-item-rating />
+            </label>
+            <input class="asset-input" type="file" accept="image/*" data-review-item-file />
+            <input type="hidden" value="${escapeHtmlAttribute(item.imagePath || "")}" data-review-item-image />
+            <div class="asset-actions">
+              <button class="admin-btn admin-btn--secondary" type="button" data-review-item-upload>Загрузить скриншот</button>
+              <button class="admin-btn admin-btn--ghost" type="button" data-review-item-clear-image>Удалить изображение</button>
+              <button class="admin-btn admin-btn--ghost" type="button" data-review-item-remove>Удалить отзыв</button>
+            </div>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+}
+
+function ensureReviewsSettings() {
+  if (!state.settings) {
+    return {
+      platforms: [],
+      items: []
+    };
+  }
+
+  state.settings.reviews = state.settings.reviews || {};
+  state.settings.reviews.platforms = Array.isArray(state.settings.reviews.platforms)
+    ? state.settings.reviews.platforms
+    : [];
+  state.settings.reviews.items = Array.isArray(state.settings.reviews.items)
+    ? state.settings.reviews.items
+    : [];
+
+  return state.settings.reviews;
+}
+
 function renderMapPreview(url) {
   const container = $("#map-preview");
   if (!container) {
@@ -359,6 +512,174 @@ function renderMapPreview(url) {
       title="Превью карты"
     ></iframe>
   `;
+}
+
+async function handleReviewPlatformActions(event) {
+  const button = event.target.closest("button");
+  if (!button) {
+    return;
+  }
+
+  const card = button.closest("[data-review-platform-index]");
+  const index = Number(card?.dataset.reviewPlatformIndex);
+  const reviews = ensureReviewsSettings();
+
+  if (!card || Number.isNaN(index)) {
+    return;
+  }
+
+  if (button.hasAttribute("data-review-platform-remove")) {
+    syncReviewsFromEditor();
+    const removedPlatform = reviews.platforms[index];
+    const removedLogoPath = removedPlatform?.logoPath || "";
+    const removedPlatformId = removedPlatform?.id || "";
+    reviews.platforms.splice(index, 1);
+    reviews.items = reviews.items.map((item) =>
+      item.platformId === removedPlatformId
+        ? {
+            ...item,
+            platformId: reviews.platforms[0]?.id || ""
+          }
+        : item
+    );
+    renderReviewsEditor();
+    showStatus("Платформа удалена. Сохраните настройки.", "info");
+    return;
+  }
+
+  if (button.hasAttribute("data-review-platform-clear-logo")) {
+    syncReviewsFromEditor();
+    const path = reviews.platforms[index]?.logoPath || "";
+    reviews.platforms[index].logoPath = "";
+    renderReviewsEditor();
+    if (path) {
+      await deleteUploadedFile(path);
+    }
+    showStatus("Логотип удален. Сохраните настройки.", "info");
+    return;
+  }
+
+  if (button.hasAttribute("data-review-platform-upload")) {
+    syncReviewsFromEditor();
+    const currentCard = $(`[data-review-platform-index="${index}"]`);
+    const input = $('[data-review-platform-file]', currentCard);
+    if (!input?.files?.length) {
+      showStatus("Выберите файл логотипа.", "error");
+      return;
+    }
+
+    button.disabled = true;
+    try {
+      const previousPath = reviews.platforms[index]?.logoPath || "";
+      const path = await uploadDynamicAsset(input.files[0]);
+      reviews.platforms[index].logoPath = path;
+      renderReviewsEditor();
+      if (previousPath && previousPath !== path) {
+        await deleteUploadedFile(previousPath);
+      }
+      showStatus("Логотип загружен. Сохраните настройки.", "success");
+    } catch (error) {
+      showStatus(error.message, "error");
+    } finally {
+      button.disabled = false;
+    }
+  }
+}
+
+async function handleReviewItemActions(event) {
+  const button = event.target.closest("button");
+  if (!button) {
+    return;
+  }
+
+  const card = button.closest("[data-review-item-index]");
+  const index = Number(card?.dataset.reviewItemIndex);
+  const reviews = ensureReviewsSettings();
+
+  if (!card || Number.isNaN(index)) {
+    return;
+  }
+
+  if (button.hasAttribute("data-review-item-remove")) {
+    syncReviewsFromEditor();
+    const path = reviews.items[index]?.imagePath || "";
+    reviews.items.splice(index, 1);
+    renderReviewsEditor();
+    if (path) {
+      await deleteUploadedFile(path);
+    }
+    showStatus("Отзыв удален. Сохраните настройки.", "info");
+    return;
+  }
+
+  if (button.hasAttribute("data-review-item-clear-image")) {
+    syncReviewsFromEditor();
+    const path = reviews.items[index]?.imagePath || "";
+    reviews.items[index].imagePath = "";
+    renderReviewsEditor();
+    if (path) {
+      await deleteUploadedFile(path);
+    }
+    showStatus("Изображение удалено. Сохраните настройки.", "info");
+    return;
+  }
+
+  if (button.hasAttribute("data-review-item-upload")) {
+    syncReviewsFromEditor();
+    const currentCard = $(`[data-review-item-index="${index}"]`);
+    const input = $('[data-review-item-file]', currentCard);
+    if (!input?.files?.length) {
+      showStatus("Выберите файл отзыва.", "error");
+      return;
+    }
+
+    button.disabled = true;
+    try {
+      const previousPath = reviews.items[index]?.imagePath || "";
+      const path = await uploadDynamicAsset(input.files[0]);
+      reviews.items[index].imagePath = path;
+      renderReviewsEditor();
+      if (previousPath && previousPath !== path) {
+        await deleteUploadedFile(previousPath);
+      }
+      showStatus("Изображение отзыва загружено. Сохраните настройки.", "success");
+    } catch (error) {
+      showStatus(error.message, "error");
+    } finally {
+      button.disabled = false;
+    }
+  }
+}
+
+async function uploadDynamicAsset(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch("/api/admin/uploads", {
+    method: "POST",
+    body: formData
+  });
+  const data = await readApiResponse(response);
+
+  if (!response.ok || !data.ok || !data.path) {
+    throw new Error(data.error || "Не удалось загрузить файл.");
+  }
+
+  return data.path;
+}
+
+async function deleteUploadedFile(path) {
+  if (!path || !String(path).startsWith("/uploads/")) {
+    return;
+  }
+
+  await fetch("/api/admin/uploads", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ path })
+  }).catch(() => {});
 }
 
 function renderSubmissions(submissions) {
@@ -454,6 +775,47 @@ function collectFormValues(form) {
   });
 
   return result;
+}
+
+function collectReviewsSettings() {
+  return {
+    reviews: {
+      platforms: $$("[data-review-platform-index]").map((card) => ({
+        id:
+          slugify($('[data-review-platform-id]', card)?.value || $('[data-review-platform-name]', card)?.value || "") ||
+          `platform-${Date.now()}`,
+        name: String($('[data-review-platform-name]', card)?.value || "").trim(),
+        logoPath: String($('[data-review-platform-logo]', card)?.value || "").trim()
+      })),
+      items: $$("[data-review-item-index]").map((card) => ({
+        platformId: String($('[data-review-item-platform]', card)?.value || "").trim(),
+        date: String($('[data-review-item-date]', card)?.value || "").trim(),
+        rating: String($('[data-review-item-rating]', card)?.value || "").trim(),
+        imagePath: String($('[data-review-item-image]', card)?.value || "").trim()
+      }))
+      }
+    };
+  }
+
+function syncReviewsFromEditor() {
+  if (!state.settings || !$("#review-platforms") || !$("#review-items")) {
+    return;
+  }
+
+  mergeDeep(state.settings, collectReviewsSettings());
+}
+
+function transparentPixel() {
+  return "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+}
+
+function slugify(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9а-яё]+/gi, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 function parsePath(path) {

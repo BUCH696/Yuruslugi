@@ -631,6 +631,149 @@
             </div>
           </section>
 
+          <section class="admin-card" id="reviews">
+            <div class="section-head">
+              <div>
+                <p class="admin-kicker">Отзывы</p>
+                <h2>Блок отзывов и платформ</h2>
+              </div>
+            </div>
+
+            <div class="fields-grid fields-grid--two">
+              <label class="field">
+                <span>Надзаголовок</span>
+                <input type="text" name="reviews.eyebrow" />
+              </label>
+              <label class="field">
+                <span>Заголовок</span>
+                <textarea name="reviews.title" rows="3"></textarea>
+              </label>
+              <label class="field field--full">
+                <span>Описание</span>
+                <textarea name="reviews.text" rows="4"></textarea>
+              </label>
+              <label class="field">
+                <span>Средняя оценка</span>
+                <input type="text" name="reviews.summaryScore" />
+              </label>
+              <label class="field">
+                <span>Подпись шкалы</span>
+                <input type="text" name="reviews.summaryScaleText" placeholder="из 5" />
+              </label>
+              <label class="field">
+                <span>Количество отзывов</span>
+                <input type="text" name="reviews.reviewCount" />
+              </label>
+              <label class="field">
+                <span>Префикс количества</span>
+                <input type="text" name="reviews.reviewCountPrefix" placeholder="на основе" />
+              </label>
+              <label class="field">
+                <span>Суффикс количества</span>
+                <input type="text" name="reviews.reviewCountSuffix" placeholder="отзывов" />
+              </label>
+              <label class="field">
+                <span>Подпись под рейтингом</span>
+                <input type="text" name="reviews.trustNote" />
+              </label>
+              <label class="field">
+                <span>Текст кнопки</span>
+                <input type="text" name="reviews.ctaLabel" />
+              </label>
+              <label class="field">
+                <span>Тип кнопки</span>
+                <select name="reviews.ctaType">
+                  <option value="anchor">Прокрутка к блоку</option>
+                  <option value="modal">Модальное окно</option>
+                  <option value="url">Внешняя ссылка</option>
+                  <option value="tel">Телефон</option>
+                  <option value="mailto">Email</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Значение кнопки</span>
+                <input type="text" name="reviews.ctaValue" />
+              </label>
+            </div>
+
+            <div class="asset-grid">
+              <article class="asset-card" data-asset-field="reviewsBackground">
+                <div class="asset-card__preview">
+                  <img alt="Фоновое изображение отзывов" data-asset-preview="reviewsBackground" />
+                </div>
+                <div class="asset-card__content">
+                  <h3>Фоновое изображение</h3>
+                  <p>Необязательный фон секции отзывов.</p>
+                  <input class="asset-input" type="file" accept="image/*" />
+                  <div class="asset-actions">
+                    <button class="admin-btn admin-btn--secondary" data-asset-upload type="button">Загрузить</button>
+                    <button class="admin-btn admin-btn--ghost" data-asset-delete type="button">Удалить</button>
+                  </div>
+                </div>
+              </article>
+              <article class="asset-card" data-asset-field="reviewsColumn">
+                <div class="asset-card__preview">
+                  <img alt="Колонна отзывов" data-asset-preview="reviewsColumn" />
+                </div>
+                <div class="asset-card__content">
+                  <h3>Колонна слева</h3>
+                  <p>Декоративная картинка на фоне секции.</p>
+                  <input class="asset-input" type="file" accept="image/*" />
+                  <div class="asset-actions">
+                    <button class="admin-btn admin-btn--secondary" data-asset-upload type="button">Загрузить</button>
+                    <button class="admin-btn admin-btn--ghost" data-asset-delete type="button">Удалить</button>
+                  </div>
+                </div>
+              </article>
+              <article class="asset-card" data-asset-field="reviewsLaurelLeft">
+                <div class="asset-card__preview asset-card__preview--logo">
+                  <img alt="Левый венок" data-asset-preview="reviewsLaurelLeft" />
+                </div>
+                <div class="asset-card__content">
+                  <h3>Левый венок</h3>
+                  <p>Декоративное изображение слева от рейтинга.</p>
+                  <input class="asset-input" type="file" accept="image/*" />
+                  <div class="asset-actions">
+                    <button class="admin-btn admin-btn--secondary" data-asset-upload type="button">Загрузить</button>
+                    <button class="admin-btn admin-btn--ghost" data-asset-delete type="button">Удалить</button>
+                  </div>
+                </div>
+              </article>
+              <article class="asset-card" data-asset-field="reviewsLaurelRight">
+                <div class="asset-card__preview asset-card__preview--logo">
+                  <img alt="Правый венок" data-asset-preview="reviewsLaurelRight" />
+                </div>
+                <div class="asset-card__content">
+                  <h3>Правый венок</h3>
+                  <p>Декоративное изображение справа от рейтинга.</p>
+                  <input class="asset-input" type="file" accept="image/*" />
+                  <div class="asset-actions">
+                    <button class="admin-btn admin-btn--secondary" data-asset-upload type="button">Загрузить</button>
+                    <button class="admin-btn admin-btn--ghost" data-asset-delete type="button">Удалить</button>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div class="section-head section-head--inline">
+              <div>
+                <p class="admin-kicker">Платформы</p>
+                <h3>Источники отзывов</h3>
+              </div>
+              <button class="admin-btn admin-btn--secondary" id="add-review-platform" type="button">Добавить платформу</button>
+            </div>
+            <div class="dynamic-list" id="review-platforms"></div>
+
+            <div class="section-head section-head--inline">
+              <div>
+                <p class="admin-kicker">Отзывы</p>
+                <h3>Карточки отзывов</h3>
+              </div>
+              <button class="admin-btn admin-btn--secondary" id="add-review-item" type="button">Добавить отзыв</button>
+            </div>
+            <div class="dynamic-list" id="review-items"></div>
+          </section>
+
           <section class="admin-card" id="analytics">
             <div class="section-head">
               <div>

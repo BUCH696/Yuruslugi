@@ -136,6 +136,37 @@ module.exports = {
     mapEmbedUrl:
       "https://yandex.ru/map-widget/v1/?ll=39.869363%2C57.630114&mode=search&oid=1787836671&ol=biz&z=19.97"
   },
+  reviews: {
+    eyebrow: "Отзывы клиентов",
+    title: "Нам доверяют клиенты",
+    text: "Реальные отзывы о нашей работе на независимых площадках.",
+    summaryScore: "4.9",
+    summaryScaleText: "из 5",
+    reviewCount: "248",
+    reviewCountPrefix: "на основе",
+    reviewCountSuffix: "отзывов",
+    trustNote: "Отзывы с независимых площадок",
+    ctaLabel: "Получить консультацию",
+    ctaType: "anchor",
+    ctaValue: "#lead",
+    backgroundImagePath: "",
+    columnImagePath: "",
+    laurelLeftPath: "",
+    laurelRightPath: "",
+    platforms: [
+      { id: "yandex", name: "Яндекс Карты", logoPath: "" },
+      { id: "google", name: "Google", logoPath: "" },
+      { id: "2gis", name: "2GIS", logoPath: "" },
+      { id: "youdo", name: "YouDo", logoPath: "" },
+      { id: "profi", name: "Профи.ру", logoPath: "" },
+      { id: "avito", name: "Авито", logoPath: "" }
+    ],
+    items: [
+      { platformId: "yandex", date: "1 июня 2024", rating: "5.0", imagePath: "" },
+      { platformId: "google", date: "28 апреля 2024", rating: "5.0", imagePath: "" },
+      { platformId: "2gis", date: "15 мая 2024", rating: "5.0", imagePath: "" }
+    ]
+  },
   analytics: {
     yandexMetrikaId: "",
     googleTagManagerId: ""
