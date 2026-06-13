@@ -5,6 +5,7 @@
 
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+  let strategyRevealObserver = null;
 
   const strategy = {
     title: "Юридические документы за 24 часа в Ярославле и дистанционно по РФ",
@@ -188,6 +189,16 @@
     }
   }
 
+  function showElement(selector, root = document) {
+    const node = $(selector, root);
+    if (!node) {
+      return null;
+    }
+    node.hidden = false;
+    node.removeAttribute("hidden");
+    return node;
+  }
+
   function escapeHtml(value) {
     return String(value)
       .replace(/&/g, "&amp;")
@@ -221,6 +232,143 @@
     anchor.innerHTML = button.innerHTML;
     button.replaceWith(anchor);
     return anchor;
+  }
+
+  function animateStrategyItem(element) {
+    if (!element) {
+      return;
+    }
+
+    element.style.opacity = "1";
+    element.style.transform = "translateY(0)";
+
+    if (typeof element.animate === "function") {
+      element.animate(
+        [
+          { opacity: 0, transform: "translateY(24px)" },
+          { opacity: 1, transform: "translateY(0)" }
+        ],
+        {
+          duration: 720,
+          easing: "cubic-bezier(.2,.8,.2,1)",
+          fill: "forwards"
+        }
+      );
+    }
+  }
+
+  function bindStrategyRevealObserver() {
+    if (strategyRevealObserver || window.gsap || !("IntersectionObserver" in window)) {
+      return;
+    }
+
+    strategyRevealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          if (entry.target.classList.contains("reveal")) {
+            animateStrategyItem(entry.target);
+          } else if (entry.target.classList.contains("reveal-group")) {
+            $$(":scope > *", entry.target).forEach((item, index) => {
+              window.setTimeout(() => {
+                animateStrategyItem(item);
+              }, index * 120);
+            });
+          }
+
+          strategyRevealObserver.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12 }
+    );
+  }
+
+  function refreshStrategyReveals() {
+    if (window.gsap && window.ScrollTrigger) {
+      window.gsap.registerPlugin(window.ScrollTrigger);
+
+      $$(".strategy-quiz .reveal, .strategy-included .reveal, .strategy-examples .reveal").forEach((element) => {
+        if (element.dataset.strategyRevealBound) {
+          return;
+        }
+
+        element.dataset.strategyRevealBound = "true";
+        window.gsap.set(element, { opacity: 0, y: 24 });
+        window.gsap.to(element, {
+          opacity: 1,
+          y: 0,
+          duration: 0.85,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: element,
+            start: "top 88%"
+          }
+        });
+      });
+
+      $$(".strategy-quiz .reveal-group, .strategy-included .reveal-group, .strategy-examples .reveal-group").forEach((group) => {
+        if (group.dataset.strategyRevealBound) {
+          return;
+        }
+
+        group.dataset.strategyRevealBound = "true";
+        window.gsap.set($$(":scope > *", group), { opacity: 0, y: 24 });
+        window.gsap.to($$(":scope > *", group), {
+          opacity: 1,
+          y: 0,
+          duration: 0.72,
+          ease: "power3.out",
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: group,
+            start: "top 84%"
+          }
+        });
+      });
+
+      if (window.ScrollTrigger?.refresh) {
+        window.ScrollTrigger.refresh();
+      }
+
+      return;
+    }
+
+    bindStrategyRevealObserver();
+
+    $$(".strategy-quiz .reveal, .strategy-included .reveal, .strategy-examples .reveal").forEach((element) => {
+      if (element.dataset.strategyRevealBound) {
+        return;
+      }
+
+      element.dataset.strategyRevealBound = "true";
+      const inView = element.getBoundingClientRect().top <= window.innerHeight * 0.9;
+      if (inView || !strategyRevealObserver) {
+        animateStrategyItem(element);
+        return;
+      }
+      strategyRevealObserver.observe(element);
+    });
+
+    $$(".strategy-quiz .reveal-group, .strategy-included .reveal-group, .strategy-examples .reveal-group").forEach((group) => {
+      if (group.dataset.strategyRevealBound) {
+        return;
+      }
+
+      group.dataset.strategyRevealBound = "true";
+      const inView = group.getBoundingClientRect().top <= window.innerHeight * 0.9;
+      if (inView || !strategyRevealObserver) {
+        $$(":scope > *", group).forEach((item, index) => {
+          window.setTimeout(() => {
+            animateStrategyItem(item);
+          }, index * 120);
+        });
+        return;
+      }
+      strategyRevealObserver.observe(group);
+    });
   }
 
   function rewriteHero() {
@@ -327,11 +475,12 @@
           <h2>Ответьте на 4 вопроса, чтобы мы быстрее оценили вашу задачу</h2>
           <p>${escapeHtml(strategy.quiz.text)}</p>
         </div>
-        <div class="strategy-quiz__grid">
+        <div class="strategy-quiz__grid reveal-group">
           ${strategy.quiz.questions
             .map(
-              (question) => `
+              (question, index) => `
                 <article class="strategy-quiz__card" data-quiz-question="${escapeHtml(question.key)}">
+                  <span class="strategy-quiz__eyebrow">Вопрос ${index + 1}</span>
                   <h3>${escapeHtml(question.title)}</h3>
                   <div class="strategy-quiz__options">
                     ${question.options
@@ -346,7 +495,7 @@
             )
             .join("")}
         </div>
-        <div class="strategy-quiz__footer">
+        <div class="strategy-quiz__footer reveal">
           <h3>Подберём нужный документ и скажем стоимость</h3>
           <p>Это ускорит первичный разбор: мы сразу поймём, какой документ нужен, насколько срочная задача и в каком формате вам удобнее получить ответ.</p>
           <div class="strategy-quiz__summary" id="quiz-summary"></div>
@@ -357,6 +506,7 @@
 
     servicesSection.insertAdjacentElement("afterend", section);
     bindQuizSection();
+    refreshStrategyReveals();
   }
 
   function bindQuizSection() {
@@ -478,6 +628,7 @@
     `;
 
     processSection.insertAdjacentElement("afterend", section);
+    refreshStrategyReveals();
   }
 
   function insertExamplesSection() {
@@ -517,6 +668,7 @@
     `;
 
     reviewsSection.insertAdjacentElement("afterend", section);
+    refreshStrategyReveals();
   }
 
   function rewritePricing() {
@@ -548,10 +700,11 @@
   function rewriteDocuments() {
     setText("#documents .section-title .eyebrow", "Отправьте документы");
     setText("#documents-title", "Пришлите фото документов — скажем срок и точную стоимость");
-    setText(
-      "#documents-description",
-      "Пришлите фото или сканы документов. Мы посмотрим материалы, скажем срок подготовки и назовём точную стоимость до начала работы."
-    );
+    const description = showElement("#documents-description");
+    if (description) {
+      description.textContent =
+        "Пришлите фото или сканы документов. Мы посмотрим материалы, скажем срок подготовки и назовём точную стоимость до начала работы.";
+    }
     setText(
       "#documents-upload-hint",
       "Подойдут PDF, DOCX, JPG, PNG. Пришлите то, что получили из суда, от приставов, от банка, продавца или другой стороны."
@@ -657,6 +810,7 @@
     rewriteFaq();
     rewriteLead();
     rewriteContacts();
+    refreshStrategyReveals();
   }
 
   window.addEventListener("load", () => {

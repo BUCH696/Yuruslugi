@@ -81,6 +81,21 @@ body[data-page="test"] .service-card.has-background .service-card__price{
   padding:24px;
 }
 
+.strategy-quiz__eyebrow{
+  display:inline-flex;
+  align-items:center;
+  min-height:32px;
+  padding:0 12px;
+  border-radius:999px;
+  background:#edf4ff;
+  color:#0b63f6;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+
 .strategy-quiz__card h3{
   margin:0 0 16px;
   font-size:24px;
