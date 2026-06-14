@@ -430,84 +430,87 @@
     </section>
     <section class="section-full contacts-section" id="contacts">
       <div class="page-shell">
-        <div class="contacts-intro reveal">
-          <span class="eyebrow">Всегда на связи</span>
+        <div class="contacts-intro contacts-intro--center reveal">
+          <span class="eyebrow">Свяжитесь с нами</span>
           <h2>Контакты</h2>
-          <p>Мы всегда на связи и готовы помочь. Выберите удобный способ связи или приходите к нам в офис.</p>
+          <p>Мы всегда на связи и готовы помочь. Выберите удобный способ связи или посетите наш офис в Москве.</p>
         </div>
-        <div class="contacts-layout">
-          <div class="contacts-visual reveal">
-            <img src="/assets/contact-art.svg" alt="Офис юридической фирмы" id="contacts-visual-image" />
-            <div class="contacts-visual__tag">
-              <span class="contacts-visual__tag-icon" aria-hidden="true"></span>
-              <strong>Офис в центре города</strong>
-            </div>
+        <div class="contacts-showcase">
+          <div class="contacts-cards reveal-group">
+            <article class="contact-info-card">
+              <span class="contact-info-card__icon contact-info-card__icon--address" aria-hidden="true"></span>
+              <h3>Офис</h3>
+              <p class="contact-info-card__value" id="contact-company-address">г. Москва, ул. Тверская, 16, офис 812</p>
+              <small id="contact-address-note">м. Тверская, Пушкинская</small>
+              <a class="contact-info-card__action contact-info-card__action--route" href="https://yandex.ru/maps/" target="_blank" rel="noreferrer">Смотреть на карте</a>
+            </article>
+            <article class="contact-info-card">
+              <span class="contact-info-card__icon contact-info-card__icon--phone" aria-hidden="true"></span>
+              <h3>Телефон</h3>
+              <a class="contact-info-card__value" id="contact-company-phone" href="tel:+74951282424">+7 (495) 128-24-24</a>
+              <small id="contact-phone-note">Консультация бесплатно</small>
+              <a class="contact-info-card__action contact-info-card__action--phone" href="tel:+74951282424">Позвонить сейчас</a>
+            </article>
+            <article class="contact-info-card">
+              <span class="contact-info-card__icon contact-info-card__icon--email" aria-hidden="true"></span>
+              <h3>Электронная почта</h3>
+              <a class="contact-info-card__value" id="contact-company-email" href="mailto:info@prav-partner.ru">info@prav-partner.ru</a>
+              <small id="contact-email-note">Ответим в течение часа</small>
+              <a class="contact-info-card__action contact-info-card__action--email" href="mailto:info@prav-partner.ru">Написать письмо</a>
+            </article>
+            <article class="contact-info-card">
+              <span class="contact-info-card__icon contact-info-card__icon--hours" aria-hidden="true"></span>
+              <h3>График работы</h3>
+              <p class="contact-info-card__value" id="contact-company-hours">Пн–Пт: 9:00–19:00, Сб: 10:00–16:00</p>
+              <small>Подтверждаем время встречи заранее</small>
+              <button class="contact-info-card__action contact-info-card__action--button" type="button" data-open-modal="appointment">Записаться на консультацию</button>
+            </article>
           </div>
-          <div class="contacts-panel reveal">
-            <div class="contacts-panel__top">
-              <div class="contacts-details">
-                <article class="contact-row">
-                  <span class="contact-row__icon contact-row__icon--phone" aria-hidden="true"></span>
-                  <div class="contact-row__body">
-                    <h3>Телефон</h3>
-                    <a id="contact-company-phone" href="tel:+74951282424">+7 (495) 128-24-24</a>
-                    <small id="contact-phone-note">Консультация бесплатно</small>
-                  </div>
-                </article>
-                <article class="contact-row">
-                  <span class="contact-row__icon contact-row__icon--address" aria-hidden="true"></span>
-                  <div class="contact-row__body">
-                    <h3>Адрес</h3>
-                    <p id="contact-company-address">г. Москва, ул. Тверская, 16, офис 812</p>
-                    <small id="contact-address-note">м. Тверская, Пушкинская</small>
-                  </div>
-                </article>
-                <article class="contact-row">
-                  <span class="contact-row__icon contact-row__icon--email" aria-hidden="true"></span>
-                  <div class="contact-row__body">
-                    <h3>E-mail</h3>
-                    <a id="contact-company-email" href="mailto:info@prav-partner.ru">info@prav-partner.ru</a>
-                    <small id="contact-email-note">Отвечаем в течение 15 минут</small>
-                  </div>
-                </article>
-                <article class="contact-row">
-                  <span class="contact-row__icon contact-row__icon--hours" aria-hidden="true"></span>
-                  <div class="contact-row__body">
-                    <h3>Режим работы</h3>
-                    <p id="contact-company-hours">Пн–Пт: 9:00–19:00, Сб: 10:00–16:00</p>
-                  </div>
-                </article>
+          <div class="contacts-bottom">
+            <article class="contacts-office-card reveal">
+              <div class="contacts-office-card__media">
+                <img src="/assets/contact-art.svg" alt="Офис юридической фирмы" id="contacts-visual-image" />
               </div>
-              <div class="contacts-actions">
-                <article class="contact-action-card">
-                  <div class="contact-action-card__head">
-                    <span class="contact-row__icon contact-row__icon--calendar" aria-hidden="true"></span>
-                    <div>
-                      <h3>Записаться на приём</h3>
-                      <p>Выберите удобное время, мы подтвердим запись</p>
-                    </div>
-                  </div>
-                  <button class="btn btn--primary btn--block" type="button" data-open-modal="appointment">Выбрать время</button>
-                </article>
-                <article class="contact-action-card">
-                  <div class="contact-action-card__head">
-                    <span class="contact-row__icon contact-row__icon--phone" aria-hidden="true"></span>
-                    <div>
-                      <h3>Нужен срочный звонок?</h3>
-                      <p>Перезвоним в течение 5 минут</p>
-                    </div>
-                  </div>
-                  <button class="btn btn--secondary btn--block" type="button" data-open-modal="callback">Заказать звонок</button>
-                </article>
+              <div class="contacts-office-card__content">
+                <span class="contacts-office-card__eyebrow">Личная встреча</span>
+                <h3>Посетите наш офис</h3>
+                <p>Мы находимся в деловом районе города. Удобная локация, спокойная обстановка и быстрый доступ к юристу без долгого ожидания.</p>
+                <div class="contacts-office-card__features">
+                  <span>Удобное расположение</span>
+                  <span>Парковка для клиентов</span>
+                  <span>Пропускной режим и безопасность</span>
+                </div>
+                <a class="btn btn--primary contacts-office-card__route" id="contact-route" href="https://yandex.ru/maps/" target="_blank" rel="noreferrer">Построить маршрут</a>
               </div>
-            </div>
-            <div class="contacts-map-card">
-              <iframe id="contacts-map-frame" src="https://yandex.ru/map-widget/v1/?ll=39.869363%2C57.630114&mode=search&oid=1787836671&ol=biz&z=19.97" title="Карта офиса" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-              <a class="contacts-map-card__route" id="contact-route" href="https://yandex.ru/maps/" target="_blank" rel="noreferrer">
-                <span class="contacts-map-card__route-icon" aria-hidden="true"></span>
-                Построить маршрут
-              </a>
-            </div>
+            </article>
+            <article class="contacts-callback-card reveal">
+              <div class="contacts-callback-card__head">
+                <span class="contacts-callback-card__icon" aria-hidden="true"></span>
+                <span class="contacts-callback-card__eyebrow">Обратный звонок</span>
+                <h3>Перезвоните мне</h3>
+                <p>Оставьте свои контакты, и наш специалист свяжется с вами в течение 5 минут.</p>
+              </div>
+              <form class="callback-form contacts-callback-form" aria-label="Форма обратного звонка">
+                <label class="contacts-form-field">
+                  <span class="contacts-form-field__icon contacts-form-field__icon--user" aria-hidden="true"></span>
+                  <input type="text" name="name" placeholder="Ваше имя" />
+                </label>
+                <label class="contacts-form-field">
+                  <span class="contacts-form-field__icon contacts-form-field__icon--phone" aria-hidden="true"></span>
+                  <input type="tel" name="phone" placeholder="Ваш телефон" />
+                </label>
+                <label class="contacts-form-consent">
+                  <input type="checkbox" checked />
+                  <span>Я согласен на <a href="privacy.html">обработку персональных данных</a></span>
+                </label>
+                <button class="btn btn--primary btn--block contacts-callback-form__submit" type="submit">Перезвоните мне за 5 минут</button>
+              </form>
+            </article>
+          </div>
+          <iframe id="contacts-map-frame" src="https://yandex.ru/map-widget/v1/?ll=39.869363%2C57.630114&mode=search&oid=1787836671&ol=biz&z=19.97" title="Карта офиса" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen hidden></iframe>
+          <div class="contacts-privacy reveal">
+            <span class="contacts-privacy__icon" aria-hidden="true"></span>
+            <p>Ваши данные защищены и не будут переданы третьим лицам.</p>
           </div>
         </div>
       </div>

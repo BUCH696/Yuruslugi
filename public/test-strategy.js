@@ -771,16 +771,37 @@
   }
 
   function rewriteContacts() {
-    setText(".contacts-intro .eyebrow", "Контакты");
-    setText(".contacts-intro h2", "Как с нами связаться");
+    setText(".contacts-intro .eyebrow", "Свяжитесь с нами");
+    setText(".contacts-intro h2", "Контакты");
     setText(".contacts-intro p", strategy.contacts.text);
 
-    const actionButtons = $$(".contact-action-card .btn");
-    if (actionButtons[0]) {
-      actionButtons[0].textContent = "Отправить документы";
+    const phoneLink = $("#contact-company-phone");
+    const emailLink = $("#contact-company-email");
+    const routeLink = $("#contact-route");
+
+    const quickCallLink = $(".contact-info-card__action--phone");
+    if (quickCallLink && phoneLink) {
+      quickCallLink.href = phoneLink.getAttribute("href") || "tel:+74951282424";
     }
-    if (actionButtons[1]) {
-      actionButtons[1].textContent = "Получить звонок за 5 минут";
+
+    const quickEmailLink = $(".contact-info-card__action--email");
+    if (quickEmailLink && emailLink) {
+      quickEmailLink.href = emailLink.getAttribute("href") || "mailto:info@prav-partner.ru";
+    }
+
+    const quickRouteLink = $(".contact-info-card__action--route");
+    if (quickRouteLink && routeLink) {
+      quickRouteLink.href = routeLink.getAttribute("href") || "https://yandex.ru/maps/";
+    }
+
+    const hoursButton = $(".contact-info-card__action--button");
+    if (hoursButton) {
+      hoursButton.textContent = "Записаться на консультацию";
+    }
+
+    const callbackButton = $(".contacts-callback-form__submit");
+    if (callbackButton) {
+      callbackButton.textContent = "Перезвоните мне за 5 минут";
     }
   }
 
