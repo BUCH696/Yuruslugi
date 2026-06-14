@@ -14,37 +14,19 @@ body[data-page="test"] .strategy-examples .section-title{
 }
 
 body[data-page="test"] .hero__strategy-points{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  margin:22px 0 0;
+  display:none !important;
 }
 
 body[data-page="test"] .hero__strategy-points span{
-  display:inline-flex;
-  align-items:center;
-  min-height:44px;
-  padding:0 16px;
-  border-radius:999px;
-  background:#fff;
-  border:1px solid rgba(11,99,246,.16);
-  box-shadow:0 10px 28px rgba(8,34,70,.05);
-  color:#183560;
-  font-size:14px;
-  font-weight:700;
+  display:none !important;
 }
 
 body[data-page="test"] .hero__secondary-links{
-  display:flex;
-  flex-wrap:wrap;
-  gap:14px;
-  margin-top:16px;
+  display:none !important;
 }
 
 body[data-page="test"] .hero__secondary-links a{
-  color:var(--blue);
-  font-weight:700;
-  font-size:15px;
+  display:none !important;
 }
 
 body[data-page="test"] .service-card__price{

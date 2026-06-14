@@ -805,6 +805,34 @@
     }
   }
 
+  function rewriteHero() {
+    setText("#hero-eyebrow", "Иски, жалобы, претензии и заявления");
+    setText("#hero-title", "Юридические документы за 24 часа в Ярославле");
+    setText(
+      "#hero-text",
+      "Подготовим документ под вашу ситуацию, заранее скажем срок и фиксированную стоимость, а после передадим готовый текст и понятную инструкцию по подаче."
+    );
+    setText("#hero-badge-title", "24 часа");
+    setText("#hero-badge-text", "на подготовку типового документа");
+
+    const primary = $("#hero-primary-action");
+    const secondary = $("#hero-secondary-action");
+
+    if (primary) {
+      primary.textContent = "Подобрать документ";
+      primary.href = "#quiz";
+      primary.removeAttribute("target");
+      primary.removeAttribute("rel");
+    }
+
+    if (secondary) {
+      secondary.textContent = "Записаться в офис";
+    }
+
+    $(".hero__strategy-points")?.remove();
+    $(".hero__secondary-links")?.remove();
+  }
+
   function setMeta() {
     document.title = strategy.title;
     const description = $('meta[name="description"]');
